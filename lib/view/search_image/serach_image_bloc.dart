@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/model/image_model.dart';
 
+import '../../model/image_model.dart';
+
 abstract class SearchImageEvent extends Equatable {
   @override
   List<Object> get props => [];
@@ -56,8 +58,13 @@ class SearchImageBloc extends Bloc<SearchImageEvent, SearchImageState> {
     if (event is RequestSearch) {
       yield LoadingState();
       try {
-        yield LoadedState(await _imageRepository.searchImageFromUrl(event.url));
-      } catch(e) {
+        final ImageModel result =
+            await _imageRepository.searchImageFromUrl(event.url);
+        if (result.imageUrl.isEmpty) {
+          yield NoImageState();
+        }
+        yield LoadedState(result);
+      } catch (e) {
         ErrorState(e);
       }
     }

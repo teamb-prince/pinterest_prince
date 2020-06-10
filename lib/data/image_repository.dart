@@ -1,4 +1,4 @@
-import 'package:pintersest_clone/api/iamge_api.dart';
+import 'package:pintersest_clone/api/image_api.dart';
 import 'package:pintersest_clone/model/image_model.dart';
 
 class ImageRepository {

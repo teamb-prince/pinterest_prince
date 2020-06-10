@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'filepick_page.dart';
+import 'package:pintersest_clone/view/search_image/search_image_widget.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: FilePickerDemo(),
+      home: SearchImageWidget(),
     );
   }
 }
