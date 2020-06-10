@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'serach_image_bloc.dart';
 
 class SearchImageWidget extends StatefulWidget {
   @override
@@ -62,7 +65,8 @@ class _SearchImageState extends State<SearchImageWidget> {
             child: Text("submit"),
             onPressed: () {
               print(_controller.text);
-              //TODO ここでPOSTする
+              BlocProvider.of<SearchImageBloc>(context)
+                  .add(RequestSearch(_controller.text));
             },
           ),
         )
@@ -72,12 +76,26 @@ class _SearchImageState extends State<SearchImageWidget> {
 
   Widget _buildGetImage() => Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: 300,
-          child: Image.network(
-            "https://avatars2.githubusercontent.com/u/23512935?s=460&u=8f50efae6e531658b6a52e0e70381c26408d7843&v=4",
-            fit: BoxFit.cover,
-          ),
-        ),
+        child: BlocBuilder<SearchImageBloc, SearchImageState>(
+            builder: (context, state) {
+          if (state is LoadedState) {
+            return Container(
+              height: 300,
+              child: Image.network(
+                state.imageModel.imageUrl,
+                fit: BoxFit.cover,
+              ),
+            );
+          } else if (state is NoImageState) {
+            return Text("No image.");
+          } else if (state is ErrorState) {
+            return Text(state.exception.toString());
+          } else if (state is LoadingState) {
+            return CircularProgressIndicator();
+          } else if (state is InitialState) {
+            return Text("Initial state.");
+          }
+          return Container();
+        }),
       );
 }

@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
+import 'package:pintersest_clone/api/image_api.dart';
 import 'package:pintersest_clone/view/search_image/search_image_widget.dart';
+
+import 'api/api_client.dart';
+import 'data/image_repository.dart';
+import 'view/search_image/serach_image_bloc.dart';
 
 void main() {
   runApp(MyApp());
@@ -7,15 +14,28 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  ApiClient _apiClient = ApiClient(Client());
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pinterest',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<ImageRepository>(
+          create: (_) => ImageRepository(DefaultImageApi(_apiClient)),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Pinterest',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: BlocProvider(
+          create: (context) =>
+              SearchImageBloc(context.repository<ImageRepository>()),
+          child: SearchImageWidget(),
+        ),
       ),
-      home: SearchImageWidget(),
     );
   }
 }
