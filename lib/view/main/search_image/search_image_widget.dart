@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
-import 'serach_image_bloc.dart';
+import 'search_image_bloc.dart';
 
 class SearchImageWidget extends StatefulWidget {
   final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());
