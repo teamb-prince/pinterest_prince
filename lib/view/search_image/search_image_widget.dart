@@ -79,12 +79,21 @@ class _SearchImageState extends State<SearchImageWidget> {
         child: BlocBuilder<SearchImageBloc, SearchImageState>(
             builder: (context, state) {
           if (state is LoadedState) {
-            return Container(
-              height: 300,
-              child: Image.network(
-                state.imageModel.imageUrl,
-                fit: BoxFit.cover,
-              ),
+            final List<String> imageUrls = state.imageModel.imageUrls;
+            return GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              children: List.generate(imageUrls.length, (index) {
+                return GestureDetector(
+                  onTap: () {
+                    print(imageUrls[index]);
+                  },
+                  child: Image.network(
+                    imageUrls[index],
+                    fit: BoxFit.cover,
+                  ),
+                );
+              }),
             );
           } else if (state is NoImageState) {
             return Text("No image.");

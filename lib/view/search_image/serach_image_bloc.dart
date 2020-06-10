@@ -60,11 +60,12 @@ class SearchImageBloc extends Bloc<SearchImageEvent, SearchImageState> {
       try {
         final ImageModel result =
             await _imageRepository.searchImageFromUrl(event.url);
-        if (result.imageUrl.isEmpty) {
+        if (result.imageUrls.length == 0) {
           yield NoImageState();
         }
         yield LoadedState(result);
       } catch (e) {
+        print(e);
         ErrorState(e);
       }
     }

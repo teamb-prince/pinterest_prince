@@ -1,17 +1,19 @@
 import 'package:equatable/equatable.dart';
 
 class ImageModel extends Equatable {
-  final String imageUrl;
+  final String url;
+  final List<String> imageUrls;
 
-  ImageModel({this.imageUrl});
+  ImageModel({this.url, this.imageUrls});
 
   factory ImageModel.fromJson(Map<String, dynamic> json) {
     return ImageModel(
-      imageUrl: json['image_url'] as String
+      url: json['url'] as String,
+      imageUrls: (json['image_url'] as List).cast<String>(),
     );
   }
 
   @override
-  List<Object> get props => [imageUrl];
+  List<Object> get props => [url, imageUrls];
 }
 
