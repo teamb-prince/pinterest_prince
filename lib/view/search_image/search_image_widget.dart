@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pintersest_clone/view/web/web_view_widget.dart';
 
 import 'serach_image_bloc.dart';
 
@@ -86,7 +87,11 @@ class _SearchImageState extends State<SearchImageWidget> {
               children: List.generate(imageUrls.length, (index) {
                 return GestureDetector(
                   onTap: () {
-                    print(imageUrls[index]);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                WebViewWidget(_controller.text)));
                   },
                   child: Image.network(
                     imageUrls[index],
