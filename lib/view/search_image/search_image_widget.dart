@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pintersest_clone/view/web/web_view_widget.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
 import 'serach_image_bloc.dart';
 
 class SearchImageWidget extends StatefulWidget {
+  final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());
+
   @override
   _SearchImageState createState() => _SearchImageState();
 }
@@ -87,11 +90,7 @@ class _SearchImageState extends State<SearchImageWidget> {
               children: List.generate(imageUrls.length, (index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                WebViewWidget(_controller.text)));
+                    widget.browser.open(url: _controller.text);
                   },
                   child: Image.network(
                     imageUrls[index],
