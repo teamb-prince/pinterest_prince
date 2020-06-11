@@ -78,37 +78,39 @@ class _SearchImageState extends State<SearchImageWidget> {
     );
   }
 
-  Widget _buildGetImage() => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: BlocBuilder<SearchImageBloc, SearchImageState>(
-            builder: (context, state) {
-          if (state is LoadedState) {
-            final List<String> imageUrls = state.imageModel.imageUrls;
-            return GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              children: List.generate(imageUrls.length, (index) {
-                return GestureDetector(
-                  onTap: () {
-                    widget.browser.open(url: _controller.text);
-                  },
-                  child: Image.network(
-                    imageUrls[index],
-                    fit: BoxFit.cover,
-                  ),
-                );
-              }),
-            );
-          } else if (state is NoImageState) {
-            return Text("No image.");
-          } else if (state is ErrorState) {
-            return Text(state.exception.toString());
-          } else if (state is LoadingState) {
-            return CircularProgressIndicator();
-          } else if (state is InitialState) {
-            return Text("Initial state.");
-          }
-          return Container();
-        }),
-      );
+  Widget _buildGetImage() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: BlocBuilder<SearchImageBloc, SearchImageState>(
+          builder: (context, state) {
+        if (state is LoadedState) {
+          final List<String> imageUrls = state.imageModel.imageUrls;
+          return GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            children: List.generate(imageUrls.length, (index) {
+              return GestureDetector(
+                onTap: () {
+                  widget.browser.open(url: _controller.text);
+                },
+                child: Image.network(
+                  imageUrls[index],
+                  fit: BoxFit.cover,
+                ),
+              );
+            }),
+          );
+        } else if (state is NoImageState) {
+          return Text("No image.");
+        } else if (state is ErrorState) {
+          return Text(state.exception.toString());
+        } else if (state is LoadingState) {
+          return CircularProgressIndicator();
+        } else if (state is InitialState) {
+          return Text("Initial state.");
+        }
+        return Container();
+      }),
+    );
+  }
 }
