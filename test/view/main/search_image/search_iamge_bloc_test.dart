@@ -5,6 +5,8 @@ import 'package:pintersest_clone/api/errors/error.dart';
 import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/model/image_model.dart';
 import 'package:pintersest_clone/view/main/search_image/search_image_bloc.dart';
+import 'package:pintersest_clone/view/main/search_image/search_image_event.dart';
+import 'package:pintersest_clone/view/main/search_image/search_image_state.dart';
 
 class MockImageRepository extends Mock implements ImageRepository {}
 
@@ -21,7 +23,7 @@ void main() {
     blocTest(
       "emit [InitialState(), LoadingState(), LoadedState()] when request will succeed",
       build: () async {
-        when(mockImageRepository.searchImageFromUrl(any))
+        when(mockImageRepository.crawlingImageFromUrl(any))
             .thenAnswer((_) => Future.value(imageModel));
 
         return SearchImageBloc(mockImageRepository);
@@ -34,7 +36,7 @@ void main() {
     blocTest(
       "emit [InitialState(), LoadingState(), ErrorState()] when request will fail",
       build: () async {
-        when(mockImageRepository.searchImageFromUrl(any))
+        when(mockImageRepository.crawlingImageFromUrl(any))
             .thenAnswer((_) => Future.error(UnauthorizedError()));
 
         return SearchImageBloc(mockImageRepository);
