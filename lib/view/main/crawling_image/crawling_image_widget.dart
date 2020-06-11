@@ -70,7 +70,6 @@ class _SearchImageState extends State<SearchImageWidget> {
           child: RaisedButton(
             child: Text("submit"),
             onPressed: () {
-              print(_controller.text);
               BlocProvider.of<SearchImageBloc>(context)
                   .add(RequestSearch(_controller.text));
             },
