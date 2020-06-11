@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:pintersest_clone/api/image_api.dart';
-import 'package:pintersest_clone/view/main/search_image/search_image_widget.dart';
+import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_bloc.dart';
+import 'package:pintersest_clone/view/main/crawling_image/crawling_image_widget.dart';
 
 import 'api/api_client.dart';
 import 'data/image_repository.dart';
-import 'view/main/search_image/search_image_bloc.dart';
 
 void main() {
   runApp(MyApp());

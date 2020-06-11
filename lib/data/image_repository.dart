@@ -6,6 +6,6 @@ class ImageRepository {
 
   ImageRepository(this._imageApi);
 
-  Future<ImageModel> searchImageFromUrl(String url) =>
-      _imageApi.searchImageFromUrl(url);
+  Future<ImageModel> crawlingImageFromUrl(String url) =>
+      _imageApi.crawlingImageFromUrl(url);
 }

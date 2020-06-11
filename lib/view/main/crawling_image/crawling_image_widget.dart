@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_event.dart';
+import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_state.dart';
 import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
-import 'search_image_bloc.dart';
+import 'bloc/crawling_image_bloc.dart';
 
 class SearchImageWidget extends StatefulWidget {
   final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());

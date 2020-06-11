@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/model/image_model.dart';
-import 'package:pintersest_clone/view/main/search_image/search_image_event.dart';
-import 'package:pintersest_clone/view/main/search_image/search_image_state.dart';
+import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_event.dart';
+import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_state.dart';
 
 class SearchImageBloc extends Bloc<SearchImageEvent, SearchImageState> {
   final ImageRepository _imageRepository;
