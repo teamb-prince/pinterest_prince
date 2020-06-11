@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pintersest_clone/view/main/account_widget/account_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/home_widget.dart';
 import 'package:pintersest_clone/view/main/notification_widget/notification_widget.dart';
-import 'package:pintersest_clone/view/main/saerch_widget/serach_widget.dart';
+import 'package:pintersest_clone/view/main/search_widget/search_widget.dart';
 
 class MainPageDestination {
   final int index;
