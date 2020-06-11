@@ -1,6 +1,8 @@
 import 'dart:math';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 
 const List<Color> _kColors = const <Color>[
   Colors.green,
@@ -53,7 +55,11 @@ class AccountWidget extends StatelessWidget {
 
   Widget _getChild(BuildContext context, int index) {
     return GestureDetector(
-      onTap: () => print(index),
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return PinDetailWidget();
+        }));
+      },
       child: Container(
         key: ObjectKey('$index'),
         color: _colors[index],
