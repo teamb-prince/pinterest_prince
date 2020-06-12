@@ -6,6 +6,8 @@ import 'package:pintersest_clone/model/pin_model.dart';
 
 abstract class PinsApi {
   Future<PinModel> getPin(String id);
+
+  Future<List<PinModel>> getPins();
 }
 
 class DefaultPinsApi extends PinsApi {
@@ -18,5 +20,15 @@ class DefaultPinsApi extends PinsApi {
     final Response response = await _apiClient.get("/pins/$id");
 
     return PinModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+  }
+
+  @override
+  Future<List<PinModel>> getPins() async {
+    final Response response = await _apiClient.get("/pins");
+    print("get pins");
+    print((jsonDecode(utf8.decode(response.bodyBytes)) as List)
+        .map((pin) => PinModel.fromJson(pin)));
+    return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
+        .map((pin) => PinModel.fromJson(pin));
   }
 }

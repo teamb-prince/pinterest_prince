@@ -23,6 +23,18 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     borderRadius: BorderRadius.circular(32),
   );
 
+  final imageList = [
+    "https://automaton-media.com/wp-content/uploads/2019/05/20190501-91106-001.jpg",
+    "https://c2.staticflickr.com/2/1496/26433173610_10a5654b94_o.jpg",
+    "https://skyticket.jp/guide/wp-content/uploads/shutterstock_252533968.jpg",
+    "https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349",
+    "https://cdn.sbfoods.co.jp/recipes/06608_l.jpg",
+    "https://images3.imgbox.com/4a/4a/XnWFHADP_o.gif",
+    "https://town.epark.jp/lp/magazine/wp-content/uploads/2019/11/sunshine_aquarium.jpg",
+    "https://www.fashion-press.net/img/news/56610/bkg.jpg",
+    "https://pbs.twimg.com/media/EZoZKkBUMAARw9Z.jpg",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,26 +42,37 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
       appBar: AppBar(
         title: Text("Pin Detail"), // TODO 本来であればAppBarではなく画像の上に戻るボタンをつける
       ),
-      body: Container(
-        decoration: _roundedContainerDecoration,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildPinImage(),
-              Container(
-                height: 1,
-                color: AppColors.pinsDetailBackgroundColor,
-              ),
-//              _buildSimilarPins(),
-            ],
+      body: CustomScrollView(
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Column(
+                  children: [
+                    _buildPinImage(),
+                  ],
+                )
+              ],
+            ),
           ),
-        ),
+          SliverGrid(
+            // TODO 細かいUIは後で
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            delegate:
+                SliverChildBuilderDelegate((BuildContext context, int index) {
+              return _buildImage(imageList[index]);
+            }, childCount: imageList.length),
+          )
+        ],
       ),
     );
   }
 
   Widget _buildPinImage() {
     return Container(
+      decoration: _roundedContainerDecoration,
       child: FutureBuilder(
           future: _pinsApi.getPin("ab917ee9-bf28-41ff-b914-550728159fae"),
           builder: (BuildContext context, AsyncSnapshot<PinModel> snapshot) {
@@ -152,10 +175,23 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     );
   }
 
-  Widget _buildSimilarPins() {
+  Widget _buildSimilarPinsContainer() {
     return Container(
       height: 300,
       decoration: _roundedContainerDecoration,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                "似ているピン",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
