@@ -62,7 +62,7 @@ class AccountWidget extends StatelessWidget {
             builder: (context) {
               return PinDetailWidget();
             },
-            fullscreenDialog: true, // TODO　半モーダルにさせる必要あり
+            fullscreenDialog: true, // TODO　おしゃれに半モーダルにさせる必要あり
           ),
         );
       },

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:http/http.dart';
 import 'package:pintersest_clone/api/api_client.dart';
 import 'package:pintersest_clone/api/pins_api.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
 class PinDetailWidget extends StatefulWidget {
+  final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());
+
   @override
   _PinDetailWidgetState createState() => _PinDetailWidgetState();
 }
@@ -109,7 +113,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
       child: Column(
         children: [
           _buildImageInformation(title, description),
-          _buildActionButton(),
+          _buildActionButton(url),
         ],
       ),
     );
@@ -131,21 +135,21 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     );
   }
 
-  Widget _buildActionButton() {
+  Widget _buildActionButton(String url) {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.share),
-          _buildVisitSiteButton(),
+          Icon(Icons.share), //TODO シェア機能いる?
+          _buildVisitSiteButton(url),
           _buildSaveBoardButton(),
-          Icon(Icons.more_horiz),
+          Icon(Icons.more_horiz), //TODO その他の操作いる?
         ],
       ),
     );
   }
 
-  Widget _buildVisitSiteButton() {
+  Widget _buildVisitSiteButton(String url) {
     return FlatButton(
       shape: _buttonDecoration,
       color: AppColors.grey,
@@ -156,7 +160,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         ),
       ),
       onPressed: () {
-        print("access tapped");
+        widget.browser.open(url: url);
       },
     );
   }
@@ -170,28 +174,8 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
       ),
       color: AppColors.red,
       onPressed: () {
-        print("save tapped");
+        print("save tapped"); // TODO boardへの保存処理
       },
-    );
-  }
-
-  Widget _buildSimilarPinsContainer() {
-    return Container(
-      height: 300,
-      decoration: _roundedContainerDecoration,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                "似ているピン",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
