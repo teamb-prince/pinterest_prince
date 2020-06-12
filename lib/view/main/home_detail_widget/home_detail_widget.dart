@@ -7,14 +7,14 @@ import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
-class PinDetailWidget extends StatefulWidget {
+class HomeDetailWidget extends StatefulWidget {
   final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());
 
   @override
-  _PinDetailWidgetState createState() => _PinDetailWidgetState();
+  _HomeDetailWidgetState createState() => _HomeDetailWidgetState();
 }
 
-class _PinDetailWidgetState extends State<PinDetailWidget> {
+class _HomeDetailWidgetState extends State<HomeDetailWidget> {
   PinsApi _pinsApi = DefaultPinsApi(ApiClient(Client()));
   String url =
       "https://avatars2.githubusercontent.com/u/23512935?s=460&u=8f50efae6e531658b6a52e0e70381c26408d7843&v=4";

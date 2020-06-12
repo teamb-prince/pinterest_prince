@@ -6,6 +6,7 @@ import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
+import 'package:pintersest_clone/view/main/home_detail_widget/home_detail_widget.dart';
 
 class HomeWidget extends StatelessWidget {
   @override
@@ -52,7 +53,17 @@ class HomeWidget extends StatelessWidget {
 
   Widget _getChild(BuildContext context, PinModel pin) {
     return GestureDetector(
-        onTap: () => print(pin.id),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return HomeDetailWidget();
+              },
+              fullscreenDialog: true, // TODO　おしゃれに半モーダルにさせる必要あり
+            ),
+          );
+        },
         child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,

@@ -18,13 +18,13 @@ class DefaultPinsApi extends PinsApi {
   @override
   Future<PinModel> getPin(String id) async {
     final Response response = await _apiClient.get("/pins/$id");
-    return PinModel.fromJson(jsonDecode(response.body));
+    return PinModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 
   @override
   Future<List<PinModel>> getPins() async {
     final Response response = await _apiClient.get("/pins");
-    return (jsonDecode(response.body) as List).map((it) =>
-        PinModel.fromJson(it)).toList();
+    return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
+        .map((pin) => PinModel.fromJson(pin)).toList();
   }
 }
