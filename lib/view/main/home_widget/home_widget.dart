@@ -1,69 +1,76 @@
-import 'dart:math';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
-
-const List<Color> _kColors = const <Color>[
-  Colors.green,
-  Colors.blue,
-  Colors.red,
-  Colors.pink,
-  Colors.indigo,
-  Colors.purple,
-  Colors.blueGrey,
-];
-
-List<StaggeredTile> _generateRandomTiles(int count) {
-  Random rnd = Random();
-  return List.generate(
-      count, (i) => StaggeredTile.count(2, rnd.nextDouble() + 2));
-}
-
-List<Color> _generateRandomColors(int count) {
-  Random rnd = Random();
-  return List.generate(count, (i) => _kColors[rnd.nextInt(_kColors.length)]);
-}
+import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
+import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
+import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
 
 class HomeWidget extends StatelessWidget {
-  HomeWidget()
-      : _tiles = _generateRandomTiles(_kItemCount).toList(),
-        _colors = _generateRandomColors(_kItemCount).toList();
-
-  static const int _kItemCount = 100;
-  final List<StaggeredTile> _tiles;
-  final List<Color> _colors;
-
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: AppBar(
-          title: Text('random tiles'),
-        ),
-        body: StaggeredGridView.countBuilder(
-          primary: false,
-          crossAxisCount: 4,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
-          staggeredTileBuilder: _getTile,
-          itemBuilder: _getChild,
-          itemCount: _kItemCount,
-        ));
+    return BlocProvider<HomeBloc>(
+      create: (context) =>
+          HomeBloc(context.repository<PinsRepository>())..add(LoadData()),
+      child: _buildScreen(context),
+    );
   }
 
-  StaggeredTile _getTile(int index) => _tiles[index];
-
-  Widget _getChild(BuildContext context, int index) {
-    return GestureDetector(
-      onTap: () => print(index),
-      child: Container(
-        key: ObjectKey('$index'),
-        color: _colors[index],
-        child: Center(
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Text('$index'),
-          ),
+  Widget _buildScreen(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        AppBar(
+          title: const Text(("Home")),
         ),
-      ),
+        Expanded(
+          child: _buildStaggeredGridView(),
+        )
+      ],
     );
+  }
+
+  Widget _buildStaggeredGridView() {
+    return BlocBuilder<HomeBloc, HomeState>(
+        builder: (BuildContext context, HomeState state) {
+      if (state is LoadedState) {
+        final List<PinModel> pins = state.pins;
+        return StaggeredGridView.countBuilder(
+          padding: EdgeInsets.all(8.0),
+          primary: false,
+          crossAxisCount: 4,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
+          itemBuilder: (context, index) => _getChild(context, pins[index]),
+          staggeredTileBuilder: (index) => StaggeredTile.fit(2),
+          itemCount: pins.length,
+        );
+      }
+      return Container();
+    });
+  }
+
+  Widget _getChild(BuildContext context, PinModel pin) {
+    return GestureDetector(
+        onTap: () => print(pin.id),
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.network(
+                  pin.imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              InkWell(
+                  onTap: () {
+                    print("tapped more");
+                  },
+                  child: Icon(Icons.more_horiz))
+            ],
+          ),
+        ));
   }
 }
