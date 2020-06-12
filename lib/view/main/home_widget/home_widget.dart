@@ -69,17 +69,12 @@ class HomeWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(12.0),
                 child: Image.network(
                   pin.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
-              InkWell(
-                  onTap: () {
-                    print("tapped more");
-                  },
-                  child: Icon(Icons.more_horiz))
             ],
           ),
         ));
