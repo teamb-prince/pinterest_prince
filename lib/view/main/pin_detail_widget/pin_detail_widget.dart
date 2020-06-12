@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'package:pintersest_clone/api/api_client.dart';
 import 'package:pintersest_clone/api/pins_api.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
 
 class PinDetailWidget extends StatefulWidget {
   @override
@@ -14,14 +15,18 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   String url =
       "https://avatars2.githubusercontent.com/u/23512935?s=460&u=8f50efae6e531658b6a52e0e70381c26408d7843&v=4";
   BoxDecoration _roundedContainerDecoration = BoxDecoration(
-    color: Colors.white,
+    color: AppColors.white,
     borderRadius: BorderRadius.circular(16),
+  );
+
+  RoundedRectangleBorder _buttonDecoration = RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(32),
   );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.pinsDetailBackgroundColor,
       appBar: AppBar(
         title: Text("Pin Detail"), // TODO 本来であればAppBarではなく画像の上に戻るボタンをつける
       ),
@@ -31,6 +36,10 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
           child: Column(
             children: [
               _buildPinImage(),
+              Container(
+                height: 1,
+                color: AppColors.pinsDetailBackgroundColor,
+              ),
 //              _buildSimilarPins(),
             ],
           ),
@@ -61,12 +70,19 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   }
 
   Widget _buildImage(String imageUrl) {
-    return Image.network(imageUrl);
+    return ClipRRect(
+      child: Image.network(imageUrl),
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(16),
+        topRight: Radius.circular(16),
+      ),
+    );
   }
 
   Widget _buildInformation(String title, String description, String url) {
     return Padding(
-      padding: const EdgeInsets.all(32.0),
+      padding:
+          const EdgeInsets.only(left: 32.0, right: 32, bottom: 16, top: 16),
       child: Column(
         children: [
           _buildImageInformation(title, description),
@@ -82,7 +98,10 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         child: Column(
           children: [
             Text("ピンもと: $title"),
-            Text(description),
+            Text(
+              description,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            ),
           ],
         ),
       ),
@@ -95,21 +114,41 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Icon(Icons.share),
-          RaisedButton(
-            child: const Text("アクセス"),
-            onPressed: () {
-              print("access tapped");
-            },
-          ),
-          RaisedButton(
-            child: const Text("保存"),
-            onPressed: () {
-              print("save tapped");
-            },
-          ),
+          _buildVisitSiteButton(),
+          _buildSaveBoardButton(),
           Icon(Icons.more_horiz),
         ],
       ),
+    );
+  }
+
+  Widget _buildVisitSiteButton() {
+    return FlatButton(
+      shape: _buttonDecoration,
+      color: AppColors.grey,
+      child: const Text(
+        "アクセス",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      onPressed: () {
+        print("access tapped");
+      },
+    );
+  }
+
+  Widget _buildSaveBoardButton() {
+    return FlatButton(
+      shape: _buttonDecoration,
+      child: const Text(
+        "保存",
+        style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.white),
+      ),
+      color: AppColors.red,
+      onPressed: () {
+        print("save tapped");
+      },
     );
   }
 
