@@ -25,9 +25,6 @@ class DefaultPinsApi extends PinsApi {
   @override
   Future<List<PinModel>> getPins() async {
     final Response response = await _apiClient.get("/pins");
-    print("get pins");
-    print((jsonDecode(utf8.decode(response.bodyBytes)) as List)
-        .map((pin) => PinModel.fromJson(pin)));
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((pin) => PinModel.fromJson(pin));
   }

@@ -80,7 +80,6 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
       child: FutureBuilder(
           future: _pinsApi.getPin("ab917ee9-bf28-41ff-b914-550728159fae"),
           builder: (BuildContext context, AsyncSnapshot<PinModel> snapshot) {
-            print("snapshot $snapshot");
             if (snapshot.hasData) {
               return Column(
                 children: [
