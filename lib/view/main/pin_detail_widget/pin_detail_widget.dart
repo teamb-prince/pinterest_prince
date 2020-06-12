@@ -1,36 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:pintersest_clone/api/api_client.dart';
+import 'package:pintersest_clone/api/pins_api.dart';
+import 'package:pintersest_clone/model/pin_model.dart';
 
-class PinDetailWidget extends StatelessWidget {
+class PinDetailWidget extends StatefulWidget {
+  @override
+  _PinDetailWidgetState createState() => _PinDetailWidgetState();
+}
+
+class _PinDetailWidgetState extends State<PinDetailWidget> {
+  PinsApi _pinsApi = DefaultPinsApi(ApiClient(Client()));
+  String url =
+      "https://avatars2.githubusercontent.com/u/23512935?s=460&u=8f50efae6e531658b6a52e0e70381c26408d7843&v=4";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         child: SingleChildScrollView(
           child: Container(
-            child: Column(
-              children: [
-                _buildImage(),
-                _buildImageInformation(),
-                _buildActionButton(),
-              ],
-            ),
+            child: FutureBuilder(
+                future: _pinsApi.getPin("ab917ee9-bf28-41ff-b914-550728159fae"),
+                builder:
+                    (BuildContext context, AsyncSnapshot<PinModel> snapshot) {
+                  print("snapshot $snapshot");
+                  if (snapshot.hasData) {
+                    return Column(
+                      children: [
+                        _buildImage(snapshot.data.imageUrl),
+                        _buildImageInformation(snapshot.data.title,
+                            snapshot.data.description, snapshot.data.url),
+                        _buildActionButton(),
+                      ],
+                    );
+                  } else {
+                    return SafeArea(child: Text("No Data."));
+                  }
+                }),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildImage() {
-    return Image.network(
-        "https://avatars2.githubusercontent.com/u/23512935?s=460&u=8f50efae6e531658b6a52e0e70381c26408d7843&v=4");
+  Widget _buildImage(String imageUrl) {
+    return Image.network(imageUrl);
   }
 
-  Widget _buildImageInformation() {
+  Widget _buildImageInformation(String title, String description, String url) {
     return Container(
       child: Column(
         children: [
-          const Text("ピンもと: aaaaa"),
-          const Text("たいとるうううううううううううううううう"),
+          Text("ピンもと: $url"),
+          Text(title),
+          Text(description),
         ],
       ),
     );
