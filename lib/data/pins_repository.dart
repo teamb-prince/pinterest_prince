@@ -7,4 +7,6 @@ class PinsRepository {
   PinsRepository(this._pinsApi);
 
   Future<PinModel> getPin(String id) => _pinsApi.getPin(id);
+
+  Future<List<PinModel>> getPins() => _pinsApi.getPins();
 }
