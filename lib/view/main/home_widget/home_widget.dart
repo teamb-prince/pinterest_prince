@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
+import 'package:pintersest_clone/view/main/home_detail_widget/home_detail_widget.dart';
 
 const List<Color> _kColors = const <Color>[
   Colors.green,
@@ -53,7 +54,17 @@ class HomeWidget extends StatelessWidget {
 
   Widget _getChild(BuildContext context, int index) {
     return GestureDetector(
-      onTap: () => print(index),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return HomeDetailWidget();
+            },
+            fullscreenDialog: true, // TODO　おしゃれに半モーダルにさせる必要あり
+          ),
+        );
+      },
       child: Container(
         key: ObjectKey('$index'),
         color: _colors[index],
