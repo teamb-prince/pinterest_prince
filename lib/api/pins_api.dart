@@ -16,7 +16,7 @@ class DefaultPinsApi extends PinsApi {
   @override
   Future<PinModel> getPin(String id) async {
     final Response response = await _apiClient.get("/pins/$id");
-    print(" $response");
-    return PinModel.fromJson(jsonDecode(response.body));
+
+    return PinModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 }

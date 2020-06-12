@@ -56,9 +56,15 @@ class AccountWidget extends StatelessWidget {
   Widget _getChild(BuildContext context, int index) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return PinDetailWidget();
-        }));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return PinDetailWidget();
+            },
+            fullscreenDialog: true, // TODO　半モーダルにさせる必要あり
+          ),
+        );
       },
       child: Container(
         key: ObjectKey('$index'),

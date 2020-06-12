@@ -17,6 +17,9 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Pin Detail"),
+      ),
       body: Container(
         child: SingleChildScrollView(
           child: Container(
@@ -52,8 +55,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     return Container(
       child: Column(
         children: [
-          Text("ピンもと: $url"),
-          Text(title),
+          Text("ピンもと: $title"),
           Text(description),
         ],
       ),
