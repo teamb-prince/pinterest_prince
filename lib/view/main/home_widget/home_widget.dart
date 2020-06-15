@@ -19,15 +19,39 @@ class HomeWidget extends StatelessWidget {
   }
 
   Widget _buildScreen(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        AppBar(
-          title: const Text(("Home")),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(48.0),
+          child: AppBar(
+            brightness: Brightness.light,
+            elevation: 0.0,
+            backgroundColor: Colors.white,
+            bottom: TabBar(
+              indicatorColor: Colors.black87,
+              labelColor: Colors.black87,
+              labelStyle: TextStyle(fontSize: 10.0),
+              tabs: <Widget>[
+                Tab(text: 'あなたにおすすめ'),
+                Tab(text: 'ピックアップ'),
+                Tab(text: 'フォロー中'),
+              ],
+            ),
+          ),
         ),
-        Expanded(
-          child: _buildStaggeredGridView(),
-        )
-      ],
+        body: TabBarView(
+          children: <Widget>[
+            _buildStaggeredGridView(),
+            Container(
+              color: Colors.red,
+            ),
+            Container(
+              color: Colors.blue,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
