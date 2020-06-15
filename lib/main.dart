@@ -5,7 +5,6 @@ import 'package:pintersest_clone/api/image_api.dart';
 import 'package:pintersest_clone/api/pins_api.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
-import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_bloc.dart';
 import 'package:pintersest_clone/view/main/crawling_image/crawling_image_widget.dart';
 import 'package:pintersest_clone/view/main/main_navigation_page.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';

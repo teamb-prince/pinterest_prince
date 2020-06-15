@@ -33,13 +33,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          SearchImageBloc(context.repository<ImageRepository>()),
-      child: Scaffold(
-        body: mainPageDestinations[_currentIndex].body,
-        bottomNavigationBar: _buildBottomNavigationBar(),
-      ),
+    return Scaffold(
+      body: mainPageDestinations[_currentIndex].body,
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
