@@ -70,16 +70,18 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
         Padding(
           padding: EdgeInsets.all(8),
         ),
-        Expanded(
-          flex: 1,
-          child: RaisedButton(
-            child: Text("submit"),
-            onPressed: () {
-              BlocProvider.of<CrawlingImageBloc>(context)
-                  .add(RequestSearch(_controller.text));
-            },
-          ),
-        )
+        Builder(builder: (context) {
+          return Expanded(
+            flex: 1,
+            child: RaisedButton(
+              child: Text("submit"),
+              onPressed: () {
+                BlocProvider.of<CrawlingImageBloc>(context)
+                    .add(RequestSearch(_controller.text));
+              },
+            ),
+          );
+        })
       ],
     );
   }

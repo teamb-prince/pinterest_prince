@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/view/main/account_widget/account_widget.dart';
-import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/home_widget.dart';
 import 'package:pintersest_clone/view/main/notification_widget/notification_widget.dart';
 import 'package:pintersest_clone/view/main/search_widget/search_widget.dart';
