@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/view/main/account_widget/account_widget.dart';
+import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/home_widget.dart';
 import 'package:pintersest_clone/view/main/notification_widget/notification_widget.dart';
 import 'package:pintersest_clone/view/main/search_widget/search_widget.dart';
@@ -30,9 +33,13 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: mainPageDestinations[_currentIndex].body,
-      bottomNavigationBar: _buildBottomNavigationBar(),
+    return BlocProvider(
+      create: (context) =>
+          SearchImageBloc(context.repository<ImageRepository>()),
+      child: Scaffold(
+        body: mainPageDestinations[_currentIndex].body,
+        bottomNavigationBar: _buildBottomNavigationBar(),
+      ),
     );
   }
 

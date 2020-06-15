@@ -70,7 +70,12 @@ class AccountWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Icon(Icons.add),
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+//            Navigator.push(context, route);
+          },
+        ),
       ],
     );
   }
