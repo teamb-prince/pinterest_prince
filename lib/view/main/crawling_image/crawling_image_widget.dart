@@ -1,40 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_event.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_state.dart';
-import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
 import 'bloc/crawling_image_bloc.dart';
 
-class CrawlingImageWidget extends StatefulWidget {
-  final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());
+class CrawlingImageArgs {
+  final String url;
 
+  CrawlingImageArgs({@required this.url});
+}
+
+class CrawlingImageWidget extends StatefulWidget {
   @override
   _CrawlingImageState createState() => _CrawlingImageState();
 }
 
 class _CrawlingImageState extends State<CrawlingImageWidget> {
-  TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final CrawlingImageArgs args = ModalRoute.of(context).settings.arguments;
     return BlocProvider<CrawlingImageBloc>(
       create: (context) =>
-          CrawlingImageBloc(context.repository<ImageRepository>()),
+          CrawlingImageBloc(context.repository<ImageRepository>())
+            ..add(RequestSearch(args.url)),
       child: Scaffold(
         appBar: AppBar(
           title: Text("Search Image"),
@@ -44,51 +34,12 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
           child: Container(
             child: Column(
               children: [
-                _buildUrlForm(),
                 _buildGetImage(),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildUrlForm() {
-    return Row(
-      children: [
-        Builder(builder: (context) {
-          return Expanded(
-            flex: 3,
-            child: TextField(
-              textInputAction: TextInputAction.done,
-              controller: _controller,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Input Url",
-              ),
-              onSubmitted: (String text) {
-                print("done");
-                print(text);
-                BlocProvider.of<CrawlingImageBloc>(context)
-                    .add(RequestSearch(text));
-              },
-            ),
-          );
-        }),
-        Padding(
-          padding: EdgeInsets.all(8),
-        ),
-        Expanded(
-          flex: 1,
-          child: RaisedButton(
-            child: Text("cancel"),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ],
     );
   }
 
@@ -103,14 +54,9 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
             crossAxisCount: 2,
             shrinkWrap: true,
             children: List.generate(imageUrls.length, (index) {
-              return GestureDetector(
-                onTap: () {
-                  widget.browser.open(url: _controller.text);
-                },
-                child: Image.network(
-                  imageUrls[index],
-                  fit: BoxFit.cover,
-                ),
+              return Image.network(
+                imageUrls[index],
+                fit: BoxFit.cover,
               );
             }),
           );

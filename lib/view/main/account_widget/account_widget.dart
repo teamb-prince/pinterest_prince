@@ -73,7 +73,7 @@ class AccountWidget extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () {
-            Navigator.pushNamed(context, AppRoute.crawlingImage);
+            Navigator.pushNamed(context, AppRoute.inputUrl);
           },
         ),
       ],
