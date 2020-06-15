@@ -26,7 +26,7 @@ void main() {
         when(mockImageRepository.crawlingImageFromUrl(any))
             .thenAnswer((_) => Future.value(imageModel));
 
-        return SearchImageBloc(mockImageRepository);
+        return CrawlingImageBloc(mockImageRepository);
       },
       act: (bloc) => bloc.add(RequestSearch("url")),
       skip: 0,
@@ -39,7 +39,7 @@ void main() {
         when(mockImageRepository.crawlingImageFromUrl(any))
             .thenAnswer((_) => Future.error(UnauthorizedError()));
 
-        return SearchImageBloc(mockImageRepository);
+        return CrawlingImageBloc(mockImageRepository);
       },
       act: (bloc) => bloc.add(RequestSearch("url")),
       skip: 0,
