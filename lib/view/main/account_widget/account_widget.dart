@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pintersest_clone/app_route.dart';
-import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 
 const List<Color> _kColors = const <Color>[
   Colors.green,
@@ -86,14 +85,9 @@ class AccountWidget extends StatelessWidget {
   Widget _getChild(BuildContext context, int index) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) {
-              return PinDetailWidget();
-            },
-            fullscreenDialog: true, // TODO　おしゃれに半モーダルにさせる必要あり
-          ),
+          AppRoute.pinDetail,
         );
       },
       child: Container(

@@ -57,31 +57,37 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
   Widget _buildUrlForm() {
     return Row(
       children: [
-        Expanded(
-          flex: 3,
-          child: TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: "Input Url",
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(8),
-        ),
         Builder(builder: (context) {
           return Expanded(
-            flex: 1,
-            child: RaisedButton(
-              child: Text("submit"),
-              onPressed: () {
+            flex: 3,
+            child: TextField(
+              textInputAction: TextInputAction.done,
+              controller: _controller,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "Input Url",
+              ),
+              onSubmitted: (String text) {
+                print("done");
+                print(text);
                 BlocProvider.of<CrawlingImageBloc>(context)
-                    .add(RequestSearch(_controller.text));
+                    .add(RequestSearch(text));
               },
             ),
           );
-        })
+        }),
+        Padding(
+          padding: EdgeInsets.all(8),
+        ),
+        Expanded(
+          flex: 1,
+          child: RaisedButton(
+            child: Text("cancel"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
       ],
     );
   }
