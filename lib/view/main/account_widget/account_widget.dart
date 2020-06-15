@@ -37,18 +37,42 @@ class AccountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: AppBar(
-          title: Text('random tiles'),
-        ),
-        body: StaggeredGridView.countBuilder(
-          primary: false,
-          crossAxisCount: 4,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
-          staggeredTileBuilder: _getTile,
-          itemBuilder: _getChild,
-          itemCount: _kItemCount,
-        ));
+      appBar: AppBar(
+        title: Text('random tiles'),
+      ),
+      body: CustomScrollView(
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Column(
+                  children: [
+                    _buildHeader(),
+                  ],
+                )
+              ],
+            ),
+          ),
+          SliverStaggeredGrid.countBuilder(
+            crossAxisCount: 4,
+            crossAxisSpacing: 4.0,
+            mainAxisSpacing: 4.0,
+            staggeredTileBuilder: _getTile,
+            itemBuilder: _getChild,
+            itemCount: _kItemCount,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Icon(Icons.add),
+      ],
+    );
   }
 
   StaggeredTile _getTile(int index) => _tiles[index];
