@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 
 const List<Color> _kColors = const <Color>[
@@ -47,7 +48,7 @@ class AccountWidget extends StatelessWidget {
               [
                 Column(
                   children: [
-                    _buildHeader(),
+                    _buildHeader(context),
                   ],
                 )
               ],
@@ -66,14 +67,14 @@ class AccountWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () {
-//            Navigator.push(context, route);
+            Navigator.pushNamed(context, AppRoute.crawlingImage);
           },
         ),
       ],

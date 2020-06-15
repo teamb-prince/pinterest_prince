@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_event.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_state.dart';
 import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
 import 'bloc/crawling_image_bloc.dart';
 
-class SearchImageWidget extends StatefulWidget {
+class CrawlingImageWidget extends StatefulWidget {
   final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());
 
   @override
-  _SearchImageState createState() => _SearchImageState();
+  _CrawlingImageState createState() => _CrawlingImageState();
 }
 
-class _SearchImageState extends State<SearchImageWidget> {
+class _CrawlingImageState extends State<CrawlingImageWidget> {
   TextEditingController _controller;
 
   @override
@@ -31,18 +32,22 @@ class _SearchImageState extends State<SearchImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Search Image"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          child: Column(
-            children: [
-              _buildUrlForm(),
-              _buildGetImage(),
-            ],
+    return BlocProvider<CrawlingImageBloc>(
+      create: (context) =>
+          CrawlingImageBloc(context.repository<ImageRepository>()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Search Image"),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            child: Column(
+              children: [
+                _buildUrlForm(),
+                _buildGetImage(),
+              ],
+            ),
           ),
         ),
       ),
@@ -70,7 +75,7 @@ class _SearchImageState extends State<SearchImageWidget> {
           child: RaisedButton(
             child: Text("submit"),
             onPressed: () {
-              BlocProvider.of<SearchImageBloc>(context)
+              BlocProvider.of<CrawlingImageBloc>(context)
                   .add(RequestSearch(_controller.text));
             },
           ),
@@ -82,7 +87,7 @@ class _SearchImageState extends State<SearchImageWidget> {
   Widget _buildGetImage() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: BlocBuilder<SearchImageBloc, SearchImageState>(
+      child: BlocBuilder<CrawlingImageBloc, CrawlingImageState>(
           builder: (context, state) {
         if (state is LoadedState) {
           final List<String> imageUrls = state.imageModel.imageUrls;

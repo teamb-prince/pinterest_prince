@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:pintersest_clone/model/image_model.dart';
 
-abstract class SearchImageState extends Equatable {
+abstract class CrawlingImageState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class InitialState extends SearchImageState {}
+class InitialState extends CrawlingImageState {}
 
-class LoadingState extends SearchImageState {}
+class LoadingState extends CrawlingImageState {}
 
-class LoadedState extends SearchImageState {
+class LoadedState extends CrawlingImageState {
   final ImageModel imageModel;
 
   LoadedState(this.imageModel);
@@ -19,9 +19,9 @@ class LoadedState extends SearchImageState {
   List<Object> get props => [imageModel];
 }
 
-class NoImageState extends SearchImageState {}
+class NoImageState extends CrawlingImageState {}
 
-class ErrorState extends SearchImageState {
+class ErrorState extends CrawlingImageState {
   final Exception exception;
 
   ErrorState(this.exception);

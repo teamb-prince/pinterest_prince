@@ -40,6 +40,8 @@ class MyApp extends StatelessWidget {
           initialRoute: AppRoute.home,
           routes: {
             AppRoute.home: (context) => MainNavigationPage(),
+            AppRoute.pinDetail: (context) => PinDetailWidget(),
+            AppRoute.crawlingImage: (context) => CrawlingImageWidget(),
           }),
     );
   }
