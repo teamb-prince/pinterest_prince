@@ -9,6 +9,8 @@ import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
 import 'package:pintersest_clone/view/main/home_detail_widget/home_detail_widget.dart';
 
 class HomeWidget extends StatelessWidget {
+  static final double _topNavigationBarHeight = 48.0;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeBloc>(
@@ -23,7 +25,7 @@ class HomeWidget extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(48.0),
+          preferredSize: Size.fromHeight(_topNavigationBarHeight),
           child: AppBar(
             brightness: Brightness.light,
             elevation: 0.0,
