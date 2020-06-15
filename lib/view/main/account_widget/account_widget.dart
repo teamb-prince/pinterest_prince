@@ -58,7 +58,7 @@ class AccountWidget extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
+          MaterialPageRoute<PinDetailWidget>(
             builder: (context) {
               return PinDetailWidget();
             },

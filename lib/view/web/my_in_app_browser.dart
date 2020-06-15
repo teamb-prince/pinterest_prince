@@ -23,7 +23,8 @@ class MyInAppBrowser extends InAppBrowser {
 }
 
 class MyChromeSafariBrowser extends ChromeSafariBrowser {
-  MyChromeSafariBrowser(browserFallback) : super(bFallback: browserFallback);
+  MyChromeSafariBrowser(dynamic browserFallback)
+      : super(bFallback: browserFallback);
 
   @override
   void onOpened() {

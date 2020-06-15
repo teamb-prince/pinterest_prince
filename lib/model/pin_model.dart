@@ -18,7 +18,7 @@ class PinModel extends Equatable {
     @required this.description,
   });
 
-  factory PinModel.fromJson(Map<String, dynamic> json) {
+  factory PinModel.fromJson(dynamic json) {
     return PinModel(
       id: json['id'] as String,
       url: json['url'] as String,
@@ -31,11 +31,11 @@ class PinModel extends Equatable {
 
   @override
   List<Object> get props => [
-    id,
-    url,
-    title,
-    imageUrl,
-    board,
-    description,
-  ];
+        id,
+        url,
+        title,
+        imageUrl,
+        board,
+        description,
+      ];
 }
