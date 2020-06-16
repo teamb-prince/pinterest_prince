@@ -2,19 +2,16 @@ import 'package:http/http.dart';
 
 import 'errors/error.dart';
 
-
 class ApiClient {
   static const _serverUrl = "http://localhost:8080";
 
   final Client _client;
 
   ApiClient(this._client);
-  
+
   Future<Response> get(String relativeUrl) async {
     return await _makeRequestWithErrorHandler(
-      _client.get(
-          "$_serverUrl$relativeUrl"
-      ),
+      _client.get("$_serverUrl$relativeUrl"),
     );
   }
 
@@ -38,7 +35,8 @@ class ApiClient {
     return response;
   }
 
-  static DefaultError _handleError(int statusCode, errorResponse, String url) {
+  static DefaultError _handleError(
+      int statusCode, String errorResponse, String url) {
     if (statusCode == 400) {
       return BadRequestError();
     } else if (statusCode == 401) {

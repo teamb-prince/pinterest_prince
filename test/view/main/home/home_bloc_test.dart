@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
-import 'package:mockito/mockito.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
@@ -35,39 +35,37 @@ void main() {
       mockPinsRepository = MockPinsRepository();
     });
 
-    blocTest("emit [LoadingState(), LoadedState()] when request will succeed",
+    blocTest<HomeBloc, HomeEvent, HomeState>(
+        "emit [LoadingState(), LoadedState()] when request will succeed",
         build: () async {
-          when(mockPinsRepository.getPins())
-              .thenAnswer((_) => Future.value(mockPins));
+      when(mockPinsRepository.getPins())
+          .thenAnswer((_) => Future.value(mockPins));
 
-          return HomeBloc(mockPinsRepository);
-        },
-        act: (bloc) => bloc.add(LoadData()),
-        skip: 0,
-        expect: [LoadingState(), LoadedState(mockPins)]);
+      return HomeBloc(mockPinsRepository);
+    }, act: (bloc) {
+      bloc.add(LoadData());
+    }, skip: 0, expect: <HomeState>[LoadingState(), LoadedState(mockPins)]);
 
-    blocTest(
+    blocTest<HomeBloc, HomeEvent, HomeState>(
         "emit [LoadingState(), NoDataState()] when request will succeed, but there are no pins",
         build: () async {
-          when(mockPinsRepository.getPins())
-              .thenAnswer((_) => Future.value(noPins));
+      when(mockPinsRepository.getPins())
+          .thenAnswer((_) => Future.value(noPins));
 
-          return HomeBloc(mockPinsRepository);
-        },
-        act: (bloc) => bloc.add(LoadData()),
-        skip: 0,
-        expect: [LoadingState(), NoDataState()]);
+      return HomeBloc(mockPinsRepository);
+    }, act: (bloc) {
+      bloc.add(LoadData());
+    }, skip: 0, expect: <HomeState>[LoadingState(), NoDataState()]);
 
-    blocTest(
+    blocTest<HomeBloc, HomeEvent, HomeState>(
         "emit [LoadingState(), ErrorState()] when request will fail",
         build: () async {
-          when(mockPinsRepository.getPins())
-              .thenAnswer((_) => Future.error(Exception()));
+      when(mockPinsRepository.getPins())
+          .thenAnswer((_) => Future.error(Exception()));
 
-          return HomeBloc(mockPinsRepository);
-        },
-        act: (bloc) => bloc.add(LoadData()),
-        skip: 0,
-        expect: [LoadingState(), isA<ErrorState>()]);
+      return HomeBloc(mockPinsRepository);
+    }, act: (bloc) {
+      bloc.add(LoadData());
+    }, skip: 0, expect: <dynamic>[LoadingState(), isA<ErrorState>()]);
   });
 }

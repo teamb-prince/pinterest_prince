@@ -23,7 +23,7 @@ class SearchImageBloc extends Bloc<SearchImageEvent, SearchImageState> {
           yield NoImageState();
         }
         yield LoadedState(result);
-      } catch (e) {
+      } on Exception catch (e) {
         yield ErrorState(e);
       }
     }

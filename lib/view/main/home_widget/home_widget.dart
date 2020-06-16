@@ -1,12 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter/material.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/view/main/home_detail_widget/home_detail_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
-import 'package:pintersest_clone/view/main/home_detail_widget/home_detail_widget.dart';
 
 class HomeWidget extends StatelessWidget {
   static final double _topNavigationBarHeight = 48.0;
@@ -82,7 +82,7 @@ class HomeWidget extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
+            MaterialPageRoute<HomeDetailWidget>(
               builder: (context) {
                 return HomeDetailWidget();
               },

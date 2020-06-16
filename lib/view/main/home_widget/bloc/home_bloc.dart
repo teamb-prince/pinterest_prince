@@ -22,7 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         } else {
           yield LoadedState(pins);
         }
-      } catch (e) {
+      } on Exception catch (e) {
         yield ErrorState(e);
       }
     }
