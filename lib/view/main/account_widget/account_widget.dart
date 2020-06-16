@@ -7,6 +7,7 @@ import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 
+
 class AccountWidget extends StatefulWidget {
   @override
   _AccountWidgetState createState() => _AccountWidgetState();

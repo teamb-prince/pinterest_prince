@@ -4,16 +4,16 @@ import 'package:pintersest_clone/model/image_model.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_event.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_state.dart';
 
-class SearchImageBloc extends Bloc<SearchImageEvent, SearchImageState> {
+class CrawlingImageBloc extends Bloc<CrawlingImageEvent, CrawlingImageState> {
   final ImageRepository _imageRepository;
 
-  SearchImageBloc(this._imageRepository);
+  CrawlingImageBloc(this._imageRepository);
 
   @override
-  SearchImageState get initialState => InitialState();
+  CrawlingImageState get initialState => InitialState();
 
   @override
-  Stream<SearchImageState> mapEventToState(SearchImageEvent event) async* {
+  Stream<CrawlingImageState> mapEventToState(CrawlingImageEvent event) async* {
     if (event is RequestSearch) {
       yield LoadingState();
       try {
