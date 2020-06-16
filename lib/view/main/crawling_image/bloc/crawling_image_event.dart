@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-abstract class SearchImageEvent extends Equatable {
+abstract class CrawlingImageEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class RequestSearch extends SearchImageEvent {
+class RequestSearch extends CrawlingImageEvent {
   final String url;
 
   RequestSearch(this.url);

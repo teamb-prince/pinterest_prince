@@ -20,32 +20,32 @@ void main() {
       mockImageRepository = MockImageRepository();
     });
 
-    blocTest<SearchImageBloc, SearchImageEvent, SearchImageState>(
+    blocTest<CrawlingImageBloc, CrawlingImageEvent, CrawlingImageState>(
       "emit [InitialState(), LoadingState(), LoadedState()] when request will succeed",
       build: () async {
         when(mockImageRepository.crawlingImageFromUrl(any))
             .thenAnswer((_) => Future.value(imageModel));
 
-        return SearchImageBloc(mockImageRepository);
+        return CrawlingImageBloc(mockImageRepository);
       },
       act: (bloc) {
         bloc.add(RequestSearch("url"));
       },
       skip: 0,
-      expect: <SearchImageState>[
+      expect: <CrawlingImageState>[
         InitialState(),
         LoadingState(),
         LoadedState(imageModel)
       ],
     );
 
-    blocTest<SearchImageBloc, SearchImageEvent, SearchImageState>(
+    blocTest<CrawlingImageBloc, CrawlingImageEvent, CrawlingImageState>(
       "emit [InitialState(), LoadingState(), ErrorState()] when request will fail",
       build: () async {
         when(mockImageRepository.crawlingImageFromUrl(any))
             .thenAnswer((_) => Future.error(UnauthorizedError()));
 
-        return SearchImageBloc(mockImageRepository);
+        return CrawlingImageBloc(mockImageRepository);
       },
       act: (bloc) {
         bloc.add(RequestSearch("url"));

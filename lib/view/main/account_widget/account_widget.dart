@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
+import 'package:pintersest_clone/app_route.dart';
 
 const List<Color> _kColors = const <Color>[
   Colors.green,
@@ -36,19 +36,48 @@ class AccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: AppBar(
-          title: Text('random tiles'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('random tiles'),
+      ),
+      body: CustomScrollView(
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Column(
+                  children: [
+                    _buildHeader(context),
+                  ],
+                )
+              ],
+            ),
+          ),
+          SliverStaggeredGrid.countBuilder(
+            crossAxisCount: 4,
+            crossAxisSpacing: 4.0,
+            mainAxisSpacing: 4.0,
+            staggeredTileBuilder: _getTile,
+            itemBuilder: _getChild,
+            itemCount: _kItemCount,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoute.inputUrl);
+          },
         ),
-        body: StaggeredGridView.countBuilder(
-          primary: false,
-          crossAxisCount: 4,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
-          staggeredTileBuilder: _getTile,
-          itemBuilder: _getChild,
-          itemCount: _kItemCount,
-        ));
+      ],
+    );
   }
 
   StaggeredTile _getTile(int index) => _tiles[index];
@@ -56,14 +85,9 @@ class AccountWidget extends StatelessWidget {
   Widget _getChild(BuildContext context, int index) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute<PinDetailWidget>(
-            builder: (context) {
-              return PinDetailWidget();
-            },
-            fullscreenDialog: true, // TODO　おしゃれに半モーダルにさせる必要あり
-          ),
+          AppRoute.pinDetail,
         );
       },
       child: Container(
