@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
-import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
-
+import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
 
 class AccountWidget extends StatefulWidget {
   @override
@@ -111,7 +111,12 @@ class _AccountWidgetState extends State<AccountWidget> {
           const SizedBox(width: 16),
           Icon(Icons.sort),
           const SizedBox(width: 16),
-          Icon(Icons.add),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoute.inputUrl);
+            },
+          ),
         ],
       ),
     );
