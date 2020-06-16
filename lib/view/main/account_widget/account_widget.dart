@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -7,9 +5,7 @@ import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
-import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
-
 
 class AccountWidget extends StatefulWidget {
   @override
@@ -17,14 +13,13 @@ class AccountWidget extends StatefulWidget {
 }
 
 class _AccountWidgetState extends State<AccountWidget> {
-
   final TextEditingController _searchTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeBloc>(
       create: (context) =>
-      HomeBloc(context.repository<PinsRepository>())..add(LoadData()),
+          HomeBloc(context.repository<PinsRepository>())..add(LoadData()),
       child: _buildScreen(context),
     );
   }
@@ -61,32 +56,43 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   Widget _buildScrollView(BuildContext context) {
-    return CustomScrollView(
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildListDelegate([
-              Column(
-                  children: <Widget>[
-                    _buildSearchBar()
-                  ]
-              )
-            ]),
-          ),
-          _buildPinsList(context),
-        ]
-    );
+    return BlocBuilder<HomeBloc, HomeState>(
+        builder: (BuildContext context, HomeState state) {
+      if (state is LoadedState) {
+        final List<PinModel> pins = state.pins;
+        return Container(
+          padding: const EdgeInsets.all(8),
+          child: CustomScrollView(slivers: <Widget>[
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Column(children: <Widget>[_buildSearchBar()])
+              ]),
+            ),
+            SliverStaggeredGrid.countBuilder(
+              crossAxisCount: 4,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              itemBuilder: (context, index) => _getChild(context, pins[index]),
+              staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+              itemCount: pins.length,
+            ),
+          ]),
+        );
+      }
+      return Container();
+    });
   }
 
   Widget _buildSearchBar() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
         children: <Widget>[
           Expanded(
             child: TextField(
               controller: _searchTextController,
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 13),
+                contentPadding: const EdgeInsets.symmetric(vertical: 12),
                 prefixIcon: Icon(
                   Icons.search,
                   size: 24,
@@ -108,24 +114,6 @@ class _AccountWidgetState extends State<AccountWidget> {
         ],
       ),
     );
-  }
-
-  Widget _buildPinsList(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-        builder: (BuildContext context, HomeState state) {
-      if (state is LoadedState) {
-        final List<PinModel> pins = state.pins;
-        return SliverStaggeredGrid.countBuilder(
-          crossAxisCount: 4,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-          itemBuilder: (context, index) => _getChild(context, pins[index]),
-          staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
-          itemCount: pins.length,
-        );
-      }
-      return Container();
-    });
   }
 
   Widget _getChild(BuildContext context, PinModel pin) {
