@@ -33,8 +33,18 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
             ..add(RequestSearch(args.url)),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("画像を選択"),
+          iconTheme: IconThemeData(
+            color: AppColors.black, //change your color here
+          ),
+          elevation: 0,
+          backgroundColor: AppColors.white,
+          title: Text(
+            "画像を選択",
+            style:
+                TextStyle(fontWeight: FontWeight.bold, color: AppColors.black),
+          ),
         ),
+        backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: BlocBuilder<CrawlingImageBloc, CrawlingImageState>(
