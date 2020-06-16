@@ -1,105 +1,138 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:pintersest_clone/app_route.dart';
+import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
+import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
+import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 
-const List<Color> _kColors = const <Color>[
-  Colors.green,
-  Colors.blue,
-  Colors.red,
-  Colors.pink,
-  Colors.indigo,
-  Colors.purple,
-  Colors.blueGrey,
-];
 
-List<StaggeredTile> _generateRandomTiles(int count) {
-  Random rnd = Random();
-  return List.generate(
-      count, (i) => StaggeredTile.count(2, rnd.nextDouble() + 2));
+class AccountWidget extends StatefulWidget {
+  @override
+  _AccountWidgetState createState() => _AccountWidgetState();
 }
 
-List<Color> _generateRandomColors(int count) {
-  Random rnd = Random();
-  return List.generate(count, (i) => _kColors[rnd.nextInt(_kColors.length)]);
-}
-
-class AccountWidget extends StatelessWidget {
-  AccountWidget()
-      : _tiles = _generateRandomTiles(_kItemCount).toList(),
-        _colors = _generateRandomColors(_kItemCount).toList();
-
-  static const int _kItemCount = 100;
-  final List<StaggeredTile> _tiles;
-  final List<Color> _colors;
+class _AccountWidgetState extends State<AccountWidget> {
+  final TextEditingController _searchTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('random tiles'),
-      ),
-      body: CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Column(
-                  children: [
-                    _buildHeader(context),
-                  ],
-                )
+    return BlocProvider<HomeBloc>(
+      create: (context) =>
+          HomeBloc(context.repository<PinsRepository>())..add(LoadData()),
+      child: _buildScreen(context),
+    );
+  }
+
+  Widget _buildScreen(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(48),
+          child: AppBar(
+            brightness: Brightness.light,
+            elevation: 0,
+            backgroundColor: Colors.white,
+            bottom: TabBar(
+              indicatorColor: Colors.black87,
+              labelColor: Colors.black87,
+              labelStyle: const TextStyle(fontSize: 10),
+              tabs: <Widget>[
+                const Tab(text: 'ボード'),
+                const Tab(text: 'ピン'),
               ],
             ),
           ),
-          SliverStaggeredGrid.countBuilder(
-            crossAxisCount: 4,
-            crossAxisSpacing: 4.0,
-            mainAxisSpacing: 4.0,
-            staggeredTileBuilder: _getTile,
-            itemBuilder: _getChild,
-            itemCount: _kItemCount,
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            Container(color: Colors.red),
+            _buildScrollView(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScrollView(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+        builder: (BuildContext context, HomeState state) {
+      if (state is LoadedState) {
+        final List<PinModel> pins = state.pins;
+        return Container(
+          padding: const EdgeInsets.all(8),
+          child: CustomScrollView(slivers: <Widget>[
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Column(children: <Widget>[_buildSearchBar()])
+              ]),
+            ),
+            SliverStaggeredGrid.countBuilder(
+              crossAxisCount: 4,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              itemBuilder: (context, index) => _getChild(context, pins[index]),
+              staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+              itemCount: pins.length,
+            ),
+          ]),
+        );
+      }
+      return Container();
+    });
+  }
+
+  Widget _buildSearchBar() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: TextField(
+              controller: _searchTextController,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                prefixIcon: Icon(
+                  Icons.search,
+                  size: 24,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: BorderSide.none,
+                ),
+                fillColor: Colors.grey[200],
+                filled: true,
+                hintText: '自分のピンを探す',
+              ),
+            ),
           ),
+          const SizedBox(width: 16),
+          Icon(Icons.sort),
+          const SizedBox(width: 16),
+          Icon(Icons.add),
         ],
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () {
-            Navigator.pushNamed(context, AppRoute.inputUrl);
-          },
-        ),
-      ],
-    );
-  }
-
-  StaggeredTile _getTile(int index) => _tiles[index];
-
-  Widget _getChild(BuildContext context, int index) {
+  Widget _getChild(BuildContext context, PinModel pin) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          AppRoute.pinDetail,
-        );
-      },
-      child: Container(
-        key: ObjectKey('$index'),
-        color: _colors[index],
-        child: Center(
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Text('$index'),
+        onTap: () {},
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  pin.imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
