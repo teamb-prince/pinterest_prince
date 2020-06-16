@@ -63,7 +63,7 @@ class LoginTopWidget extends StatelessWidget {
         style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
       ),
       onPressed: () {
-        Navigator.pushNamedAndRemoveUntil(context, AppRoute.home, (_) => false);
+        Navigator.pushNamed(context, AppRoute.login);
       },
     );
   }

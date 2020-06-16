@@ -8,4 +8,5 @@ class AppColors {
   static const white = Colors.white;
   static const facebookButtonColor = Color(0xff3B5998);
   static const googleButtonColor = Color(0xff4284F4);
+  static const darkGrey = Colors.blueGrey;
 }

@@ -5,4 +5,5 @@ class AppRoute {
   static const String crawlingImage = "/crawling_image";
   static const String loginTop = "/login_top";
   static const String createAccount = "/create_account";
+  static const String login = "/login";
 }
