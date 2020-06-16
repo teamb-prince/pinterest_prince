@@ -23,7 +23,7 @@ class CrawlingImageBloc extends Bloc<CrawlingImageEvent, CrawlingImageState> {
           yield NoImageState();
         }
         yield LoadedState(result);
-      } catch (e) {
+      } on Exception catch (e) {
         yield ErrorState(e);
       }
     }

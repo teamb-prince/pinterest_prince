@@ -25,7 +25,8 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final CrawlingImageArgs args = ModalRoute.of(context).settings.arguments;
+    final CrawlingImageArgs args =
+        ModalRoute.of(context).settings.arguments as CrawlingImageArgs;
     return BlocProvider<CrawlingImageBloc>(
       create: (context) =>
           CrawlingImageBloc(context.repository<ImageRepository>())

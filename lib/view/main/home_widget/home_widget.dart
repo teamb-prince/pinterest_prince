@@ -1,14 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter/material.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/view/main/home_detail_widget/home_detail_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
-import 'package:pintersest_clone/view/main/home_detail_widget/home_detail_widget.dart';
 
 class HomeWidget extends StatelessWidget {
+  static final double _topNavigationBarHeight = 48.0;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeBloc>(
@@ -19,15 +21,39 @@ class HomeWidget extends StatelessWidget {
   }
 
   Widget _buildScreen(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        AppBar(
-          title: const Text(("Home")),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(_topNavigationBarHeight),
+          child: AppBar(
+            brightness: Brightness.light,
+            elevation: 0.0,
+            backgroundColor: Colors.white,
+            bottom: TabBar(
+              indicatorColor: Colors.black87,
+              labelColor: Colors.black87,
+              labelStyle: TextStyle(fontSize: 10.0),
+              tabs: <Widget>[
+                Tab(text: 'あなたにおすすめ'),
+                Tab(text: 'ピックアップ'),
+                Tab(text: 'フォロー中'),
+              ],
+            ),
+          ),
         ),
-        Expanded(
-          child: _buildStaggeredGridView(),
-        )
-      ],
+        body: TabBarView(
+          children: <Widget>[
+            _buildStaggeredGridView(),
+            Container(
+              color: Colors.red,
+            ),
+            Container(
+              color: Colors.blue,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -56,7 +82,7 @@ class HomeWidget extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
+            MaterialPageRoute<HomeDetailWidget>(
               builder: (context) {
                 return HomeDetailWidget();
               },

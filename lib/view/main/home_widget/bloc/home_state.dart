@@ -20,9 +20,7 @@ class LoadedState extends HomeState {
 class NoDataState extends HomeState {}
 
 class ErrorState extends HomeState {
-  final exception;
+  final Exception exception;
 
   ErrorState(this.exception);
 }
-
-

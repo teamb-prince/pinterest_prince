@@ -6,7 +6,7 @@ class ImageModel extends Equatable {
 
   ImageModel({this.url, this.imageUrls});
 
-  factory ImageModel.fromJson(Map<String, dynamic> json) {
+  factory ImageModel.fromJson(dynamic json) {
     return ImageModel(
       url: json['url'] as String,
       imageUrls: (json['image_url'] as List).cast<String>(),
@@ -16,4 +16,3 @@ class ImageModel extends Equatable {
   @override
   List<Object> get props => [url, imageUrls];
 }
-
