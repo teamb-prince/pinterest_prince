@@ -30,14 +30,12 @@ class _InputUrlState extends State<InputUrlWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        child: Container(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
-            child: Column(
-              children: [
-                _buildUrlForm(),
-              ],
-            ),
+          child: Column(
+            children: [
+              _buildUrlForm(),
+            ],
           ),
         ),
       ),
