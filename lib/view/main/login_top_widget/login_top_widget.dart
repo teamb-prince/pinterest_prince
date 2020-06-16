@@ -4,6 +4,7 @@ import 'package:pintersest_clone/values/app_colors.dart';
 
 class LoginTopWidget extends StatelessWidget {
   double _sizedBoxHeight = 40.0;
+  final double _buttonWidth = 350.0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class LoginTopWidget extends StatelessWidget {
 
   Widget _buildCreateAccountButton(BuildContext context) {
     return Container(
-      width: 350,
+      width: _buttonWidth,
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -49,8 +50,7 @@ class LoginTopWidget extends StatelessWidget {
         ),
         color: AppColors.red,
         onPressed: () {
-          Navigator.pushNamedAndRemoveUntil(
-              context, AppRoute.home, (_) => false);
+          Navigator.pushNamed(context, AppRoute.createAccount);
         },
       ),
     );
