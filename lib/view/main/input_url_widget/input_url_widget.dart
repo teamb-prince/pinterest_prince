@@ -66,8 +66,8 @@ class _InputUrlState extends State<InputUrlWidget> {
             ),
           );
         }),
-        Padding(
-          padding: EdgeInsets.all(8),
+        SizedBox(
+          width: 8,
         ),
         Expanded(
           flex: 1,
