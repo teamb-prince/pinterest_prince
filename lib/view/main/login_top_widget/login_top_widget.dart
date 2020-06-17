@@ -4,8 +4,7 @@ import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/common_widget/base_button_widget.dart';
 
 class LoginTopWidget extends StatelessWidget {
-  double _sizedBoxHeight = 40.0;
-  final double _buttonWidth = 350.0;
+  final double _sizedBoxHeight = 40;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class LoginTopWidget extends StatelessWidget {
             height: _sizedBoxHeight,
           ),
           const Text(
-            "Pinterestへようこそ！",
+            'Pinterestへようこそ！',
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -35,12 +34,12 @@ class LoginTopWidget extends StatelessWidget {
   }
 
   Widget _buildHeader() {
-    return Image.asset("assets/images/login_image.png");
+    return Image.asset('assets/images/login_image.png');
   }
 
   Widget _buildCreateAccountButton(BuildContext context) {
     return RedButton(
-      title: "アカウントを無料登録",
+      title: 'アカウントを無料登録',
       onPressedCallback: () {
         Navigator.pushNamed(context, AppRoute.createAccount);
       },
@@ -49,8 +48,8 @@ class LoginTopWidget extends StatelessWidget {
 
   Widget _buildLoginButton(BuildContext context) {
     return FlatButton(
-      child: Text(
-        "ログイン",
+      child: const Text(
+        'ログイン',
         style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
       ),
       onPressed: () {

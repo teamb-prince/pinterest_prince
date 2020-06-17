@@ -4,10 +4,10 @@ import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/common_widget/base_button_widget.dart';
 
 class SubmitValue {
-  String email;
-  String password;
+  const SubmitValue({@required this.email, @required this.password});
 
-  SubmitValue({this.email, this.password});
+  final String email;
+  final String password;
 }
 
 class LoginWidget extends StatelessWidget {
@@ -15,22 +15,21 @@ class LoginWidget extends StatelessWidget {
     borderRadius: BorderRadius.circular(16),
   );
 
-  final double _buttonWidth = 350.0;
-  final TextStyle _buttonTextStyle = TextStyle(color: AppColors.white);
+  final double _buttonWidth = 350;
   final TextStyle _boldTextStyle =
-      TextStyle(color: AppColors.black, fontWeight: FontWeight.bold);
+      const TextStyle(color: AppColors.black, fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: AppColors.black,
         ),
         elevation: 0,
         backgroundColor: Colors.white,
         title: const Text(
-          "ログイン",
+          'ログイン',
           style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
         ),
       ),
@@ -41,7 +40,7 @@ class LoginWidget extends StatelessWidget {
             _buildLoginAccountButton(context),
             Center(
               child: Text(
-                "または",
+                'または',
                 style: _boldTextStyle,
               ),
             ),
@@ -56,21 +55,21 @@ class LoginWidget extends StatelessWidget {
     return Column(
       children: [
         FacebookButton(
-          title: "Facebookで続行",
+          title: 'Facebookで続行',
           onPressedCallback: () {
             Navigator.pushNamedAndRemoveUntil(
                 context, AppRoute.home, (_) => false);
           },
         ),
         GoogleButton(
-          title: "Googleで続行",
+          title: 'Googleで続行',
           onPressedCallback: () {
             Navigator.pushNamedAndRemoveUntil(
                 context, AppRoute.home, (_) => false);
           },
         ),
         AppleButton(
-          title: "Appleで続行",
+          title: 'Appleで続行',
           onPressedCallback: () {
             Navigator.pushNamedAndRemoveUntil(
                 context, AppRoute.home, (_) => false);
@@ -87,7 +86,7 @@ class LoginWidget extends StatelessWidget {
       child: RaisedButton(
         color: AppColors.grey,
         shape: _buttonShape,
-        child: Text(
+        child: const Text(
           'ログイン',
           style: TextStyle(color: AppColors.darkGrey),
         ),
