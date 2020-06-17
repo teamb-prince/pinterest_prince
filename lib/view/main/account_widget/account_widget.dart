@@ -22,8 +22,13 @@ class _AccountWidgetState extends State<AccountWidget> {
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _searchTextController = TextEditingController();
 
-  Future _getImage() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+  Future _getImage(bool fromCamera) async {
+    PickedFile pickedFile;
+    if (fromCamera) {
+      pickedFile = await _picker.getImage(source: ImageSource.camera);
+    } else {
+      pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    }
     _image = File(pickedFile.path);
     Navigator.pushNamed(context, AppRoute.createPin,
         arguments: CreatePinArguments(_image));
@@ -171,14 +176,18 @@ class _AccountWidgetState extends State<AccountWidget> {
                   child: const Text('写真をとる',
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                  onTap: () {},
+                  onTap: () {
+                    _getImage(true);
+                  },
                 ),
                 const SizedBox(height: 16),
                 InkWell(
                   child: const Text('カメラロール',
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                  onTap: _getImage,
+                  onTap: () {
+                    _getImage(false);
+                  },
                 ),
                 const SizedBox(height: 16),
                 InkWell(
