@@ -10,6 +10,7 @@ import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.d
 import 'package:pintersest_clone/view/main/input_url_widget/input_url_widget.dart';
 import 'package:pintersest_clone/view/main/main_navigation_page.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
+import 'package:pintersest_clone/view/main/select_board_widget/select_board_widget.dart';
 
 import 'api/api_client.dart';
 import 'data/image_repository.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
             AppRoute.inputUrl: (context) => InputUrlWidget(),
             AppRoute.crawlingImage: (context) => CrawlingImageWidget(),
             AppRoute.createPin: (context) => CreatePinWidget(),
+            AppRoute.selectBoard: (context) => SelectBoardWidget(),
           }),
     );
   }
