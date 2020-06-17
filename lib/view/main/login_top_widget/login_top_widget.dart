@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/values/assets.dart';
 import 'package:pintersest_clone/view/main/common_widget/base_button_widget.dart';
 
 class LoginTopWidget extends StatelessWidget {
@@ -34,7 +35,8 @@ class LoginTopWidget extends StatelessWidget {
   }
 
   Widget _buildHeader() {
-    return Image.asset('assets/images/login_image.png');
+    print(Assets.imagePath);
+    return Image.asset(Assets.headerImage);
   }
 
   Widget _buildCreateAccountButton(BuildContext context) {
