@@ -20,15 +20,12 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
   String _linkUrl;
   final TextEditingController _titleTextController = TextEditingController();
   final TextEditingController _descriptionTextController =
-  TextEditingController();
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final args =
-    ModalRoute
-        .of(context)
-        .settings
-        .arguments as CreatePinArguments;
+        ModalRoute.of(context).settings.arguments as CreatePinArguments;
 
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +40,8 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
             child: FlatButton(
               onPressed: () {
                 Navigator.pushNamed(context, AppRoute.selectBoard,
-                    arguments: SelectBoardArguments(image: args.image,
+                    arguments: SelectBoardArguments(
+                        image: args.image,
                         title: _titleTextController.text,
                         description: _descriptionTextController.text,
                         linkUrl: _linkUrl));
@@ -57,16 +55,13 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
           )
         ],
       ),
-      body: _buildScreen(),
+      body: _buildScreen(context),
     );
   }
 
-  Widget _buildScreen() {
+  Widget _buildScreen(BuildContext context) {
     final args =
-    ModalRoute
-        .of(context)
-        .settings
-        .arguments as CreatePinArguments;
+        ModalRoute.of(context).settings.arguments as CreatePinArguments;
     return Container(
       padding: const EdgeInsets.all(16),
       child: CustomScrollView(

@@ -54,13 +54,13 @@ class SelectBoardWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: Row(
         children: <Widget>[
-          // 適当な画像です。
           SizedBox(
               height: _iconImageSize,
               width: _iconImageSize,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
+                    // 適当な画像です。
                     'https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349',
                     fit: BoxFit.cover),
               )),

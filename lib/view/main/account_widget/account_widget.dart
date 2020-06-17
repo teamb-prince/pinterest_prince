@@ -18,6 +18,8 @@ class AccountWidget extends StatefulWidget {
 }
 
 class _AccountWidgetState extends State<AccountWidget> {
+  final double _topNavigationBarHeight = 48;
+
   File _image;
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _searchTextController = TextEditingController();
@@ -48,7 +50,7 @@ class _AccountWidgetState extends State<AccountWidget> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
+          preferredSize: Size.fromHeight(_topNavigationBarHeight),
           child: AppBar(
             brightness: Brightness.light,
             elevation: 0,
@@ -76,9 +78,9 @@ class _AccountWidgetState extends State<AccountWidget> {
 
   Widget _buildScrollView(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
-        builder: (BuildContext context, HomeState state) {
+        builder: (context, state) {
       if (state is LoadedState) {
-        final List<PinModel> pins = state.pins;
+        final pins = state.pins;
         return Container(
           padding: const EdgeInsets.all(8),
           child: CustomScrollView(slivers: <Widget>[
