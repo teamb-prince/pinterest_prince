@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
@@ -14,6 +15,7 @@ class AccountWidget extends StatefulWidget {
 }
 
 class _AccountWidgetState extends State<AccountWidget> {
+  final picker = ImagePicker();
   final TextEditingController _searchTextController = TextEditingController();
 
   @override
@@ -109,7 +111,10 @@ class _AccountWidgetState extends State<AccountWidget> {
             ),
           ),
           const SizedBox(width: 16),
-          Icon(Icons.sort),
+          IconButton(
+            icon: Icon(Icons.sort),
+            onPressed: getImage,
+          ),
           const SizedBox(width: 16),
           IconButton(
             icon: Icon(Icons.add),
@@ -120,6 +125,12 @@ class _AccountWidgetState extends State<AccountWidget> {
         ],
       ),
     );
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    print(pickedFile.path);
   }
 
   Widget _getChild(BuildContext context, PinModel pin) {
