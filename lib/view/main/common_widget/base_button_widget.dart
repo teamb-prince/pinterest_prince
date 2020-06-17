@@ -9,11 +9,14 @@ class BaseButton extends StatelessWidget {
     @required this.buttonColor,
     @required this.onPressedCallback,
   }) : super(key: key);
-  static const double _buttonWidth = 350;
-  static final RoundedRectangleBorder _buttonShape = RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(16),
-  );
-  static const TextStyle _buttonTextStyle = TextStyle(color: AppColors.white);
+
+  double get _buttonWidth => 350;
+
+  RoundedRectangleBorder get _buttonShape => RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      );
+
+  TextStyle get _buttonTextStyle => const TextStyle(color: AppColors.white);
 
   final String title;
   final Color buttonColor;
