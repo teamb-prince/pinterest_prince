@@ -22,7 +22,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _searchTextController = TextEditingController();
 
-  Future getImage() async {
+  Future _getImage() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
     _image = File(pickedFile.path);
     Navigator.pushNamed(context, AppRoute.createPin,
@@ -124,13 +124,13 @@ class _AccountWidgetState extends State<AccountWidget> {
           const SizedBox(width: 16),
           IconButton(
             icon: Icon(Icons.sort),
-            onPressed: getImage,
+            onPressed: () {},
           ),
           const SizedBox(width: 16),
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              Navigator.pushNamed(context, AppRoute.inputUrl);
+              _showModalBottomSheet(context);
             },
           ),
         ],
@@ -155,5 +155,43 @@ class _AccountWidgetState extends State<AccountWidget> {
             ],
           ),
         ));
+  }
+
+  void _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                InkWell(
+                  child: const Text('写真をとる',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onTap: () {},
+                ),
+                const SizedBox(height: 16),
+                InkWell(
+                  child: const Text('カメラロール',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onTap: _getImage,
+                ),
+                const SizedBox(height: 16),
+                InkWell(
+                  child: const Text('URLから追加',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoute.inputUrl);
+                  },
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
