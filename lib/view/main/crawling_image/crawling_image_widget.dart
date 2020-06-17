@@ -33,6 +33,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
             ..add(RequestSearch(args.url)),
       child: Scaffold(
         appBar: AppBar(
+          brightness: Brightness.light,
           iconTheme: IconThemeData(
             color: AppColors.black, //change your color here
           ),
