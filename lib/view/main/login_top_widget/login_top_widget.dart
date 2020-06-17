@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/main/common_widget/base_button_widget.dart';
 
 class LoginTopWidget extends StatelessWidget {
   double _sizedBoxHeight = 40.0;
@@ -38,21 +39,11 @@ class LoginTopWidget extends StatelessWidget {
   }
 
   Widget _buildCreateAccountButton(BuildContext context) {
-    return Container(
-      width: _buttonWidth,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Text(
-          "アカウントを無料登録",
-          style: TextStyle(color: AppColors.white),
-        ),
-        color: AppColors.red,
-        onPressed: () {
-          Navigator.pushNamed(context, AppRoute.createAccount);
-        },
-      ),
+    return RedButton(
+      title: "アカウントを無料登録",
+      onPressedCallback: () {
+        Navigator.pushNamed(context, AppRoute.createAccount);
+      },
     );
   }
 

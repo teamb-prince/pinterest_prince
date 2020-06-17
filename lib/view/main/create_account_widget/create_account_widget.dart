@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/main/common_widget/base_button_widget.dart';
 
 class CreateAccountWidget extends StatelessWidget {
   final _buttonShape = RoundedRectangleBorder(
@@ -37,65 +38,33 @@ class CreateAccountWidget extends StatelessWidget {
   Widget _buildSelectAccountButton(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: _buttonWidth,
-          child: RaisedButton(
-            color: AppColors.red,
-            shape: _buttonShape,
-            child: Text(
-              "メールアドレスで続行",
-              style: _buttonTextStyle,
-            ),
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, AppRoute.home, (_) => false);
-            },
-          ),
+        RedButton(
+          title: "メールアドレスで続行",
+          onPressedCallback: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, AppRoute.home, (_) => false);
+          },
         ),
-        Container(
-          width: _buttonWidth,
-          child: RaisedButton(
-            color: AppColors.facebookButtonColor,
-            shape: _buttonShape,
-            child: Text(
-              "Facebookで続行",
-              style: _buttonTextStyle,
-            ),
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, AppRoute.home, (_) => false);
-            },
-          ),
+        FacebookButton(
+          title: "Facebookで続行",
+          onPressedCallback: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, AppRoute.home, (_) => false);
+          },
         ),
-        Container(
-          width: _buttonWidth,
-          child: RaisedButton(
-            color: AppColors.googleButtonColor,
-            shape: _buttonShape,
-            child: Text(
-              "Googleで続行",
-              style: _buttonTextStyle,
-            ),
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, AppRoute.home, (_) => false);
-            },
-          ),
+        GoogleButton(
+          title: "Googleで続行",
+          onPressedCallback: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, AppRoute.home, (_) => false);
+          },
         ),
-        Container(
-          width: _buttonWidth,
-          child: RaisedButton(
-            color: AppColors.black,
-            shape: _buttonShape,
-            child: Text(
-              "Appleで続行",
-              style: _buttonTextStyle,
-            ),
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, AppRoute.home, (_) => false);
-            },
-          ),
+        AppleButton(
+          title: "Appleで続行",
+          onPressedCallback: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, AppRoute.home, (_) => false);
+          },
         ),
       ],
     );
