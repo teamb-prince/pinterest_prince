@@ -29,12 +29,9 @@ class _InputUrlState extends State<InputUrlWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Search Image"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
+      body: SafeArea(
         child: Container(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               _buildUrlForm(),
