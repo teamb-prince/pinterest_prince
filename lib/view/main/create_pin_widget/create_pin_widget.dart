@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/main/select_board_widget/select_board_widget.dart';
 
 class CreatePinArguments {
   final File image;
@@ -15,12 +17,19 @@ class CreatePinWidget extends StatefulWidget {
 }
 
 class _CreatePinWidgetState extends State<CreatePinWidget> {
+  String _linkUrl;
   final TextEditingController _titleTextController = TextEditingController();
   final TextEditingController _descriptionTextController =
-      TextEditingController();
+  TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final args =
+    ModalRoute
+        .of(context)
+        .settings
+        .arguments as CreatePinArguments;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('ピンを作成', style: TextStyle(color: AppColors.black)),
@@ -32,7 +41,13 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
           Container(
             padding: const EdgeInsets.all(8),
             child: FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoute.selectBoard,
+                    arguments: SelectBoardArguments(image: args.image,
+                        title: _titleTextController.text,
+                        description: _descriptionTextController.text,
+                        linkUrl: _linkUrl));
+              },
               color: AppColors.red,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -48,7 +63,10 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
 
   Widget _buildScreen() {
     final args =
-        ModalRoute.of(context).settings.arguments as CreatePinArguments;
+    ModalRoute
+        .of(context)
+        .settings
+        .arguments as CreatePinArguments;
     return Container(
       padding: const EdgeInsets.all(16),
       child: CustomScrollView(
