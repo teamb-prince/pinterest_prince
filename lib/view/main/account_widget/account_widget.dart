@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -5,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
@@ -15,8 +18,16 @@ class AccountWidget extends StatefulWidget {
 }
 
 class _AccountWidgetState extends State<AccountWidget> {
-  final picker = ImagePicker();
+  File _image;
+  final ImagePicker _picker = ImagePicker();
   final TextEditingController _searchTextController = TextEditingController();
+
+  Future getImage() async {
+    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    _image = File(pickedFile.path);
+    Navigator.pushNamed(context, AppRoute.createPin,
+        arguments: CreatePinArguments(_image));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,12 +136,6 @@ class _AccountWidgetState extends State<AccountWidget> {
         ],
       ),
     );
-  }
-
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
-    print(pickedFile.path);
   }
 
   Widget _getChild(BuildContext context, PinModel pin) {
