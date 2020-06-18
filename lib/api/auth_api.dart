@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:pintersest_clone/api/api_client.dart';
-import 'package:pintersest_clone/model/sign_in_request_model.dart';
+import 'package:pintersest_clone/model/login_request_model.dart';
 
 abstract class AuthApi {
-  Future<String> signIn(SignInRequestModel signInRequestModel);
+  Future<String> signIn(LoginRequestModel loginRequestModel);
 }
 
 class DefaultAuthApi extends AuthApi {
@@ -14,9 +14,9 @@ class DefaultAuthApi extends AuthApi {
   final ApiClient _apiClient;
 
   @override
-  Future<String> signIn(SignInRequestModel signInRequestModel) async {
+  Future<String> signIn(LoginRequestModel loginRequestModel) async {
     final Response response =
-        await _apiClient.post('login', body: signInRequestModel.toJson());
+        await _apiClient.post('login', body: loginRequestModel.toJson());
     /*
     {
       "token": {JWT}
