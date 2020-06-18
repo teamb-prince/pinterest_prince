@@ -35,7 +35,6 @@ class LoginTopWidget extends StatelessWidget {
   }
 
   Widget _buildHeader() {
-    print(Assets.imagePath);
     return Image.asset(Assets.headerImage);
   }
 
