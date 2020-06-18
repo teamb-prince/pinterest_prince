@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          initialRoute: AppRoute.loginTop,
+          initialRoute: AppRoute.home,
           routes: {
             AppRoute.home: (context) => MainNavigationPage(),
             AppRoute.pinDetail: (context) => PinDetailWidget(),
