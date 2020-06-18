@@ -5,6 +5,7 @@ import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_event.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_state.dart';
+import 'package:pintersest_clone/view/main/select_board_widget/select_board_widget.dart';
 
 import 'bloc/crawling_image_bloc.dart';
 
@@ -21,12 +22,12 @@ class CrawlingImageWidget extends StatefulWidget {
 
 class _CrawlingImageState extends State<CrawlingImageWidget> {
   int _selectedIndex = 0;
-  double _footerHeight = 48.0;
+  String _selectedUrl = '';
+  final double _footerHeight = 48;
 
   @override
   Widget build(BuildContext context) {
-    final CrawlingImageArgs args =
-        ModalRoute.of(context).settings.arguments as CrawlingImageArgs;
+    final args = ModalRoute.of(context).settings.arguments as CrawlingImageArgs;
     return BlocProvider<CrawlingImageBloc>(
       create: (context) =>
           CrawlingImageBloc(context.repository<ImageRepository>())
@@ -34,13 +35,13 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
       child: Scaffold(
         appBar: AppBar(
           brightness: Brightness.light,
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: AppColors.black, //change your color here
           ),
           elevation: 0,
           backgroundColor: AppColors.white,
-          title: Text(
-            "画像を選択",
+          title: const Text(
+            '画像を選択',
             style:
                 TextStyle(fontWeight: FontWeight.bold, color: AppColors.black),
           ),
@@ -51,23 +52,24 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
           child: BlocBuilder<CrawlingImageBloc, CrawlingImageState>(
               builder: (context, state) {
             if (state is LoadedState) {
-              final List<String> imageUrls = state.imageModel.imageUrls;
+              final imageUrls = state.imageModel.imageUrls;
+
               return Container(
                 child: Column(
                   children: [
                     Expanded(child: _buildGetImage(imageUrls)),
-                    _buildFooter(),
+                    _buildFooter(args.url),
                   ],
                 ),
               );
             } else if (state is NoImageState) {
-              return Text("No image.");
+              return const Text('No image.');
             } else if (state is ErrorState) {
               return Text(state.exception.toString());
             } else if (state is LoadingState) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (state is InitialState) {
-              return Text("Initial state.");
+              return const Text('Initial state.');
             }
             return Container();
           }),
@@ -87,6 +89,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
             onTap: () {
               setState(() {
                 _selectedIndex = index;
+                _selectedUrl = imageUrls[index];
               });
             },
             child: Stack(
@@ -105,7 +108,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
   }
 
   Widget _buildCheckbox() {
-    return Positioned(
+    return const Positioned(
       top: 4,
       left: 4,
       child: Icon(
@@ -115,7 +118,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
     );
   }
 
-  Widget _buildFooter() {
+  Widget _buildFooter(String url) {
     return Padding(
       padding: EdgeInsets.all(8),
       child: Container(
@@ -124,14 +127,18 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             RaisedButton(
-              child: Text(
-                "保存", // TODO Pinのボードへの保存処理はDBが固まってから
+              child: const Text(
+                '保存', // TODO Pinのボードへの保存処理はDBが固まってから
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: AppColors.white),
               ),
               color: AppColors.red,
               onPressed: () {
-                Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
+                Navigator.pushNamed(context, AppRoute.selectBoard,
+                    arguments: SelectBoardFromUrlArguments(
+                      imageUrl: _selectedUrl,
+                      linkUrl: url,
+                    ));
               },
             ),
           ],

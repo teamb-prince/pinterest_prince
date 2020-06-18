@@ -11,21 +11,43 @@ List<String> boards = [
   'board 3',
 ];
 
-class SelectBoardArguments {
+class SelectBoardFromImageArguments {
+  SelectBoardFromImageArguments(
+      {@required this.image,
+      this.title,
+      this.description,
+      this.linkUrl}); //TODO ここの設計は要相談
+
   final File image;
   final String title;
   final String description;
   final String linkUrl;
+}
 
-  SelectBoardArguments(
-      {@required this.image, this.title, this.description, this.linkUrl});
+//TODO とりあえずこっちに対応
+class SelectBoardFromUrlArguments {
+  SelectBoardFromUrlArguments(
+      {@required this.imageUrl, this.linkUrl}); //TODO ここの設計は要相談
+
+  final String imageUrl;
+  final String linkUrl;
 }
 
 class SelectBoardWidget extends StatelessWidget {
   static const double _iconImageSize = 40;
+  File image;
+  String imageUrl = '';
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context).settings.arguments;
+
+    if (args is SelectBoardFromImageArguments) {
+      image = args.image;
+    } else if (args is SelectBoardFromUrlArguments) {
+      imageUrl = args.imageUrl;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('ボードを選択', style: TextStyle(color: AppColors.black)),

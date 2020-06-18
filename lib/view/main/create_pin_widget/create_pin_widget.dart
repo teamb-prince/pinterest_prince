@@ -40,7 +40,7 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
             child: FlatButton(
               onPressed: () {
                 Navigator.pushNamed(context, AppRoute.selectBoard,
-                    arguments: SelectBoardArguments(
+                    arguments: SelectBoardFromImageArguments(
                         image: args.image,
                         title: _titleTextController.text,
                         description: _descriptionTextController.text,
