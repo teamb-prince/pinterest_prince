@@ -72,40 +72,14 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
           const SliverPadding(
             padding: EdgeInsets.only(top: 16),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  const Text(
-                    'タイトル',
-                    textAlign: TextAlign.left,
-                  ),
-                  TextField(
-                    controller: _titleTextController,
-                    decoration: InputDecoration(
-                        border: InputBorder.none, hintText: 'ピンのタイトルを入力'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  const Text('説明文', textAlign: TextAlign.left),
-                  TextField(
-                    controller: _descriptionTextController,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'このピンの説明文を入力してください'),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          _CustomTextField(
+              title: 'タイトル',
+              hintText: 'ピンのタイトルを入力',
+              textEditingController: _titleTextController),
+          _CustomTextField(
+              title: '説明文',
+              hintText: 'このピンの説明文を入力してください',
+              textEditingController: _descriptionTextController),
           SliverToBoxAdapter(
             child: _buildAddLinkButton(),
           )
@@ -130,6 +104,39 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _CustomTextField extends StatelessWidget {
+  final String title;
+  final String hintText;
+  final TextEditingController textEditingController;
+
+  _CustomTextField(
+      {@required this.title,
+      @required this.hintText,
+      @required this.textEditingController});
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text(
+              title,
+              textAlign: TextAlign.left,
+            ),
+            TextField(
+              controller: textEditingController,
+              decoration:
+                  InputDecoration(border: InputBorder.none, hintText: hintText),
+            ),
+          ],
+        ),
       ),
     );
   }
