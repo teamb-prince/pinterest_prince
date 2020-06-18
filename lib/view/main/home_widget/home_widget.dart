@@ -9,7 +9,7 @@ import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
 
 class HomeWidget extends StatelessWidget {
-  static final double _topNavigationBarHeight = 48.0;
+  final double _topNavigationBarHeight = 48;
 
   @override
   Widget build(BuildContext context) {

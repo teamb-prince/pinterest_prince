@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
@@ -14,7 +18,23 @@ class AccountWidget extends StatefulWidget {
 }
 
 class _AccountWidgetState extends State<AccountWidget> {
+  final double _topNavigationBarHeight = 48;
+
+  File _image;
+  final ImagePicker _picker = ImagePicker();
   final TextEditingController _searchTextController = TextEditingController();
+
+  Future _getImage(bool fromCamera) async {
+    PickedFile pickedFile;
+    if (fromCamera) {
+      pickedFile = await _picker.getImage(source: ImageSource.camera);
+    } else {
+      pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    }
+    _image = File(pickedFile.path);
+    Navigator.pushNamed(context, AppRoute.createPin,
+        arguments: CreatePinArguments(_image));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +50,7 @@ class _AccountWidgetState extends State<AccountWidget> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
+          preferredSize: Size.fromHeight(_topNavigationBarHeight),
           child: AppBar(
             brightness: Brightness.light,
             elevation: 0,
@@ -57,10 +77,9 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   Widget _buildScrollView(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-        builder: (BuildContext context, HomeState state) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state is LoadedState) {
-        final List<PinModel> pins = state.pins;
+        final pins = state.pins;
         return Container(
           padding: const EdgeInsets.all(8),
           child: CustomScrollView(slivers: <Widget>[
@@ -109,12 +128,15 @@ class _AccountWidgetState extends State<AccountWidget> {
             ),
           ),
           const SizedBox(width: 16),
-          Icon(Icons.sort),
+          IconButton(
+            icon: Icon(Icons.sort),
+            onPressed: () {},
+          ),
           const SizedBox(width: 16),
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              Navigator.pushNamed(context, AppRoute.inputUrl);
+              _showModalBottomSheet(context);
             },
           ),
         ],
@@ -139,5 +161,43 @@ class _AccountWidgetState extends State<AccountWidget> {
             ],
           ),
         ));
+  }
+
+  void _showModalBottomSheet(BuildContext context) {
+    final _textStyle = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
+    final _heightRatio = 0.3;
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: MediaQuery.of(context).size.height * _heightRatio,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                InkWell(
+                  child: Text('写真をとる', style: _textStyle),
+                  onTap: () {
+                    _getImage(true);
+                  },
+                ),
+                const SizedBox(height: 16),
+                InkWell(
+                  child: Text('カメラロール', style: _textStyle),
+                  onTap: () {
+                    _getImage(false);
+                  },
+                ),
+                const SizedBox(height: 16),
+                InkWell(
+                  child: Text('URLから追加', style: _textStyle),
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoute.inputUrl);
+                  },
+                ),
+              ],
+            ),
+          );
+        });
   }
 }

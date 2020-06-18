@@ -6,4 +6,6 @@ class AppRoute {
   static const String loginTop = '/login_top';
   static const String createAccount = '/create_account';
   static const String login = '/login';
+  static const String createPin = '/create_pin';
+  static const String selectBoard = '/select_board';
 }
