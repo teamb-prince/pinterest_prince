@@ -77,8 +77,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   Widget _buildScrollView(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state is LoadedState) {
         final pins = state.pins;
         return Container(
@@ -165,37 +164,33 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   void _showModalBottomSheet(BuildContext context) {
+    final _textStyle = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
+    final _heightRatio = 0.3;
     showModalBottomSheet(
         context: context,
         builder: (context) {
           return Container(
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery.of(context).size.height * _heightRatio,
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 InkWell(
-                  child: const Text('写真をとる',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  child: Text('写真をとる', style: _textStyle),
                   onTap: () {
                     _getImage(true);
                   },
                 ),
                 const SizedBox(height: 16),
                 InkWell(
-                  child: const Text('カメラロール',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  child: Text('カメラロール', style: _textStyle),
                   onTap: () {
                     _getImage(false);
                   },
                 ),
                 const SizedBox(height: 16),
                 InkWell(
-                  child: const Text('URLから追加',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  child: Text('URLから追加', style: _textStyle),
                   onTap: () {
                     Navigator.pushNamed(context, AppRoute.inputUrl);
                   },
