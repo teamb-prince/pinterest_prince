@@ -12,9 +12,9 @@ class LoadingState extends LoginState {}
 class SuccessState extends LoginState {}
 
 class ErrorState extends LoginState {
-  final Exception exception;
-
   ErrorState(this.exception);
+
+  final Exception exception;
 
   @override
   List<Object> get props => [exception];

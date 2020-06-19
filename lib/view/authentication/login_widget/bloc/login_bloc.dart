@@ -4,9 +4,9 @@ import 'package:pintersest_clone/view/authentication/login_widget/bloc/login_eve
 import 'package:pintersest_clone/view/authentication/login_widget/bloc/login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final AuthRepository _authRepository;
-
   LoginBloc(this._authRepository);
+
+  final AuthRepository _authRepository;
 
   @override
   LoginState get initialState => InitialState();

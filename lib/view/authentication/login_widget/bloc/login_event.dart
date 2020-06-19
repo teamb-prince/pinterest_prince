@@ -7,9 +7,9 @@ abstract class LoginEvent extends Equatable {
 }
 
 class Login extends LoginEvent {
-  final LoginRequestModel loginRequestModel;
-
   Login({this.loginRequestModel});
+
+  final LoginRequestModel loginRequestModel;
 
   @override
   List<Object> get props => [loginRequestModel];

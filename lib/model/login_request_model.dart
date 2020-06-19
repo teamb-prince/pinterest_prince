@@ -4,10 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 class LoginRequestModel extends Equatable {
+  const LoginRequestModel({@required this.email, @required this.password});
+
   final String email;
   final String password;
-
-  const LoginRequestModel({@required this.email, @required this.password});
 
   String toJson() {
     return jsonEncode({

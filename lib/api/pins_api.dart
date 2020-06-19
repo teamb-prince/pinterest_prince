@@ -11,19 +11,19 @@ abstract class PinsApi {
 }
 
 class DefaultPinsApi extends PinsApi {
-  final ApiClient _apiClient;
-
   DefaultPinsApi(this._apiClient);
+
+  final ApiClient _apiClient;
 
   @override
   Future<PinModel> getPin(String id) async {
-    final Response response = await _apiClient.get("/pins/$id");
+    final response = await _apiClient.get('/pins/$id');
     return PinModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 
   @override
   Future<List<PinModel>> getPins() async {
-    final Response response = await _apiClient.get("/pins");
+    final response = await _apiClient.get('/pins');
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((pin) => PinModel.fromJson(pin))
         .toList();
