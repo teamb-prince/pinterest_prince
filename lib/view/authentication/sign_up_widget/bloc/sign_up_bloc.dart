@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:pintersest_clone/data/auth_repository.dart';
-import 'package:pintersest_clone/view/authentication/create_account_widget/bloc/sign_up_event.dart';
-import 'package:pintersest_clone/view/authentication/create_account_widget/bloc/sign_up_state.dart';
+import 'package:pintersest_clone/view/authentication/sign_up_widget/bloc/sign_up_event.dart';
+import 'package:pintersest_clone/view/authentication/sign_up_widget/bloc/sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc(this._authRepository);
