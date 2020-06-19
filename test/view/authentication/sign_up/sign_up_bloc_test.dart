@@ -6,7 +6,8 @@ import 'package:pintersest_clone/view/authentication/sign_up_widget/bloc/sign_up
 import 'package:pintersest_clone/view/authentication/sign_up_widget/bloc/sign_up_event.dart';
 import 'package:pintersest_clone/view/authentication/sign_up_widget/bloc/sign_up_state.dart';
 
-import '../login/login_bloc_test.dart';
+import '../mock_auth_repository.dart';
+
 
 final SignUpRequestModel mockSignUpRequest = SignUpRequestModel(
     email: 'test@email.com', password: 'password', confirmPassword: 'password');
