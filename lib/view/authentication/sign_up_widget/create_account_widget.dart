@@ -4,7 +4,7 @@ import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/values/assets.dart';
 import 'package:pintersest_clone/view/main/common_widget/base_button_widget.dart';
 
-class CreateAccountWidget extends StatelessWidget {
+class SignUpWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
