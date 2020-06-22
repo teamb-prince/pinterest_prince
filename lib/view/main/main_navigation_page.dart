@@ -5,19 +5,19 @@ import 'package:pintersest_clone/view/main/notification_widget/notification_widg
 import 'package:pintersest_clone/view/main/search_widget/search_widget.dart';
 
 class MainPageDestination {
+  MainPageDestination(this.index, this.title, this.body, this.iconData);
+
   final int index;
   final String title;
   final Widget body;
   final IconData iconData;
-
-  MainPageDestination(this.index, this.title, this.body, this.iconData);
 }
 
 List<MainPageDestination> mainPageDestinations = [
-  MainPageDestination(0, "Discover", HomeWidget(), Icons.home),
-  MainPageDestination(1, "Library", SearchWidget(), Icons.search),
-  MainPageDestination(2, "Search", NotificationWidget(), Icons.notifications),
-  MainPageDestination(3, "Account", AccountWidget(), Icons.person),
+  MainPageDestination(0, 'ホーム', HomeWidget(), Icons.home),
+  MainPageDestination(1, '検索', SearchWidget(), Icons.search),
+  MainPageDestination(2, 'お知らせ', NotificationWidget(), Icons.notifications),
+  MainPageDestination(3, '保存済み', AccountWidget(), Icons.person),
 ];
 
 class MainNavigationPage extends StatefulWidget {
