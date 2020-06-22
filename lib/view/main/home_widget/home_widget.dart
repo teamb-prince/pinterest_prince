@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
-import 'package:pintersest_clone/view/main/home_detail_widget/home_detail_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
+import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 
 class HomeWidget extends StatelessWidget {
   final double _topNavigationBarHeight = 48;
@@ -28,12 +29,12 @@ class HomeWidget extends StatelessWidget {
           preferredSize: Size.fromHeight(_topNavigationBarHeight),
           child: AppBar(
             brightness: Brightness.light,
-            elevation: 0.0,
+            elevation: 0,
             backgroundColor: Colors.white,
             bottom: TabBar(
               indicatorColor: Colors.black87,
               labelColor: Colors.black87,
-              labelStyle: TextStyle(fontSize: 10.0),
+              labelStyle: const TextStyle(fontSize: 10),
               tabs: <Widget>[
                 Tab(text: 'あなたにおすすめ'),
                 Tab(text: 'ピックアップ'),
@@ -59,17 +60,17 @@ class HomeWidget extends StatelessWidget {
 
   Widget _buildStaggeredGridView() {
     return BlocBuilder<HomeBloc, HomeState>(
-        builder: (BuildContext context, HomeState state) {
+        builder: (context, state) {
       if (state is LoadedState) {
-        final List<PinModel> pins = state.pins;
+        final pins = state.pins;
         return StaggeredGridView.countBuilder(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           primary: false,
           crossAxisCount: 4,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
           itemBuilder: (context, index) => _getChild(context, pins[index]),
-          staggeredTileBuilder: (index) => StaggeredTile.fit(2),
+          staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
           itemCount: pins.length,
         );
       }
@@ -80,22 +81,15 @@ class HomeWidget extends StatelessWidget {
   Widget _getChild(BuildContext context, PinModel pin) {
     return GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute<HomeDetailWidget>(
-              builder: (context) {
-                return HomeDetailWidget();
-              },
-              fullscreenDialog: true, // TODO　おしゃれに半モーダルにさせる必要あり
-            ),
-          );
+          Navigator.pushNamed(context, AppRoute.pinDetail,
+              arguments: PinDetailWidgetArguments(pin));
         },
         child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               ClipRRect(
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(12),
                 child: Image.network(
                   pin.imageUrl,
                   fit: BoxFit.cover,
