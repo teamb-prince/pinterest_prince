@@ -7,6 +7,12 @@ import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
+class PinDetailWidgetArguments {
+  PinDetailWidgetArguments(this.pin);
+
+  final PinModel pin;
+}
+
 class PinDetailWidget extends StatefulWidget {
   final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());
 
@@ -41,6 +47,10 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+      ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
+    print(args.pin.title);
+
     return Scaffold(
       backgroundColor: AppColors.pinsDetailBackgroundColor,
       appBar: AppBar(

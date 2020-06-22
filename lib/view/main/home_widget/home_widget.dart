@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/view/main/home_detail_widget/home_detail_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
+import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 
 class HomeWidget extends StatelessWidget {
   final double _topNavigationBarHeight = 48;
@@ -84,7 +86,8 @@ class HomeWidget extends StatelessWidget {
             context,
             MaterialPageRoute<HomeDetailWidget>(
               builder: (context) {
-                return HomeDetailWidget();
+                Navigator.pushNamed(context, AppRoute.pinDetail,
+                    arguments: PinDetailWidgetArguments(pin));
               },
               fullscreenDialog: true, // TODO　おしゃれに半モーダルにさせる必要あり
             ),
