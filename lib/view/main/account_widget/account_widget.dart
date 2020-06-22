@@ -11,6 +11,7 @@ import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.d
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
+import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 
 class AccountWidget extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _AccountWidgetState extends State<AccountWidget> {
       pickedFile = await _picker.getImage(source: ImageSource.gallery);
     }
     _image = File(pickedFile.path);
-    Navigator.pushNamed(context, AppRoute.createPin,
+    await Navigator.pushNamed(context, AppRoute.createPin,
         arguments: CreatePinArguments(_image));
   }
 
@@ -146,7 +147,10 @@ class _AccountWidgetState extends State<AccountWidget> {
 
   Widget _getChild(BuildContext context, PinModel pin) {
     return GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, AppRoute.pinDetail,
+              arguments: PinDetailWidgetArguments(pin));
+        },
         child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
