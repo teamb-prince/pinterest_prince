@@ -47,10 +47,6 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-      ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
-    print(args.pin.title);
-
     return Scaffold(
       backgroundColor: AppColors.pinsDetailBackgroundColor,
       appBar: AppBar(
@@ -85,24 +81,19 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   }
 
   Widget _buildPinImage() {
+    final args =
+        ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
+    print(args.pin.title);
+
     return Container(
-      decoration: _roundedContainerDecoration,
-      child: FutureBuilder(
-          future: _pinsApi.getPin("ab917ee9-bf28-41ff-b914-550728159fae"),
-          builder: (BuildContext context, AsyncSnapshot<PinModel> snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                children: [
-                  _buildImage(snapshot.data.imageUrl),
-                  _buildInformation(snapshot.data.title,
-                      snapshot.data.description, snapshot.data.url),
-                ],
-              );
-            } else {
-              return Text("No Data.");
-            }
-          }),
-    );
+        decoration: _roundedContainerDecoration,
+        child: Column(
+          children: [
+            _buildImage(args.pin.imageUrl),
+            _buildInformation(
+                args.pin.title, args.pin.description, args.pin.url),
+          ],
+        ));
   }
 
   Widget _buildImage(String imageUrl) {

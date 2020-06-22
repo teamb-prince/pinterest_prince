@@ -82,16 +82,8 @@ class HomeWidget extends StatelessWidget {
   Widget _getChild(BuildContext context, PinModel pin) {
     return GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute<HomeDetailWidget>(
-              builder: (context) {
-                Navigator.pushNamed(context, AppRoute.pinDetail,
-                    arguments: PinDetailWidgetArguments(pin));
-              },
-              fullscreenDialog: true, // TODO　おしゃれに半モーダルにさせる必要あり
-            ),
-          );
+          Navigator.pushNamed(context, AppRoute.pinDetail,
+              arguments: PinDetailWidgetArguments(pin));
         },
         child: Container(
           child: Column(
