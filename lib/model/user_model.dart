@@ -22,7 +22,7 @@ class UserModel extends Equatable {
       description: json['description'] as String,
       location: json['location'] as String,
       web: json['web'] as String,
-      createdAt: json['created_at'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
     );
   }
 
@@ -33,7 +33,7 @@ class UserModel extends Equatable {
   final String description;
   final String location;
   final String web;
-  final String createdAt;
+  final DateTime createdAt;
 
   @override
   List<Object> get props => [

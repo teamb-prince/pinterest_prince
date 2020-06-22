@@ -12,7 +12,7 @@ final UserModel expected = UserModel(
     description: 'めろぴっぴです',
     location: 'めろ王国',
     web: 'https://github.com/mrypq',
-    createdAt: '2020-01-01T10:10:10Z'
+    createdAt: DateTime.parse('2020-01-01T10:10:10Z')
 );
 
 void main() {
@@ -23,7 +23,6 @@ void main() {
   });
 
   test('decode json to user', () {
-
     final json = File(Assets.testUserResponse).readAsStringSync();
     final result = UserModel.fromJson(jsonDecode(json));
 
