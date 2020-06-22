@@ -26,28 +26,42 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context).settings.arguments
-        as SelectBoardFromUrlArguments;
-
     return BlocProvider(
       create: (context) => SelectBoardFromUrlBloc(
         RepositoryProvider.of<BoardsRepository>(context),
         RepositoryProvider.of<PinsRepository>(context),
       )..add(LoadData()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
-          backgroundColor: AppColors.white,
-          iconTheme: const IconThemeData(color: AppColors.black),
-          brightness: Brightness.light,
-          elevation: 0,
-        ),
-        body: _buildScreen(args),
-      ),
+      child: _buildScreen(context),
     );
   }
 
-  Widget _buildScreen(SelectBoardFromUrlArguments args) {
+  Widget _buildScreen(BuildContext context) {
+    final args = ModalRoute.of(context).settings.arguments
+        as SelectBoardFromUrlArguments;
+
+    return BlocConsumer<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
+      listener: (context, state) {
+        if (state is SavedPinState) {
+          Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title:
+                const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
+            backgroundColor: AppColors.white,
+            iconTheme: const IconThemeData(color: AppColors.black),
+            brightness: Brightness.light,
+            elevation: 0,
+          ),
+          body: _buildBoardListView(args),
+        );
+      },
+    );
+  }
+
+  Widget _buildBoardListView(SelectBoardFromUrlArguments args) {
     return Builder(builder: (context) {
       return BlocBuilder<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
         builder: (context, state) {
@@ -86,7 +100,6 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
           //TODO ここでstateのSavedPinにstateがなったらpopuntilしたいのだが謎
           BlocProvider.of<SelectBoardFromUrlBloc>(context)
               .add(SavePin(pinRequestModel: request));
-          Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
         },
         child: _buildTile(board),
       );
