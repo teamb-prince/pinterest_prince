@@ -35,7 +35,7 @@ class DefaultPinsApi extends PinsApi {
   Future<PinModel> savePin(PinRequestModel pinRequestModel) async {
     // jsonに
     final response =
-        await _apiClient.post('/pins', body: pinRequestModel.toJson());
+        await _apiClient.post('/pins/url', body: pinRequestModel.toJson());
     return PinModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 }
