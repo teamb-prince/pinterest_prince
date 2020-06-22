@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
@@ -50,21 +51,32 @@ class _AccountWidgetState extends State<AccountWidget> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(_topNavigationBarHeight),
-          child: AppBar(
-            brightness: Brightness.light,
-            elevation: 0,
-            backgroundColor: Colors.white,
-            bottom: TabBar(
-              indicatorColor: Colors.black87,
-              labelColor: Colors.black87,
-              labelStyle: const TextStyle(fontSize: 10),
-              tabs: <Widget>[
-                const Tab(text: 'ボード'),
-                const Tab(text: 'ピン'),
-              ],
+        appBar: AppBar(
+          title: const Text(
+            'アカウント',
+            style: TextStyle(color: AppColors.black),
+          ),
+          brightness: Brightness.light,
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: GestureDetector(
+            onTap: () {},
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: const CircleAvatar(
+                backgroundColor: AppColors.grey,
+                child: Text('TA'),
+              ),
             ),
+          ),
+          bottom: TabBar(
+            indicatorColor: Colors.black87,
+            labelColor: Colors.black87,
+            labelStyle: const TextStyle(fontSize: 10),
+            tabs: <Widget>[
+              const Tab(text: 'ボード'),
+              const Tab(text: 'ピン'),
+            ],
           ),
         ),
         body: TabBarView(
