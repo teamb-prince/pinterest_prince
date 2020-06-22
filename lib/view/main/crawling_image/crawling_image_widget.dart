@@ -5,7 +5,7 @@ import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_event.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_state.dart';
-import 'package:pintersest_clone/view/main/select_board_widget/select_board_widget.dart';
+import 'package:pintersest_clone/view/main/select_board_from_url_widget/select_board_from_url_widget.dart';
 
 import 'bloc/crawling_image_bloc.dart';
 
@@ -21,7 +21,7 @@ class CrawlingImageWidget extends StatefulWidget {
 }
 
 class _CrawlingImageState extends State<CrawlingImageWidget> {
-  int _selectedIndex = 0;
+  int _selectedIndex = -1;
   String _selectedUrl = '';
   final double _footerHeight = 48;
 
@@ -134,11 +134,15 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
               ),
               color: AppColors.red,
               onPressed: () {
-                Navigator.pushNamed(context, AppRoute.selectBoard,
-                    arguments: SelectBoardFromUrlArguments(
-                      imageUrl: _selectedUrl,
-                      linkUrl: url,
-                    ));
+                if (_selectedIndex != -1) {
+                  Navigator.pushNamed(context, AppRoute.selectBoard,
+                      arguments: SelectBoardFromUrlArguments(
+                        imageUrl: _selectedUrl,
+                        linkUrl: url,
+                      ));
+                } else {
+                  print('show alert'); //TODO 戻った時に、一覧画像を更新する作業
+                }
               },
             ),
           ],

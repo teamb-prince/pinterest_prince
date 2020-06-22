@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
+import 'package:pintersest_clone/api/board_api.dart';
 import 'package:pintersest_clone/api/image_api.dart';
 import 'package:pintersest_clone/api/pins_api.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/view/main/crawling_image/crawling_image_widget.dart';
-import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
 import 'package:pintersest_clone/view/main/create_account_widget/create_account_widget.dart';
+import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
 import 'package:pintersest_clone/view/main/input_url_widget/input_url_widget.dart';
 import 'package:pintersest_clone/view/main/login_top_widget/login_top_widget.dart';
 import 'package:pintersest_clone/view/main/login_widget/login_widget.dart';
 import 'package:pintersest_clone/view/main/main_navigation_page.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
-import 'package:pintersest_clone/view/main/select_board_widget/select_board_widget.dart';
+import 'package:pintersest_clone/view/main/select_board_from_url_widget/select_board_from_url_widget.dart';
 
 import 'api/api_client.dart';
+import 'data/boards_repository.dart';
 import 'data/image_repository.dart';
 
 void main() {
@@ -35,6 +37,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<PinsRepository>(
           create: (_) => PinsRepository(DefaultPinsApi(_apiClient)),
+        ),
+        RepositoryProvider<BoardsRepository>(
+          create: (_) => BoardsRepository(DefaultBoardsApi(_apiClient)),
         )
       ],
       child: MaterialApp(
@@ -53,7 +58,7 @@ class MyApp extends StatelessWidget {
             AppRoute.createAccount: (context) => CreateAccountWidget(),
             AppRoute.login: (context) => LoginWidget(),
             AppRoute.createPin: (context) => CreatePinWidget(),
-            AppRoute.selectBoard: (context) => SelectBoardWidget(),
+            AppRoute.selectBoard: (context) => SelectBoardFromUrlWidget(),
           }),
     );
   }
