@@ -16,13 +16,13 @@ class UserModel extends Equatable {
   factory UserModel.fromJson(dynamic json) {
     return UserModel(
       id: json['id'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      profileImageUrl: json['profileImageUrl'] as String,
+      firstName: json['first_name'] as String,
+      lastName: json['last_name'] as String,
+      profileImageUrl: json['profile_image'] as String,
       description: json['description'] as String,
       location: json['location'] as String,
       web: json['web'] as String,
-      createdAt: json['created_at'] as DateTime,
+      createdAt: json['created_at'] as String,
     );
   }
 
@@ -33,7 +33,7 @@ class UserModel extends Equatable {
   final String description;
   final String location;
   final String web;
-  final DateTime createdAt;
+  final String createdAt;
 
   @override
   List<Object> get props => [
