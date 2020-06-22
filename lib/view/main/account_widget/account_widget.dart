@@ -69,7 +69,7 @@ class _AccountWidgetState extends State<AccountWidget> {
         body: TabBarView(
           children: <Widget>[
             Container(color: Colors.red),
-            _buildScrollView(context),
+            Builder(builder: (context) => _buildScrollView(context)),
           ],
         ),
       ),
@@ -77,6 +77,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   Widget _buildScrollView(BuildContext context) {
+    final bloc = BlocProvider.of<HomeBloc>(context);
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state is LoadedState) {
         final pins = state.pins;
@@ -85,7 +86,11 @@ class _AccountWidgetState extends State<AccountWidget> {
           child: CustomScrollView(slivers: <Widget>[
             SliverList(
               delegate: SliverChildListDelegate([
-                Column(children: <Widget>[_buildSearchBar()])
+                Column(
+                  children: <Widget>[
+                    _buildSearchBar(bloc),
+                  ],
+                )
               ]),
             ),
             SliverStaggeredGrid.countBuilder(
@@ -103,7 +108,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     });
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(HomeBloc bloc) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
@@ -136,7 +141,7 @@ class _AccountWidgetState extends State<AccountWidget> {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              _showModalBottomSheet(context);
+              _showModalBottomSheet(bloc);
             },
           ),
         ],
@@ -163,7 +168,7 @@ class _AccountWidgetState extends State<AccountWidget> {
         ));
   }
 
-  void _showModalBottomSheet(BuildContext context) {
+  void _showModalBottomSheet(HomeBloc bloc) {
     final _textStyle = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
     final _heightRatio = 0.3;
     showModalBottomSheet(
@@ -192,7 +197,11 @@ class _AccountWidgetState extends State<AccountWidget> {
                 InkWell(
                   child: Text('URLから追加', style: _textStyle),
                   onTap: () {
-                    Navigator.pushNamed(context, AppRoute.inputUrl);
+                    Navigator.pushNamed(context, AppRoute.inputUrl)
+                        .then((value) {
+                      bloc.add(LoadData());
+                      print("back");
+                    });
                   },
                 ),
               ],

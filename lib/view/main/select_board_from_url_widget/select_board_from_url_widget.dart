@@ -71,25 +71,26 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
 
   Widget _buildBoardTile(BuildContext context, BoardModel board,
       SelectBoardFromUrlArguments args) {
-    return GestureDetector(
-      onTap: () {
-        final request = PinRequestModel(
-          userId: 'mrypq',
-          originalUserId: 'mrypq',
-          url: args.linkUrl,
-          imageUrl: args.imageUrl,
-          boardId: board.id,
-          description: 'てきとう',
-        );
-        BlocProvider.of<SelectBoardFromUrlBloc>(context)
-            .add(SavePin(pinRequestModel: request));
-        Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
-        print(board.id);
-        print(args.imageUrl);
-        print(args.linkUrl);
-      },
-      child: _buildTile(board),
-    );
+    return BlocBuilder<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
+        builder: (context, state) {
+      return GestureDetector(
+        onTap: () {
+          final request = PinRequestModel(
+            userId: 'mrypq',
+            originalUserId: 'mrypq',
+            url: args.linkUrl,
+            imageUrl: args.imageUrl,
+            boardId: board.id,
+            description: 'てきとう',
+          );
+          //TODO ここでstateのSavedPinにstateがなったらpopuntilしたいのだが謎
+          BlocProvider.of<SelectBoardFromUrlBloc>(context)
+              .add(SavePin(pinRequestModel: request));
+          Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
+        },
+        child: _buildTile(board),
+      );
+    });
   }
 
   Widget _buildTile(BoardModel board) {
