@@ -55,13 +55,13 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
             brightness: Brightness.light,
             elevation: 0,
           ),
-          body: _buildBoardListView(args),
+          body: _buildBoardsListView(args),
         );
       },
     );
   }
 
-  Widget _buildBoardListView(SelectBoardFromUrlArguments args) {
+  Widget _buildBoardsListView(SelectBoardFromUrlArguments args) {
     return Builder(builder: (context) {
       return BlocBuilder<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
         builder: (context, state) {
