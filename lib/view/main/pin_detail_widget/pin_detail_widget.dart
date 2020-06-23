@@ -43,33 +43,31 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pinsDetailBackgroundColor,
-      appBar: AppBar(
-        title: const Text('Pin Detail'), // TODO 本来であればAppBarではなく画像の上に戻るボタンをつける
-      ),
-      body: CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Column(
-                  children: [
-                    _buildPinImage(),
-                  ],
-                )
-              ],
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Column(
+                    children: [
+                      _buildPinImage(),
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-          SliverGrid(
-            // TODO 細かいUIは後で
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-            ),
-            delegate:
-                SliverChildBuilderDelegate((context, index) {
-              return _buildImage(imageList[index]);
-            }, childCount: imageList.length),
-          )
-        ],
+            SliverGrid(
+              // TODO 細かいUIは後で
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              delegate: SliverChildBuilderDelegate((context, index) {
+                return _buildSmallImage(imageList[index]);
+              }, childCount: imageList.length),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -91,19 +89,56 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   }
 
   Widget _buildImage(String imageUrl) {
-    return ClipRRect(
-      child: Image.network(imageUrl),
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(16),
+    return Stack(
+      children: [
+        ClipRRect(
+          child: Image.network(imageUrl),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          ),
+        ),
+        _buildBackButton(),
+      ],
+    );
+  }
+
+  Widget _buildSmallImage(String imageUrl) {
+    return Container(
+      child: ClipRRect(
+        child: Image.network(imageUrl),
+        borderRadius: BorderRadius.circular(16),
+      ),
+    );
+  }
+
+  Widget _buildBackButton() {
+    return Positioned(
+      top: 8,
+      left: 8,
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: AppColors.backButtonBackgroundColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: IconButton(
+          icon: Icon(
+            Icons.close,
+            color: AppColors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
     );
   }
 
   Widget _buildInformation(String title, String description, String url) {
     return Padding(
-      padding:
-          const EdgeInsets.only(left: 32, right: 32, bottom: 16, top: 16),
+      padding: const EdgeInsets.only(left: 32, right: 32, bottom: 16, top: 16),
       child: Column(
         children: [
           _buildImageInformation(title, description),
