@@ -14,9 +14,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is LoadData) {
+      print("move");
       yield LoadingState();
       try {
         final pins = await _pinsRepository.getPins();
+
         if (pins.isEmpty) {
           yield NoDataState();
         } else {
