@@ -40,7 +40,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _searchTextController = TextEditingController();
 
-  Future _getImage(bool fromCamera) async {
+  Future _getImage(bool fromCamera, Function(Object) callback) async {
     PickedFile pickedFile;
     if (fromCamera) {
       pickedFile = await _picker.getImage(source: ImageSource.camera);
@@ -49,7 +49,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     }
     _image = File(pickedFile.path);
     await Navigator.pushNamed(context, AppRoute.createPin,
-        arguments: CreatePinArguments(_image));
+        arguments: CreatePinArguments(_image)).then(callback);
   }
 
   @override
@@ -107,7 +107,6 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   Widget _buildScrollView(BuildContext context) {
-    final bloc = BlocProvider.of<HomeBloc>(context);
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state is LoadedState) {
         final pins = state.pins;
@@ -118,7 +117,7 @@ class _AccountWidgetState extends State<AccountWidget> {
               delegate: SliverChildListDelegate([
                 Column(
                   children: <Widget>[
-                    _buildSearchBar(bloc),
+                    _buildSearchBar(context),
                   ],
                 )
               ]),
@@ -138,7 +137,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     });
   }
 
-  Widget _buildSearchBar(HomeBloc bloc) {
+  Widget _buildSearchBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
@@ -171,7 +170,7 @@ class _AccountWidgetState extends State<AccountWidget> {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              _showModalBottomSheet(bloc);
+              _showModalBottomSheet(context);
             },
           ),
         ],
@@ -201,7 +200,7 @@ class _AccountWidgetState extends State<AccountWidget> {
         ));
   }
 
-  void _showModalBottomSheet(HomeBloc bloc) {
+  void _showModalBottomSheet(BuildContext context) {
     final _textStyle = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
     final _heightRatio = 0.3;
     showModalBottomSheet(
@@ -216,14 +215,18 @@ class _AccountWidgetState extends State<AccountWidget> {
                 InkWell(
                   child: Text('写真をとる', style: _textStyle),
                   onTap: () {
-                    _getImage(true);
+                    _getImage(true, (_) {
+                      BlocProvider.of<HomeBloc>(context).add(LoadData());
+                    });
                   },
                 ),
                 const SizedBox(height: 16),
                 InkWell(
                   child: Text('カメラロール', style: _textStyle),
                   onTap: () {
-                    _getImage(false);
+                    _getImage(false, (_) {
+                      BlocProvider.of<HomeBloc>(context).add(LoadData());
+                    });
                   },
                 ),
                 const SizedBox(height: 16),
@@ -232,7 +235,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                   onTap: () {
                     Navigator.pushNamed(context, AppRoute.inputUrl)
                         .then((value) {
-                      bloc.add(LoadData());
+                      BlocProvider.of<HomeBloc>(context).add(LoadData());
                       print("back");
                     });
                   },
