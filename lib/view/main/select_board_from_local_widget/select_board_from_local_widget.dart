@@ -1,16 +1,18 @@
 import 'dart:io';
-import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pintersest_clone/data/boards_repository.dart';
+import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/model/board_model.dart';
+import 'package:pintersest_clone/model/pin_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 
-// 今は仮のボードのリストです
-List<String> boards = [
-  'board 1',
-  'board 2',
-  'board 3',
-];
+import 'package:pintersest_clone/app_route.dart';
+import 'bloc/select_board_from_local_bloc.dart';
+import 'bloc/select_board_from_local_event.dart';
+import 'bloc/select_board_from_local_state.dart';
 
 class SelectBoardFromLocalArguments {
   SelectBoardFromLocalArguments(
@@ -27,64 +29,105 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
-        backgroundColor: AppColors.white,
-        iconTheme: const IconThemeData(color: AppColors.black),
-        brightness: Brightness.light,
-        elevation: 0,
-      ),
-      body: _buildScreen(),
+    return BlocProvider(
+      create: (context) => SelectBoardFromLocalBloc(
+        RepositoryProvider.of<BoardsRepository>(context),
+        RepositoryProvider.of<PinsRepository>(context),
+      )..add(LoadBoards()),
+      child: _buildScreen(context),
     );
   }
 
-  Widget _buildScreen() {
-    return Container(
-      child: ListView.builder(
-        itemBuilder: (context, index) => index == boards.length
-            ? _buildAddNewBoardButton()
-            : _getChild(context, index),
-        itemCount: boards.length + 1,
-      ),
-    );
-  }
-
-  Widget _getChild(BuildContext context, int index) {
+  Widget _buildScreen(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments
         as SelectBoardFromLocalArguments;
 
-    return GestureDetector(
-      onTap: () async {
-        final request = http.MultipartRequest(
-            'POST', Uri.parse('http://localhost:8080/pins/local'));
-        request.fields['json'] = '{"text":"This is a sample text."}';
-        request.files.add(http.MultipartFile.fromBytes(
-            'image', args.image.readAsBytesSync(),
-            filename: 'image'));
-        await request.send().then((response) {
-          print(response.statusCode);
-        });
+    return BlocConsumer<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
+      listener: (context, state) {
+        if (state is SavedPinState) {
+          Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
+        }
       },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          children: <Widget>[
-            // 適当な画像です。
-            SizedBox(
-                height: _iconImageSize,
-                width: _iconImageSize,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                      'https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349',
-                      fit: BoxFit.cover),
-                )),
-            const SizedBox(width: 16),
-            Text(boards[index],
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          ],
-        ),
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title:
+                const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
+            backgroundColor: AppColors.white,
+            iconTheme: const IconThemeData(color: AppColors.black),
+            brightness: Brightness.light,
+            elevation: 0,
+          ),
+          body: _buildBoardsListView(args),
+        );
+      },
+    );
+  }
+
+  Widget _buildBoardsListView(SelectBoardFromLocalArguments args) {
+    return Builder(builder: (context) {
+      return BlocBuilder<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
+        builder: (context, state) {
+          if (state is LoadedState) {
+            final boards = state.boards;
+
+            return Container(
+              child: ListView.builder(
+                itemBuilder: (context, index) => index == boards.length
+                    ? _buildAddNewBoardButton()
+                    : _buildBoardTile(context, boards[index], args),
+                itemCount: boards.length + 1,
+              ),
+            );
+          }
+          return Container();
+        },
+      );
+    });
+  }
+
+  Widget _buildBoardTile(BuildContext context, BoardModel board,
+      SelectBoardFromLocalArguments args) {
+    return BlocBuilder<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
+        builder: (context, state) {
+      return GestureDetector(
+        onTap: () {
+          final request = PinRequestModel(
+            userId: 'mrypq',
+            originalUserId: 'mrypq',
+            url: args.linkUrl,
+            imageUrl: '',
+            boardId: board.id,
+            description: 'てきとう',
+          );
+          BlocProvider.of<SelectBoardFromLocalBloc>(context)
+              .add(SavePin(image: args.image, pinRequestModel: request));
+        },
+        child: _buildTile(board),
+      );
+    });
+  }
+
+  Widget _buildTile(BoardModel board) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        children: <Widget>[
+          SizedBox(
+              height: _iconImageSize,
+              width: _iconImageSize,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                    // 適当な画像です。
+                    'https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349',
+                    fit: BoxFit.cover),
+              )),
+          const SizedBox(width: 16),
+          Text(board.name,
+              style:
+                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        ],
       ),
     );
   }
@@ -94,12 +137,12 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: <Widget>[
-          CircleAvatar(
+          const CircleAvatar(
             backgroundColor: AppColors.red,
             child: Icon(Icons.add, color: AppColors.white),
           ),
           const SizedBox(width: 16),
-          Text('新規ボードを作成',
+          const Text('新規ボードを作成',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         ],
       ),
