@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:http/http.dart' as http;
 import 'package:pintersest_clone/api/api_client.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
@@ -10,6 +12,9 @@ abstract class PinsApi {
   Future<List<PinModel>> getPins();
 
   Future<PinModel> savePinWithUrl(PinRequestModel pinRequestModel);
+
+  Future<PinModel> savePinWithImage(
+      File image, PinRequestModel pinRequestModel);
 }
 
 class DefaultPinsApi extends PinsApi {
@@ -33,9 +38,23 @@ class DefaultPinsApi extends PinsApi {
 
   @override
   Future<PinModel> savePinWithUrl(PinRequestModel pinRequestModel) async {
-    // jsonに
     final response =
         await _apiClient.post('/pins/url', body: pinRequestModel.toJson());
     return PinModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+  }
+
+  @override
+  Future<PinModel> savePinWithImage(
+      File image, PinRequestModel pinRequestModel) async {
+    // ここで_apiClientのpostを呼び出す形で書けないのが微妙
+    final request = http.MultipartRequest(
+        'POST', Uri.parse('http://localhost:8080/pins/local'));
+    request.fields['json'] = pinRequestModel.toString();
+    request.files.add(http.MultipartFile.fromBytes(
+        'image', image.readAsBytesSync(),
+        filename: 'image'));
+    final response = await request.send();
+    final body = await response.stream.bytesToString();
+    return PinModel.fromJson(jsonDecode(body));
   }
 }
