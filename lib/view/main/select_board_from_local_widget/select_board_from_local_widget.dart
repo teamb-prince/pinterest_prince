@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -50,24 +51,40 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
   }
 
   Widget _getChild(BuildContext context, int index) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: <Widget>[
-          // 適当な画像です。
-          SizedBox(
-              height: _iconImageSize,
-              width: _iconImageSize,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                    'https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349',
-                    fit: BoxFit.cover),
-              )),
-          const SizedBox(width: 16),
-          Text(boards[index],
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        ],
+    final args = ModalRoute.of(context).settings.arguments
+        as SelectBoardFromLocalArguments;
+
+    return GestureDetector(
+      onTap: () async {
+        final request = http.MultipartRequest(
+            'POST', Uri.parse('http://localhost:8080/pins/local'));
+        request.fields['json'] = '{"text":"This is a sample text."}';
+        request.files.add(http.MultipartFile.fromBytes(
+            'image', args.image.readAsBytesSync(),
+            filename: 'image'));
+        await request.send().then((response) {
+          print(response.statusCode);
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: <Widget>[
+            // 適当な画像です。
+            SizedBox(
+                height: _iconImageSize,
+                width: _iconImageSize,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                      'https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349',
+                      fit: BoxFit.cover),
+                )),
+            const SizedBox(width: 16),
+            Text(boards[index],
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ],
+        ),
       ),
     );
   }
