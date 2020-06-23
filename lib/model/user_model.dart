@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 
 class UserModel extends Equatable {
-  UserModel({
+  const UserModel({
     @required this.id,
     @required this.firstName,
     @required this.lastName,
