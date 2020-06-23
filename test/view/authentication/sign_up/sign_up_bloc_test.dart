@@ -8,8 +8,7 @@ import 'package:pintersest_clone/view/authentication/sign_up_widget/bloc/sign_up
 
 import '../mock_auth_repository.dart';
 
-
-final SignUpRequestModel mockSignUpRequest = SignUpRequestModel(
+const SignUpRequestModel mockSignUpRequest = SignUpRequestModel(
     email: 'test@email.com', password: 'password', confirmPassword: 'password');
 
 void main() {
@@ -27,6 +26,7 @@ void main() {
           .thenAnswer((_) => Future.value(null));
 
       return SignUpBloc(mockAuthRepository);
+      // ignore: missing_return
     }, act: (bloc) {
       bloc.add(SignUp(signUpRequestModel: mockSignUpRequest));
     }, skip: 0, expect: [InitialState(), LoadingState(), SuccessState()]);
@@ -34,11 +34,12 @@ void main() {
     blocTest(
         'emit [InitialState(), LoadingState(), ErrorState()] when sign up request will fail',
         build: () async {
-          when(mockAuthRepository.signUp(any))
-              .thenAnswer((_) => Future.error(Exception()));
+      when(mockAuthRepository.signUp(any))
+          .thenAnswer((_) => Future.error(Exception()));
 
-          return SignUpBloc(mockAuthRepository);
-        }, act: (bloc) {
+      return SignUpBloc(mockAuthRepository);
+      // ignore: missing_return
+    }, act: (bloc) {
       bloc.add(SignUp(signUpRequestModel: mockSignUpRequest));
     }, skip: 0, expect: [InitialState(), LoadingState(), isA<ErrorState>()]);
   });
