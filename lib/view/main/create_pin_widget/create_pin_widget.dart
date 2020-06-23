@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/main/select_board_from_local_widget/select_board_from_local_widget.dart';
 
 class CreatePinArguments {
   final File image;
@@ -40,11 +41,11 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
               onPressed: () {
                 Navigator.pushNamed(
                   context, AppRoute.selectBoardFromLocal,
-//                    arguments: SelectBoardFromImageArguments(
-//                        image: args.image,
-//                        title: _titleTextController.text,
-//                        description: _descriptionTextController.text,
-//                        linkUrl: _linkUrl)
+                    arguments: SelectBoardFromLocalArguments(
+                        image: args.image,
+                        title: _titleTextController.text,
+                        description: _descriptionTextController.text,
+                        linkUrl: _linkUrl)
                 );
               },
               color: AppColors.red,
