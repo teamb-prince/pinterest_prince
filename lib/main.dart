@@ -14,6 +14,7 @@ import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.d
 import 'package:pintersest_clone/view/main/input_url_widget/input_url_widget.dart';
 import 'package:pintersest_clone/view/main/main_navigation_page.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
+import 'package:pintersest_clone/view/main/select_board_from_local_widget/select_board_from_local_widget.dart';
 import 'package:pintersest_clone/view/main/select_board_from_url_widget/select_board_from_url_widget.dart';
 import 'package:pintersest_clone/view/main/user_detail_widget/user_detail_widget.dart';
 
@@ -60,6 +61,8 @@ class MyApp extends StatelessWidget {
             AppRoute.createAccount: (context) => SignUpWidget(),
             AppRoute.login: (context) => LoginWidget(),
             AppRoute.createPin: (context) => CreatePinWidget(),
+            AppRoute.selectBoardFromLocal: (context) =>
+                SelectBoardFromLocalWidget(),
             AppRoute.selectBoardFromUrl: (context) =>
                 SelectBoardFromUrlWidget(),
           }),

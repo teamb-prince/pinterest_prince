@@ -12,7 +12,6 @@ import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/sel
 
 import 'bloc/select_board_from_url_event.dart';
 
-//TODO とりあえずこっちに対応
 class SelectBoardFromUrlArguments {
   SelectBoardFromUrlArguments(
       {@required this.imageUrl, this.linkUrl}); //TODO ここの設計は要相談
