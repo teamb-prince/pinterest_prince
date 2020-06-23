@@ -9,7 +9,7 @@ abstract class PinsApi {
 
   Future<List<PinModel>> getPins();
 
-  Future<PinModel> savePin(PinRequestModel pinRequestModel);
+  Future<PinModel> savePinWithUrl(PinRequestModel pinRequestModel);
 }
 
 class DefaultPinsApi extends PinsApi {
@@ -32,7 +32,7 @@ class DefaultPinsApi extends PinsApi {
   }
 
   @override
-  Future<PinModel> savePin(PinRequestModel pinRequestModel) async {
+  Future<PinModel> savePinWithUrl(PinRequestModel pinRequestModel) async {
     // jsonに
     final response =
         await _apiClient.post('/pins/url', body: pinRequestModel.toJson());
