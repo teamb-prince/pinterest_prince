@@ -6,11 +6,8 @@ class BoardModel extends Equatable {
   const BoardModel({
     @required this.id,
     @required this.userId,
-    @required this.originalUserId,
-    @required this.url,
-    @required this.title,
-    @required this.imageUrl,
-    @required this.boardId,
+    @required this.name,
+    @required this.topicId,
     @required this.description,
     @required this.createdAt,
   });
@@ -19,35 +16,26 @@ class BoardModel extends Equatable {
     return BoardModel(
       id: json['id'] as String,
       userId: json['user_id'] as String,
-      originalUserId: json['original_user_id'] as String,
-      url: json['url'] as String,
-      title: json['title'] as String,
-      imageUrl: json['image_url'] as String,
-      boardId: json['board_id'] as String,
+      name: json['name'] as String,
+      topicId: json['topic_id'] as String,
       description: json['description'] as String,
-      createdAt: json['created_at'] as DateTime,
+      createdAt: json['created_at'] as String,
     );
   }
 
   final String id;
   final String userId;
-  final String originalUserId;
-  final String url;
-  final String title;
-  final String imageUrl;
-  final String boardId;
+  final String name;
+  final String topicId;
   final String description;
-  final DateTime createdAt;
+  final String createdAt;
 
   @override
   List<Object> get props => [
         id,
         userId,
-        originalUserId,
-        url,
-        title,
-        imageUrl,
-        boardId,
+        name,
+        topicId,
         description,
         createdAt,
       ];
