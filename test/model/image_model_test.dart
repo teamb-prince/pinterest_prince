@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pintersest_clone/model/image_model.dart';
 import 'package:pintersest_clone/values/assets.dart';
 
-final ImageModel expected = ImageModel(
+const ImageModel expected = ImageModel(
   url: 'https://github.com/mrypq',
   imageUrls: [
     'https://example.com/image1.png',
@@ -15,7 +15,6 @@ final ImageModel expected = ImageModel(
   title: 'title',
   description: 'description',
 );
-
 
 void main() {
   setUp(() {
