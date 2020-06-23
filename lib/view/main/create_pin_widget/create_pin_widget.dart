@@ -6,9 +6,9 @@ import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/select_board_widget/select_board_widget.dart';
 
 class CreatePinArguments {
-  final File image;
-
   CreatePinArguments(this.image);
+
+  final File image;
 }
 
 class CreatePinWidget extends StatefulWidget {

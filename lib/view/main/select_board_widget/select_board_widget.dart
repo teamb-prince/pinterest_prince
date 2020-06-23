@@ -76,12 +76,12 @@ class SelectBoardWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       child: Row(
-        children: <Widget>[
+        children: const <Widget>[
           CircleAvatar(
             backgroundColor: AppColors.red,
             child: Icon(Icons.add, color: AppColors.white),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Text('新規ボードを作成',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         ],

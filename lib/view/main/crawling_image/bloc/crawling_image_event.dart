@@ -6,7 +6,7 @@ abstract class CrawlingImageEvent extends Equatable {
 }
 
 class RequestSearch extends CrawlingImageEvent {
-  final String url;
-
   RequestSearch(this.url);
+
+  final String url;
 }

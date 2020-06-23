@@ -30,7 +30,7 @@ class UserDetailWidget extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back_ios)),
+              icon: const Icon(Icons.arrow_back_ios)),
           const SizedBox(height: 8),
           _buildUserInfoView(args.user),
         ],
@@ -65,9 +65,8 @@ class UserDetailWidget extends StatelessWidget {
         children: <Widget>[
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.share),
+            icon: const Icon(Icons.share),
           ),
-
           FlatButton(
             padding: const EdgeInsets.all(16),
             onPressed: () {},
@@ -83,7 +82,7 @@ class UserDetailWidget extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.more_horiz),
+            icon: const Icon(Icons.more_horiz),
           ),
         ],
       ),
