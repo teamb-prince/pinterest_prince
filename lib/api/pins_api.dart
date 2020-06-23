@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
 import 'package:pintersest_clone/api/api_client.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 
