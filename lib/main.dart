@@ -60,7 +60,8 @@ class MyApp extends StatelessWidget {
             AppRoute.createAccount: (context) => SignUpWidget(),
             AppRoute.login: (context) => LoginWidget(),
             AppRoute.createPin: (context) => CreatePinWidget(),
-            AppRoute.selectBoard: (context) => SelectBoardFromUrlWidget(),
+            AppRoute.selectBoardFromUrl: (context) =>
+                SelectBoardFromUrlWidget(),
           }),
     );
   }

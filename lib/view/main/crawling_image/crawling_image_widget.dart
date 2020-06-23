@@ -135,7 +135,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
               color: AppColors.red,
               onPressed: () {
                 if (_selectedIndex != -1) {
-                  Navigator.pushNamed(context, AppRoute.selectBoard,
+                  Navigator.pushNamed(context, AppRoute.selectBoardFromUrl,
                       arguments: SelectBoardFromUrlArguments(
                         imageUrl: _selectedUrl,
                         linkUrl: url,
