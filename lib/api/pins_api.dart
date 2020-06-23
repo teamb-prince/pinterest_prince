@@ -49,7 +49,7 @@ class DefaultPinsApi extends PinsApi {
     // ここで_apiClientのpostを呼び出す形で書けないのが微妙
     final request = http.MultipartRequest(
         'POST', Uri.parse('http://localhost:8080/pins/local'));
-    request.fields['json'] = pinRequestModel.toString();
+    request.fields['json'] = pinRequestModel.toJson();
     request.files.add(http.MultipartFile.fromBytes(
         'image', image.readAsBytesSync(),
         filename: 'image'));
