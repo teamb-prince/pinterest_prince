@@ -51,9 +51,9 @@ class _InputUrlState extends State<InputUrlWidget> {
             child: TextField(
               textInputAction: TextInputAction.done,
               controller: _controller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: "Input Url",
+                labelText: 'Input Url',
               ),
               onSubmitted: (String text) {
                 //TODO ここでブラウザを出すのはBonusで良いような気がしたので切り分ける
@@ -63,13 +63,13 @@ class _InputUrlState extends State<InputUrlWidget> {
             ),
           );
         }),
-        SizedBox(
+        const SizedBox(
           width: 8,
         ),
         Expanded(
           flex: 1,
           child: RaisedButton(
-            child: Text("cancel"),
+            child: const Text('cancel'),
             onPressed: () {
               Navigator.pop(context);
             },

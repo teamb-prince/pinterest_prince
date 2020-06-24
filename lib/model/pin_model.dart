@@ -1,15 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 
 class PinModel extends Equatable {
-  final String id;
-  final String url;
-  final String title;
-  final String imageUrl;
-  final String board;
-  final String description;
-
-  PinModel({
+  const PinModel({
     @required this.id,
     @required this.url,
     @required this.title,
@@ -28,6 +21,13 @@ class PinModel extends Equatable {
       description: json['description'] as String,
     );
   }
+
+  final String id;
+  final String url;
+  final String title;
+  final String imageUrl;
+  final String board;
+  final String description;
 
   @override
   List<Object> get props => [

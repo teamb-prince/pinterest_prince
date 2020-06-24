@@ -34,8 +34,6 @@ class AccountWidget extends StatefulWidget {
 }
 
 class _AccountWidgetState extends State<AccountWidget> {
-  final double _topNavigationBarHeight = 48;
-
   File _image;
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _searchTextController = TextEditingController();
@@ -86,13 +84,13 @@ class _AccountWidgetState extends State<AccountWidget> {
               ),
             ),
           ),
-          bottom: TabBar(
+          bottom: const TabBar(
             indicatorColor: Colors.black87,
             labelColor: Colors.black87,
-            labelStyle: const TextStyle(fontSize: 10),
+            labelStyle: TextStyle(fontSize: 10),
             tabs: <Widget>[
-              const Tab(text: 'ボード'),
-              const Tab(text: 'ピン'),
+              Tab(text: 'ボード'),
+              Tab(text: 'ピン'),
             ],
           ),
         ),
@@ -147,7 +145,7 @@ class _AccountWidgetState extends State<AccountWidget> {
               controller: _searchTextController,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                prefixIcon: Icon(
+                prefixIcon: const Icon(
                   Icons.search,
                   size: 24,
                 ),
@@ -163,12 +161,12 @@ class _AccountWidgetState extends State<AccountWidget> {
           ),
           const SizedBox(width: 16),
           IconButton(
-            icon: Icon(Icons.sort),
+            icon: const Icon(Icons.sort),
             onPressed: () {},
           ),
           const SizedBox(width: 16),
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () {
               _showModalBottomSheet(context);
             },
@@ -201,9 +199,10 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   void _showModalBottomSheet(BuildContext context) {
+    // ignore: close_sinks
     final bloc = BlocProvider.of<HomeBloc>(context);
-    final _textStyle = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
-    final _heightRatio = 0.3;
+    const _textStyle = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
+    const _heightRatio = 0.3;
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -214,7 +213,7 @@ class _AccountWidgetState extends State<AccountWidget> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 InkWell(
-                  child: Text('写真をとる', style: _textStyle),
+                  child: const Text('写真をとる', style: _textStyle),
                   onTap: () {
                     _getImage(true, (_) {
                       bloc.add(LoadData());
@@ -223,7 +222,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                 ),
                 const SizedBox(height: 16),
                 InkWell(
-                  child: Text('カメラロール', style: _textStyle),
+                  child: const Text('カメラロール', style: _textStyle),
                   onTap: () {
                     _getImage(false, (_) {
                       bloc.add(LoadData());
@@ -232,7 +231,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                 ),
                 const SizedBox(height: 16),
                 InkWell(
-                  child: Text('URLから追加', style: _textStyle),
+                  child: const Text('URLから追加', style: _textStyle),
                   onTap: () {
                     Navigator.pushNamed(context, AppRoute.inputUrl)
                         .then((value) {

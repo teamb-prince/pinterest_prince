@@ -31,10 +31,10 @@ class HomeWidget extends StatelessWidget {
             brightness: Brightness.light,
             elevation: 0,
             backgroundColor: Colors.white,
-            bottom: TabBar(
+            bottom: const TabBar(
               indicatorColor: Colors.black87,
               labelColor: Colors.black87,
-              labelStyle: const TextStyle(fontSize: 10),
+              labelStyle: TextStyle(fontSize: 10),
               tabs: <Widget>[
                 Tab(text: 'あなたにおすすめ'),
                 Tab(text: 'ピックアップ'),
@@ -59,8 +59,7 @@ class HomeWidget extends StatelessWidget {
   }
 
   Widget _buildStaggeredGridView() {
-    return BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state is LoadedState) {
         final pins = state.pins;
         return StaggeredGridView.countBuilder(

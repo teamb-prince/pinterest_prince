@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pintersest_clone/model/user_model.dart';
 import 'package:pintersest_clone/values/assets.dart';
@@ -8,12 +9,12 @@ final UserModel expected = UserModel(
     id: 'mrypq',
     firstName: 'めろ子',
     lastName: 'めろ田',
-    profileImageUrl: 'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/profile_image.jpeg',
+    profileImageUrl:
+        'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/profile_image.jpeg',
     description: 'めろぴっぴです',
     location: 'めろ王国',
     web: 'https://github.com/mrypq',
-    createdAt: DateTime.parse('2020-01-01T10:10:10Z')
-);
+    createdAt: DateTime.parse('2020-01-01T10:10:10Z'));
 
 void main() {
   setUp(() {

@@ -3,12 +3,12 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 class MyInAppBrowser extends InAppBrowser {
   @override
   Future onLoadStart(String url) async {
-    print("\n\nStarted $url\n\n");
+    print('\n\nStarted $url\n\n');
   }
 
   @override
   Future onLoadStop(String url) async {
-    print("\n\nStopped $url\n\n");
+    print('\n\nStopped $url\n\n');
   }
 
   @override
@@ -18,7 +18,7 @@ class MyInAppBrowser extends InAppBrowser {
 
   @override
   void onExit() {
-    print("\n\nBrowser closed!\n\n");
+    print('\n\nBrowser closed!\n\n');
   }
 }
 
@@ -28,16 +28,16 @@ class MyChromeSafariBrowser extends ChromeSafariBrowser {
 
   @override
   void onOpened() {
-    print("ChromeSafari browser opened");
+    print('ChromeSafari browser opened');
   }
 
   @override
   void onCompletedInitialLoad() {
-    print("ChromeSafari browser initial load completed");
+    print('ChromeSafari browser initial load completed');
   }
 
   @override
   void onClosed() {
-    print("ChromeSafari browser closed");
+    print('ChromeSafari browser closed');
   }
 }

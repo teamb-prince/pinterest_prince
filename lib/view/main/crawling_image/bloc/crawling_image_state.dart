@@ -11,9 +11,9 @@ class InitialState extends CrawlingImageState {}
 class LoadingState extends CrawlingImageState {}
 
 class LoadedState extends CrawlingImageState {
-  final ImageModel imageModel;
-
   LoadedState(this.imageModel);
+
+  final ImageModel imageModel;
 
   @override
   List<Object> get props => [imageModel];
@@ -22,9 +22,9 @@ class LoadedState extends CrawlingImageState {
 class NoImageState extends CrawlingImageState {}
 
 class ErrorState extends CrawlingImageState {
-  final Exception exception;
-
   ErrorState(this.exception);
+
+  final Exception exception;
 
   @override
   List<Object> get props => [exception];

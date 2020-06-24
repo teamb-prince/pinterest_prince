@@ -16,38 +16,53 @@ void main() {
       apiClient = ApiClient(mockHttpClient);
     });
 
-    test('when API return response with status code 401, [get] function should throw [UnauthorizedError]', () {
-      when(mockHttpClient.get(any)).thenAnswer((_) => Future.value(Response("body", 401)));
+    test(
+        'when API return response with status code 401, [get] function should throw [UnauthorizedError]',
+        () {
+      when(mockHttpClient.get(any))
+          .thenAnswer((_) => Future.value(Response('body', 401)));
 
-      Future<Response> getFuture = apiClient.get("401");
+      final getFuture = apiClient.get('401');
       expect(getFuture, throwsA(isInstanceOf<UnauthorizedError>()));
     });
 
-    test('when API return response with status code 403, [get] function should throw [ForbiddenServerError]', () {
-      when(mockHttpClient.get(any)).thenAnswer((_) => Future.value(Response("body", 403)));
+    test(
+        'when API return response with status code 403, [get] function should throw [ForbiddenServerError]',
+        () {
+      when(mockHttpClient.get(any))
+          .thenAnswer((_) => Future.value(Response('body', 403)));
 
-      Future<Response> getFuture = apiClient.get("403");
+      final getFuture = apiClient.get('403');
       expect(getFuture, throwsA(isInstanceOf<ForbiddenServerError>()));
     });
 
-    test('when API return response with status code 404, [get] function should throw [NotFoundError]', () {
-      when(mockHttpClient.get(any)).thenAnswer((_) => Future.value(Response("body", 404)));
+    test(
+        'when API return response with status code 404, [get] function should throw [NotFoundError]',
+        () {
+      when(mockHttpClient.get(any))
+          .thenAnswer((_) => Future.value(Response('body', 404)));
 
-      Future<Response> getFuture = apiClient.get("404");
+      final getFuture = apiClient.get('404');
       expect(getFuture, throwsA(isInstanceOf<NotFoundError>()));
     });
 
-    test('when API return response with status code 500, [get] function should throw [UnknownServerError]', () {
-      when(mockHttpClient.get(any)).thenAnswer((_) => Future.value(Response("body", 500)));
+    test(
+        'when API return response with status code 500, [get] function should throw [UnknownServerError]',
+        () {
+      when(mockHttpClient.get(any))
+          .thenAnswer((_) => Future.value(Response('body', 500)));
 
-      Future<Response> getFuture = apiClient.get("500");
+      final getFuture = apiClient.get('500');
       expect(getFuture, throwsA(isInstanceOf<UnknownServerError>()));
     });
 
-    test('when API return response with status code 422, [get] function should throw UnknownClientError', () {
-      when(mockHttpClient.get(any)).thenAnswer((_) => Future.value(Response("body", 422)));
+    test(
+        'when API return response with status code 422, [get] function should throw UnknownClientError',
+        () {
+      when(mockHttpClient.get(any))
+          .thenAnswer((_) => Future.value(Response('body', 422)));
 
-      Future<Response> getFuture = apiClient.get("422");
+      final getFuture = apiClient.get('422');
       expect(getFuture, throwsA(isInstanceOf<UnknownClientError>()));
     });
   });

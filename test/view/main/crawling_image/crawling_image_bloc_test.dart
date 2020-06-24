@@ -12,24 +12,28 @@ class MockImageRepository extends Mock implements ImageRepository {}
 
 void main() {
   MockImageRepository mockImageRepository;
-  final ImageModel imageModel =
-      ImageModel(url: "url", imageUrls: ["url 1", 'url 2']);
+  const imageModel = ImageModel(
+      url: 'url',
+      imageUrls: ['url 1', 'url 2'],
+      description: null,
+      title: null);
 
-  group("SearchImageBloc test", () {
+  group('SearchImageBloc test', () {
     setUp(() async {
       mockImageRepository = MockImageRepository();
     });
 
     blocTest<CrawlingImageBloc, CrawlingImageEvent, CrawlingImageState>(
-      "emit [InitialState(), LoadingState(), LoadedState()] when request will succeed",
+      'emit [InitialState(), LoadingState(), LoadedState()] when request will succeed',
       build: () async {
         when(mockImageRepository.crawlingImageFromUrl(any))
             .thenAnswer((_) => Future.value(imageModel));
 
         return CrawlingImageBloc(mockImageRepository);
       },
+      // ignore: missing_return
       act: (bloc) {
-        bloc.add(RequestSearch("url"));
+        bloc.add(RequestSearch('url'));
       },
       skip: 0,
       expect: <CrawlingImageState>[
@@ -40,15 +44,16 @@ void main() {
     );
 
     blocTest<CrawlingImageBloc, CrawlingImageEvent, CrawlingImageState>(
-      "emit [InitialState(), LoadingState(), ErrorState()] when request will fail",
+      'emit [InitialState(), LoadingState(), ErrorState()] when request will fail',
       build: () async {
         when(mockImageRepository.crawlingImageFromUrl(any))
             .thenAnswer((_) => Future.error(UnauthorizedError()));
 
         return CrawlingImageBloc(mockImageRepository);
       },
+      // ignore: missing_return
       act: (bloc) {
-        bloc.add(RequestSearch("url"));
+        bloc.add(RequestSearch('url'));
       },
       skip: 0,
       expect: <dynamic>[InitialState(), LoadingState(), isA<ErrorState>()],
