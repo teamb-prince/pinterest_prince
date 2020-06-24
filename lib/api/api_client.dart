@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 import 'errors/error.dart';
@@ -21,6 +24,18 @@ class ApiClient {
         body: body,
       ),
     );
+  }
+
+  Future<String> multiPartPost(String relativeUrl,
+      {File image, String json}) async {
+    final request =
+        http.MultipartRequest('POST', Uri.parse('$_serverUrl$relativeUrl'));
+    request.fields['json'] = json;
+    request.files.add(http.MultipartFile.fromBytes(
+        'image', image.readAsBytesSync(),
+        filename: 'image'));
+    final response = await request.send();
+    return response.stream.bytesToString();
   }
 
   static Future<Response> _makeRequestWithErrorHandler(

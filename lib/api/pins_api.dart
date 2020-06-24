@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
 import 'package:pintersest_clone/api/api_client.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
@@ -46,15 +45,8 @@ class DefaultPinsApi extends PinsApi {
   @override
   Future<PinModel> savePinWithImage(
       File image, PinRequestModel pinRequestModel) async {
-    // ここで_apiClientのpostを呼び出す形で書けないのが微妙
-    final request = http.MultipartRequest(
-        'POST', Uri.parse('http://localhost:8080/pins/local'));
-    request.fields['json'] = pinRequestModel.toJson();
-    request.files.add(http.MultipartFile.fromBytes(
-        'image', image.readAsBytesSync(),
-        filename: 'image'));
-    final response = await request.send();
-    final body = await response.stream.bytesToString();
-    return PinModel.fromJson(jsonDecode(body));
+    final response = await _apiClient.multiPartPost('/pins/local',
+        image: image, json: pinRequestModel.toJson());
+    return PinModel.fromJson(jsonDecode(response));
   }
 }
