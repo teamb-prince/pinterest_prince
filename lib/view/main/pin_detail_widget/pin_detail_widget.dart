@@ -28,15 +28,15 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   );
 
   final List<String> imageList = [
-    "https://automaton-media.com/wp-content/uploads/2019/05/20190501-91106-001.jpg",
-    "https://c2.staticflickr.com/2/1496/26433173610_10a5654b94_o.jpg",
-    "https://skyticket.jp/guide/wp-content/uploads/shutterstock_252533968.jpg",
-    "https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349",
-    "https://cdn.sbfoods.co.jp/recipes/06608_l.jpg",
-    "https://images3.imgbox.com/4a/4a/XnWFHADP_o.gif",
-    "https://town.epark.jp/lp/magazine/wp-content/uploads/2019/11/sunshine_aquarium.jpg",
-    "https://www.fashion-press.net/img/news/56610/bkg.jpg",
-    "https://pbs.twimg.com/media/EZoZKkBUMAARw9Z.jpg",
+    'https://automaton-media.com/wp-content/uploads/2019/05/20190501-91106-001.jpg',
+    'https://c2.staticflickr.com/2/1496/26433173610_10a5654b94_o.jpg',
+    'https://skyticket.jp/guide/wp-content/uploads/shutterstock_252533968.jpg',
+    'https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349',
+    'https://cdn.sbfoods.co.jp/recipes/06608_l.jpg',
+    'https://images3.imgbox.com/4a/4a/XnWFHADP_o.gif',
+    'https://town.epark.jp/lp/magazine/wp-content/uploads/2019/11/sunshine_aquarium.jpg',
+    'https://www.fashion-press.net/img/news/56610/bkg.jpg',
+    'https://pbs.twimg.com/media/EZoZKkBUMAARw9Z.jpg',
   ];
 
   @override
@@ -124,7 +124,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
           borderRadius: BorderRadius.circular(20),
         ),
         child: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.close,
             color: AppColors.white,
           ),
@@ -169,10 +169,10 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.share), //TODO シェア機能いる?
+          const Icon(Icons.share), //TODO シェア機能いる?
           _buildVisitSiteButton(url),
           _buildSaveBoardButton(),
-          Icon(Icons.more_horiz), //TODO その他の操作いる?
+          const Icon(Icons.more_horiz), //TODO その他の操作いる?
         ],
       ),
     );
