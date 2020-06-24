@@ -28,8 +28,21 @@ class DefaultPinsApi extends PinsApi {
   Future<List<PinModel>> getPins(
       {String userId, String boardId, int limit, int offset}) async {
     // ここもっといい書き方ないかな？
-    final response = await _apiClient.get(
-        '/pins?user_id={$userId}&board_id={$boardId}&limit={$limit}&offset={$offset}');
+    var urlWithQuery = '/pins?';
+    if (userId != null) {
+      urlWithQuery += 'user_id={$userId}&';
+    }
+    if (boardId != null) {
+      urlWithQuery += 'board_id={$boardId}&';
+    }
+    if (limit != null) {
+      urlWithQuery += 'limit={$limit}&';
+    }
+    if (offset != null) {
+      urlWithQuery += 'offset={$offset}';
+    }
+
+    final response = await _apiClient.get(urlWithQuery);
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((pin) => PinModel.fromJson(pin))
         .toList();
