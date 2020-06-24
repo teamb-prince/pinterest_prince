@@ -21,7 +21,7 @@ class CrawlingImageWidget extends StatefulWidget {
 }
 
 class _CrawlingImageState extends State<CrawlingImageWidget> {
-  int _selectedIndex = 0;
+  int _selectedIndex = -1;
   final _footerHeight = 48.0;
   String _selectedUrl = '';
 

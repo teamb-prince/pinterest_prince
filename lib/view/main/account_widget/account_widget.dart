@@ -231,7 +231,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                     Navigator.pushNamed(context, AppRoute.inputUrl)
                         .then((value) {
                       bloc.add(LoadData());
-                      print("back");
                     });
                   },
                 ),
