@@ -16,38 +16,23 @@ class BoardsListBloc extends Bloc<BoardsListEvent, BoardsListState> {
 
   @override
   Stream<BoardsListState> mapEventToState(BoardsListEvent event) async* {
-    if (event is LoadBoards) {
-      yield* _mapLoadBoardsToState(event);
-    } else if (event is LoadPins) {
-      yield* _mapLoadPinsToState(event);
-    }
-  }
-
-  Stream<BoardsListState> _mapLoadBoardsToState(LoadBoards loadBoards) async* {
-    yield LoadingState();
-    try {
-      final boards = await _boardsRepository.getBoards();
-      if (boards.isEmpty) {
-        yield NoBoardsState();
-      } else {
-        yield LoadedBoardsState(boards);
+    if (event is LoadData) {
+      yield LoadingState();
+      try {
+        final boards = await _boardsRepository.getBoards();
+        if (boards.isEmpty) {
+          yield NoDataState();
+        } else {
+          final pins = <String, List<PinModel>>{};
+          for (var i = 0; i < boards.length; i++) {
+            pins[boards[i].id] = await _pinsRepository.getPins(
+                boardId: boards[i].id, limit: 3);
+          }
+          yield LoadedDataState(boards, pins);
+        }
+      } on Exception catch (e) {
+        yield ErrorState(e);
       }
-    } on Exception catch (e) {
-      yield ErrorState(e);
-    }
-  }
-
-  Stream<BoardsListState> _mapLoadPinsToState(LoadPins loadPins) async* {
-    yield LoadingState();
-    try {
-      Map<String, List<PinModel>> pins;
-      for (var i = 0; i < loadPins.boardIds.length; i++) {
-        pins[loadPins.boardIds[i]] = await _pinsRepository.getPins(
-            boardId: loadPins.boardIds[i], limit: 3);
-      }
-      yield LoadedPinsState(pins);
-    } on Exception catch (e) {
-      yield ErrorState(e);
     }
   }
 }

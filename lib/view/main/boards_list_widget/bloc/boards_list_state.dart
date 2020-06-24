@@ -9,19 +9,14 @@ abstract class BoardsListState extends Equatable {
 
 class LoadingState extends BoardsListState {}
 
-class LoadedBoardsState extends BoardsListState {
-  LoadedBoardsState(this.boards);
+class LoadedDataState extends BoardsListState {
+  LoadedDataState(this.boards, this.pins);
 
   final List<BoardModel> boards;
-}
-
-class LoadedPinsState extends BoardsListState {
-  LoadedPinsState(this.pins);
-
   final Map<String, List<PinModel>> pins;
 }
 
-class NoBoardsState extends BoardsListState {}
+class NoDataState extends BoardsListState {}
 
 class ErrorState extends BoardsListState {
   ErrorState(this.exception);
