@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pintersest_clone/model/board_model.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
 
 class BoardTile extends StatelessWidget {
   const BoardTile({@required this.board, @required this.pins});
@@ -15,7 +16,7 @@ class BoardTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Expanded(
-          flex: 4,
+          flex: 5,
           child: _buildPinsView(context),
         ),
         const SizedBox(height: 8),
@@ -36,10 +37,12 @@ class BoardTile extends StatelessWidget {
           children: <Widget>[
             Expanded(
                 flex: 2,
-                child: Image.network(
-                  pins[0].imageUrl,
-                  fit: BoxFit.cover,
-                )),
+                child: (pins.isNotEmpty)
+                    ? Image.network(
+                        pins[0].imageUrl,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(color: AppColors.grey)),
             const SizedBox(width: 2),
             Expanded(
               flex: 1,
@@ -47,17 +50,21 @@ class BoardTile extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                       flex: 1,
-                      child: Image.network(
-                        pins[0].imageUrl,
-                        fit: BoxFit.cover,
-                      )),
+                      child: (pins.length >= 2)
+                          ? Image.network(
+                              pins[1].imageUrl,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(color: AppColors.grey)),
                   const SizedBox(height: 2),
                   Expanded(
                       flex: 1,
-                      child: Image.network(
-                        pins[0].imageUrl,
-                        fit: BoxFit.cover,
-                      )),
+                      child: (pins.length >= 3)
+                          ? Image.network(
+                              pins[2].imageUrl,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(color: AppColors.grey)),
                 ],
               ),
             )
@@ -69,6 +76,7 @@ class BoardTile extends StatelessWidget {
 
   Widget _buildInfoLabels(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Text(board.name,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           textAlign: TextAlign.left),
