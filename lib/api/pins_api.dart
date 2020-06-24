@@ -30,18 +30,17 @@ class DefaultPinsApi extends PinsApi {
     // ここもっといい書き方ないかな？
     var urlWithQuery = '/pins?';
     if (userId != null) {
-      urlWithQuery += 'user_id={$userId}&';
+      urlWithQuery += 'user_id=$userId&';
     }
     if (boardId != null) {
-      urlWithQuery += 'board_id={$boardId}&';
+      urlWithQuery += 'board_id=$boardId&';
     }
     if (limit != null) {
-      urlWithQuery += 'limit={$limit}&';
+      urlWithQuery += 'limit=$limit&';
     }
     if (offset != null) {
-      urlWithQuery += 'offset={$offset}';
+      urlWithQuery += 'offset=$offset';
     }
-
     final response = await _apiClient.get(urlWithQuery);
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((pin) => PinModel.fromJson(pin))
