@@ -4,6 +4,7 @@ import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/board_model.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/bloc/boards_list_bloc.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/bloc/boards_list_event.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/bloc/boards_list_state.dart';
@@ -48,8 +49,8 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
             ),
             SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-              ),
+                  crossAxisCount: 1,
+                  mainAxisSpacing: 16),
               delegate: SliverChildBuilderDelegate((context, index) {
                 return _BoardTile(
                     board: boards[index], pins: pins[boards[index].id]);
@@ -111,7 +112,67 @@ class _BoardTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Image.network(pins[0].imageUrl),
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          flex: 4,
+          child: _buildPinsView(context),
+        ),
+        const SizedBox(height: 8),
+        Expanded(
+          flex: 1,
+          child: _buildInfoLabels(context),
+        ),
+      ],
+    ));
+  }
+
+  Widget _buildPinsView(BuildContext context) {
+    return Container(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+                flex: 12,
+                child: Image.network(
+                  pins[0].imageUrl,
+                  fit: BoxFit.cover,
+                )),
+            const SizedBox(width: 2),
+            Expanded(
+              flex: 7,
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                      flex: 1,
+                      child: Image.network(
+                        pins[0].imageUrl,
+                        fit: BoxFit.cover,
+                      )),
+                  const SizedBox(height: 2),
+                  Expanded(
+                      flex: 1,
+                      child: Image.network(
+                        pins[0].imageUrl,
+                        fit: BoxFit.cover,
+                      )),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoLabels(BuildContext context) {
+    return Container(
+      child: Text(board.name,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.left),
     );
   }
 }
