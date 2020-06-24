@@ -9,6 +9,7 @@ import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/user_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/main/boards_list_widget/boards_list_widget.dart';
 import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
@@ -98,7 +99,7 @@ class _AccountWidgetState extends State<AccountWidget> {
         ),
         body: TabBarView(
           children: <Widget>[
-            Container(color: Colors.red),
+            BoardsListWidget(),
             Builder(builder: (context) => _buildScrollView(context)),
           ],
         ),
