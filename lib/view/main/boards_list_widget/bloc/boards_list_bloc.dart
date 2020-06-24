@@ -19,7 +19,7 @@ class BoardsListBloc extends Bloc<BoardsListEvent, BoardsListState> {
     if (event is LoadBoards) {
       yield* _mapLoadBoardsToState(event);
     } else if (event is LoadPins) {
-
+      yield* _mapLoadPinsToState(event);
     }
   }
 
@@ -42,7 +42,8 @@ class BoardsListBloc extends Bloc<BoardsListEvent, BoardsListState> {
     try {
       Map<String, List<PinModel>> pins;
       for (var i = 0; i < loadPins.boardIds.length; i++) {
-        pins[loadPins.boardIds[i]] = await _pinsRepository.getPins();
+        pins[loadPins.boardIds[i]] = await _pinsRepository.getPins(
+            boardId: loadPins.boardIds[i], limit: 3);
       }
       yield LoadedPinsState(pins);
     } on Exception catch (e) {
