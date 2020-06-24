@@ -1,44 +1,48 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/board_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_bloc.dart';
-import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_state.dart';
 
-import 'bloc/select_board_from_url_event.dart';
+import 'package:pintersest_clone/app_route.dart';
+import 'bloc/select_board_from_local_bloc.dart';
+import 'bloc/select_board_from_local_event.dart';
+import 'bloc/select_board_from_local_state.dart';
 
-class SelectBoardFromUrlArguments {
-  SelectBoardFromUrlArguments(
-      {@required this.imageUrl, this.linkUrl}); //TODO ここの設計は要相談
+class SelectBoardFromLocalArguments {
+  SelectBoardFromLocalArguments(
+      {@required this.image, this.title, this.description, this.linkUrl});
 
-  final String imageUrl;
+  final File image;
+  final String title;
+  final String description;
   final String linkUrl;
 }
 
-class SelectBoardFromUrlWidget extends StatelessWidget {
+class SelectBoardFromLocalWidget extends StatelessWidget {
   static const double _iconImageSize = 40;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SelectBoardFromUrlBloc(
+      create: (context) => SelectBoardFromLocalBloc(
         RepositoryProvider.of<BoardsRepository>(context),
         RepositoryProvider.of<PinsRepository>(context),
-      )..add(LoadData()),
+      )..add(LoadBoards()),
       child: _buildScreen(context),
     );
   }
 
   Widget _buildScreen(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments
-        as SelectBoardFromUrlArguments;
+        as SelectBoardFromLocalArguments;
 
-    return BlocConsumer<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
+    return BlocConsumer<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
       listener: (context, state) {
         if (state is SavedPinState) {
           Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
@@ -60,9 +64,9 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildBoardsListView(SelectBoardFromUrlArguments args) {
+  Widget _buildBoardsListView(SelectBoardFromLocalArguments args) {
     return Builder(builder: (context) {
-      return BlocBuilder<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
+      return BlocBuilder<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
         builder: (context, state) {
           if (state is LoadedState) {
             final boards = state.boards;
@@ -83,8 +87,8 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
   }
 
   Widget _buildBoardTile(BuildContext context, BoardModel board,
-      SelectBoardFromUrlArguments args) {
-    return BlocBuilder<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
+      SelectBoardFromLocalArguments args) {
+    return BlocBuilder<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
         builder: (context, state) {
       return GestureDetector(
         onTap: () {
@@ -92,13 +96,12 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
             userId: 'mrypq',
             originalUserId: 'mrypq',
             url: args.linkUrl,
-            imageUrl: args.imageUrl,
+            imageUrl: '',
             boardId: board.id,
             description: 'てきとう',
           );
-          //TODO ここでstateのSavedPinにstateがなったらpopuntilしたいのだが謎
-          BlocProvider.of<SelectBoardFromUrlBloc>(context)
-              .add(SavePin(pinRequestModel: request));
+          BlocProvider.of<SelectBoardFromLocalBloc>(context)
+              .add(SavePin(image: args.image, pinRequestModel: request));
         },
         child: _buildTile(board),
       );
