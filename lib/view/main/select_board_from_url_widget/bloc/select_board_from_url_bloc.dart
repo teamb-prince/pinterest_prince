@@ -29,16 +29,6 @@ class SelectBoardFromUrlBloc
       } on Exception catch (e) {
         yield ErrorState(e);
       }
-    } else if (event is SavePin) {
-      yield LoadingState();
-      try {
-        final pin = await _pinsRepository.savePin(event.pinRequestModel);
-        print(pin.imageUrl);
-        yield SavedPinState();
-      } on Exception catch (e) {
-        print(e);
-        yield ErrorState(e);
-      }
     }
   }
 }

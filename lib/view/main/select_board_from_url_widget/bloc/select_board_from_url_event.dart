@@ -8,9 +8,3 @@ abstract class SelectBoardFromUrlEvent extends Equatable {
 }
 
 class LoadData extends SelectBoardFromUrlEvent {}
-
-class SavePin extends SelectBoardFromUrlEvent {
-  SavePin({@required this.pinRequestModel});
-
-  final PinRequestModel pinRequestModel;
-}

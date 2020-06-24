@@ -58,7 +58,8 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
                 child: Column(
                   children: [
                     Expanded(child: _buildGetImage(imageUrls)),
-                    _buildFooter(args.url),
+                    _buildFooter(args.url, state.imageModel.title,
+                        state.imageModel.description),
                   ],
                 ),
               );
@@ -118,7 +119,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
     );
   }
 
-  Widget _buildFooter(String url) {
+  Widget _buildFooter(String url, String title, String description) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Container(
