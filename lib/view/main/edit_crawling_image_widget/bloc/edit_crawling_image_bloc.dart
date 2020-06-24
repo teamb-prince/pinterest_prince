@@ -18,7 +18,7 @@ class EditCrawlingImageBloc
     if (event is SavePin) {
       yield LoadingState();
       try {
-        final pin = await _pinsRepository.savePin(event.pinRequestModel);
+        final pin = await _pinsRepository.savePinFromUrl(event.pinRequestModel);
         print(pin.imageUrl);
         yield SavedPinState();
       } on Exception catch (e) {

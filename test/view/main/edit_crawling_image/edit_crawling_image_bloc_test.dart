@@ -41,7 +41,7 @@ void main() {
         EditCrawlingImageState>(
       'emit [LoadingState(), SavedPinState()] when request will succeed',
       build: () async {
-        when(mockPinRepository.savePin(any))
+        when(mockPinRepository.savePinFromUrl(any))
             .thenAnswer((_) => Future.value(_pinModel));
 
         return EditCrawlingImageBloc(mockPinRepository);
@@ -58,7 +58,7 @@ void main() {
         EditCrawlingImageState>(
       'emit [LoadingState(), ErrorState()] when request will succeed',
       build: () async {
-        when(mockPinRepository.savePin(any))
+        when(mockPinRepository.savePinFromUrl(any))
             .thenAnswer((_) => Future.error(UnauthorizedError()));
 
         return EditCrawlingImageBloc(mockPinRepository);

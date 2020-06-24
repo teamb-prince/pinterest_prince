@@ -1,61 +1,72 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
+import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/board_model.dart';
+import 'package:pintersest_clone/model/pin_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/main/edit_crawling_image_widget/edit_crawling_image_widget.dart';
-import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_bloc.dart';
-import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_state.dart';
 
-import 'bloc/select_board_from_url_event.dart';
+import 'package:pintersest_clone/app_route.dart';
+import 'bloc/select_board_from_local_bloc.dart';
+import 'bloc/select_board_from_local_event.dart';
+import 'bloc/select_board_from_local_state.dart';
 
-class SelectBoardFromUrlArguments {
-  SelectBoardFromUrlArguments(
-      {@required this.imageUrl,
-      @required this.linkUrl,
-      @required this.title,
-      @required this.description});
+class SelectBoardFromLocalArguments {
+  SelectBoardFromLocalArguments(
+      {@required this.image, this.title, this.description, this.linkUrl});
 
-  final String imageUrl;
-  final String linkUrl;
+  final File image;
   final String title;
   final String description;
+  final String linkUrl;
 }
 
-class SelectBoardFromUrlWidget extends StatelessWidget {
+class SelectBoardFromLocalWidget extends StatelessWidget {
   static const double _iconImageSize = 40;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SelectBoardFromUrlBloc(
+      create: (context) => SelectBoardFromLocalBloc(
         RepositoryProvider.of<BoardsRepository>(context),
-      )..add(LoadData()),
+        RepositoryProvider.of<PinsRepository>(context),
+      )..add(LoadBoards()),
       child: _buildScreen(context),
     );
   }
 
   Widget _buildScreen(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments
-        as SelectBoardFromUrlArguments;
+        as SelectBoardFromLocalArguments;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
-        backgroundColor: AppColors.white,
-        iconTheme: const IconThemeData(color: AppColors.black),
-        brightness: Brightness.light,
-        elevation: 0,
-      ),
-      body: _buildBoardsListView(args),
+    return BlocConsumer<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
+      listener: (context, state) {
+        if (state is SavedPinState) {
+          Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title:
+                const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
+            backgroundColor: AppColors.white,
+            iconTheme: const IconThemeData(color: AppColors.black),
+            brightness: Brightness.light,
+            elevation: 0,
+          ),
+          body: _buildBoardsListView(args),
+        );
+      },
     );
   }
 
-  Widget _buildBoardsListView(SelectBoardFromUrlArguments args) {
+  Widget _buildBoardsListView(SelectBoardFromLocalArguments args) {
     return Builder(builder: (context) {
-      return BlocBuilder<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
+      return BlocBuilder<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
         builder: (context, state) {
           if (state is LoadedState) {
             final boards = state.boards;
@@ -76,18 +87,21 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
   }
 
   Widget _buildBoardTile(BuildContext context, BoardModel board,
-      SelectBoardFromUrlArguments args) {
-    return BlocBuilder<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
+      SelectBoardFromLocalArguments args) {
+    return BlocBuilder<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
         builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, AppRoute.editCrawlingImage,
-              arguments: EditCrawlingImageArgs(
-                  url: args.linkUrl,
-                  imageUrl: args.imageUrl,
-                  title: args.title,
-                  description: args.description,
-                  boardId: board.id));
+          final request = PinRequestModel(
+            userId: 'mrypq',
+            originalUserId: 'mrypq',
+            url: args.linkUrl,
+            imageUrl: '',
+            boardId: board.id,
+            description: 'てきとう',
+          );
+          BlocProvider.of<SelectBoardFromLocalBloc>(context)
+              .add(SavePin(image: args.image, pinRequestModel: request));
         },
         child: _buildTile(board),
       );
