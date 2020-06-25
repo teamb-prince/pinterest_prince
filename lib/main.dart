@@ -10,6 +10,7 @@ import 'package:pintersest_clone/view/authentication//login_top_widget/login_top
 import 'package:pintersest_clone/view/authentication//login_widget/login_widget.dart';
 import 'package:pintersest_clone/view/authentication//sign_up_widget/create_account_widget.dart';
 import 'package:pintersest_clone/view/main/crawling_image/crawling_image_widget.dart';
+import 'package:pintersest_clone/view/main/create_board_widget/create_board_widget.dart';
 import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
 import 'package:pintersest_clone/view/main/edit_crawling_image_widget/edit_crawling_image_widget.dart';
 import 'package:pintersest_clone/view/main/input_url_widget/input_url_widget.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
             AppRoute.createAccount: (context) => SignUpWidget(),
             AppRoute.login: (context) => LoginWidget(),
             AppRoute.createPin: (context) => CreatePinWidget(),
+            AppRoute.createBoard: (context) => CreateBoardWidget(),
             AppRoute.editCrawlingImage: (context) => EditCrawlingImageWidget(),
             AppRoute.selectBoardFromLocal: (context) =>
                 SelectBoardFromLocalWidget(),
