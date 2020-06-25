@@ -4,6 +4,7 @@ import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/model/board_request_model.dart';
 import 'package:pintersest_clone/app_route.dart';
+import 'package:pintersest_clone/view/common_widget/base_text_field.dart';
 import 'package:pintersest_clone/view/main/create_board_widget/bloc/create_board_state.dart';
 
 import 'bloc/create_board_bloc.dart';
@@ -81,23 +82,11 @@ class _CreateBoardWidgetState extends State<CreateBoardWidget> {
 
   Widget _buildTextField(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          const Text(
-            'ボード名',
-            style: TextStyle(fontSize: 16),
-            textAlign: TextAlign.left,
-          ),
-          TextField(
-            controller: _textEditingController,
-            style: const TextStyle(fontSize: 24),
-            decoration:
-                InputDecoration(border: InputBorder.none, hintText: '追加'),
-          ),
-        ],
-      ),
-    );
+        padding: const EdgeInsets.all(16),
+        child: BaseTextField(
+          title: 'ボード名',
+          hintText: '追加',
+          textEditingController: _textEditingController,
+        ));
   }
 }
