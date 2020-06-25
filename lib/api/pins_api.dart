@@ -10,7 +10,7 @@ abstract class PinsApi {
 
   Future<List<PinModel>> getPins();
 
-  Future<List<PinModel>> getAllPins();
+  Future<List<PinModel>> getDiscoverPins();
 
   Future<PinModel> savePinWithUrl(PinRequestModel pinRequestModel);
 
@@ -38,7 +38,7 @@ class DefaultPinsApi extends PinsApi {
   }
 
   @override
-  Future<List<PinModel>> getAllPins() async {
+  Future<List<PinModel>> getDiscoverPins() async {
     final response = await _apiClient.get('/discover');
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((pin) => PinModel.fromJson(pin))

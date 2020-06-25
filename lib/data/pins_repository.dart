@@ -13,7 +13,7 @@ class PinsRepository {
 
   Future<List<PinModel>> getPins() => _pinsApi.getPins();
 
-  Future<List<PinModel>> getAllPins() => _pinsApi.getAllPins();
+  Future<List<PinModel>> getDiscoverPins() => _pinsApi.getDiscoverPins();
 
   Future<PinModel> savePinFromUrl(PinRequestModel pinRequestModel) =>
       _pinsApi.savePinWithUrl(pinRequestModel);

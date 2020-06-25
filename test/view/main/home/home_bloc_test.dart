@@ -38,7 +38,7 @@ void main() {
     blocTest<HomeBloc, HomeEvent, HomeState>(
         'emit [LoadingState(), LoadedState()] when request will succeed',
         build: () async {
-      when(mockPinsRepository.getAllPins())
+      when(mockPinsRepository.getDiscoverPins())
           .thenAnswer((_) => Future.value(mockPins));
 
       return HomeBloc(mockPinsRepository);
@@ -50,7 +50,7 @@ void main() {
     blocTest<HomeBloc, HomeEvent, HomeState>(
         'emit [LoadingState(), NoDataState()] when request will succeed, but there are no pins',
         build: () async {
-      when(mockPinsRepository.getAllPins())
+      when(mockPinsRepository.getDiscoverPins())
           .thenAnswer((_) => Future.value(noPins));
 
       return HomeBloc(mockPinsRepository);
@@ -62,7 +62,7 @@ void main() {
     blocTest<HomeBloc, HomeEvent, HomeState>(
         'emit [LoadingState(), ErrorState()] when request will fail',
         build: () async {
-      when(mockPinsRepository.getAllPins())
+      when(mockPinsRepository.getDiscoverPins())
           .thenAnswer((_) => Future.error(Exception()));
 
       return HomeBloc(mockPinsRepository);
