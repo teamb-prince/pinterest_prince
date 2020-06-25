@@ -10,6 +10,8 @@ abstract class PinsApi {
 
   Future<List<PinModel>> getPins();
 
+  Future<List<PinModel>> getDiscoverPins();
+
   Future<PinModel> savePinWithUrl(PinRequestModel pinRequestModel);
 
   Future<PinModel> savePinWithImage(
@@ -30,6 +32,14 @@ class DefaultPinsApi extends PinsApi {
   @override
   Future<List<PinModel>> getPins() async {
     final response = await _apiClient.get('/pins');
+    return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
+        .map((pin) => PinModel.fromJson(pin))
+        .toList();
+  }
+
+  @override
+  Future<List<PinModel>> getDiscoverPins() async {
+    final response = await _apiClient.get('/discover');
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((pin) => PinModel.fromJson(pin))
         .toList();
