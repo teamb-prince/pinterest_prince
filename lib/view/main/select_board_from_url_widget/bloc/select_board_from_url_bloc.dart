@@ -32,11 +32,9 @@ class SelectBoardFromUrlBloc
     } else if (event is SavePin) {
       yield LoadingState();
       try {
-        final pin = await _pinsRepository.savePin(event.pinRequestModel);
-        print(pin.imageUrl);
+        await _pinsRepository.savePinFromUrl(event.pinRequestModel);
         yield SavedPinState();
       } on Exception catch (e) {
-        print(e);
         yield ErrorState(e);
       }
     }

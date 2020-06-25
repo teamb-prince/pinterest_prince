@@ -75,31 +75,30 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   Widget _buildPinImage() {
     final args =
         ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
-    print(args.pin.title);
 
-    return Container(
-        decoration: _roundedContainerDecoration,
-        child: Column(
-          children: [
-            _buildImage(args.pin.imageUrl),
-            _buildInformation(
-                args.pin.title, args.pin.description, args.pin.url),
-          ],
-        ));
+    return Stack(
+      children: [
+        Container(
+            decoration: _roundedContainerDecoration,
+            child: Column(
+              children: [
+                _buildImage(args.pin.imageUrl),
+                _buildInformation(
+                    args.pin.title, args.pin.description, args.pin.url),
+              ],
+            )),
+        _buildBackButton(),
+      ],
+    );
   }
 
   Widget _buildImage(String imageUrl) {
-    return Stack(
-      children: [
-        ClipRRect(
-          child: Image.network(imageUrl),
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
-          ),
-        ),
-        _buildBackButton(),
-      ],
+    return ClipRRect(
+      child: Image.network(imageUrl),
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(16),
+        topRight: Radius.circular(16),
+      ),
     );
   }
 
@@ -114,13 +113,13 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
 
   Widget _buildBackButton() {
     return Positioned(
-      top: 8,
-      left: 8,
+      top: 12,
+      left: 12,
       child: Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: AppColors.backButtonBackgroundColor,
+          color: AppColors.darkGrey,
           borderRadius: BorderRadius.circular(20),
         ),
         child: IconButton(

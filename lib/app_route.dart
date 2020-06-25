@@ -8,5 +8,7 @@ class AppRoute {
   static const String createAccount = '/create_account';
   static const String login = '/login';
   static const String createPin = '/create_pin';
-  static const String selectBoard = '/select_board';
+  static const String editCrawlingImage = '/edit_crawling_image';
+  static const String selectBoardFromLocal = '/select_board_from_local';
+  static const String selectBoardFromUrl = '/select_board_from_url';
 }

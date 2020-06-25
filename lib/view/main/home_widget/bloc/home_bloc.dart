@@ -16,7 +16,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (event is LoadData) {
       yield LoadingState();
       try {
-        final pins = await _pinsRepository.getPins();
+        final pins = await _pinsRepository.getDiscoverPins();
 
         if (pins.isEmpty) {
           yield NoDataState();
