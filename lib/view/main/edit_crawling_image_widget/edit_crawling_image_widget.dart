@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/app_route.dart';
-import 'package:pintersest_clone/data/pins_repository.dart';
-import 'package:pintersest_clone/model/pin_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/main/edit_crawling_image_widget/bloc/edit_crawling_image_bloc.dart';
-import 'package:pintersest_clone/view/main/edit_crawling_image_widget/bloc/edit_crawling_image_event.dart';
-import 'package:pintersest_clone/view/main/edit_crawling_image_widget/bloc/edit_crawling_image_state.dart';
+import 'package:pintersest_clone/view/main/select_board_from_url_widget/select_board_from_url_widget.dart';
 
 class EditCrawlingImageArgs {
   const EditCrawlingImageArgs({
@@ -14,14 +9,12 @@ class EditCrawlingImageArgs {
     @required this.imageUrl,
     @required this.title,
     @required this.description,
-    @required this.boardId,
   });
 
   final String url;
   final String imageUrl;
   final String title;
   final String description;
-  final String boardId;
 }
 
 class EditCrawlingImageWidget extends StatelessWidget {
@@ -36,51 +29,40 @@ class EditCrawlingImageWidget extends StatelessWidget {
 
     _title = args.title;
     _description = args.description;
-    return BlocProvider(
-      create: (context) => EditCrawlingImageBloc(
-        RepositoryProvider.of<PinsRepository>(context),
-      ),
-      child: _buildScreen(args, context),
-    );
+    return _buildScreen(args, context);
   }
 
   Widget _buildScreen(EditCrawlingImageArgs args, BuildContext context) {
-    return BlocConsumer<EditCrawlingImageBloc, EditCrawlingImageState>(
-        listener: (context, state) {
-      if (state is SavedPinState) {
-        Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
-      }
-    }, builder: (context, state) {
-      return Scaffold(
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
         backgroundColor: AppColors.white,
-        appBar: AppBar(
-          brightness: Brightness.light,
-          iconTheme: IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          backgroundColor: AppColors.white,
-          elevation: 0,
-          title: const Text(
-            'ピンのタイトルを編集',
-            style: TextStyle(color: AppColors.black),
+        elevation: 0,
+        title: const Text(
+          'ピンのタイトルを編集',
+          style: TextStyle(color: AppColors.black),
+        ),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(32),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            children: [
+              _buildTitleTextForm(args),
+              _buildDescriptionTextForm(args),
+              _buildConfirmButton(args, context),
+            ],
           ),
         ),
-        body: Container(
-          padding: EdgeInsets.all(32),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              children: [
-                _buildTitleTextForm(args),
-                _buildDescriptionTextForm(args),
-                _buildConfirmButton(args, context),
-              ],
-            ),
-          ),
-        ),
-      );
-    });
+      ),
+    );
+//    });
   }
 
   Widget _buildTitleTextForm(EditCrawlingImageArgs args) {
@@ -135,17 +117,17 @@ class EditCrawlingImageWidget extends StatelessWidget {
       onPressed: () {
         if (_formKey.currentState.validate()) {
           _formKey.currentState.save();
-          final request = PinRequestModel(
-            userId: 'mrypq',
-            originalUserId: 'mrypq',
-            url: args.url,
-            imageUrl: args.imageUrl,
-            boardId: args.boardId,
-            title: _title,
-            description: _description,
+
+          Navigator.pushNamed(
+            context,
+            AppRoute.selectBoardFromUrl,
+            arguments: SelectBoardFromUrlArguments(
+              url: args.url,
+              imageUrl: args.imageUrl,
+              title: _title,
+              description: _description,
+            ),
           );
-          BlocProvider.of<EditCrawlingImageBloc>(context)
-              .add(SavePin(pinRequestModel: request));
         }
       },
       textColor: AppColors.white,

@@ -3,9 +3,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
+import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/board_model.dart';
+import 'package:pintersest_clone/model/pin_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/main/edit_crawling_image_widget/edit_crawling_image_widget.dart';
 import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_bloc.dart';
 import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_state.dart';
 
@@ -14,12 +15,12 @@ import 'bloc/select_board_from_url_event.dart';
 class SelectBoardFromUrlArguments {
   SelectBoardFromUrlArguments(
       {@required this.imageUrl,
-      @required this.linkUrl,
+      @required this.url,
       @required this.title,
       @required this.description});
 
+  final String url;
   final String imageUrl;
-  final String linkUrl;
   final String title;
   final String description;
 }
@@ -32,6 +33,7 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
     return BlocProvider(
       create: (context) => SelectBoardFromUrlBloc(
         RepositoryProvider.of<BoardsRepository>(context),
+        RepositoryProvider.of<PinsRepository>(context),
       )..add(LoadData()),
       child: _buildScreen(context),
     );
@@ -41,16 +43,23 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
     final args = ModalRoute.of(context).settings.arguments
         as SelectBoardFromUrlArguments;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
-        backgroundColor: AppColors.white,
-        iconTheme: const IconThemeData(color: AppColors.black),
-        brightness: Brightness.light,
-        elevation: 0,
-      ),
-      body: _buildBoardsListView(args),
-    );
+    return BlocConsumer<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
+        listener: (context, state) {
+      if (state is SavedPinState) {
+        Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
+      }
+    }, builder: (context, state) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
+          backgroundColor: AppColors.white,
+          iconTheme: const IconThemeData(color: AppColors.black),
+          brightness: Brightness.light,
+          elevation: 0,
+        ),
+        body: _buildBoardsListView(args),
+      );
+    });
   }
 
   Widget _buildBoardsListView(SelectBoardFromUrlArguments args) {
@@ -81,13 +90,17 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
         builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, AppRoute.editCrawlingImage,
-              arguments: EditCrawlingImageArgs(
-                  url: args.linkUrl,
-                  imageUrl: args.imageUrl,
-                  title: args.title,
-                  description: args.description,
-                  boardId: board.id));
+          final request = PinRequestModel(
+            userId: 'mrypq',
+            originalUserId: 'mrypq',
+            url: args.url,
+            imageUrl: args.imageUrl,
+            title: args.title,
+            description: args.description,
+            boardId: board.id,
+          );
+          BlocProvider.of<SelectBoardFromUrlBloc>(context)
+              .add(SavePin(pinRequestModel: request));
         },
         child: _buildTile(board),
       );

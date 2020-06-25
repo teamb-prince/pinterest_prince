@@ -1,13 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
+import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_event.dart';
 import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_state.dart';
 
 class SelectBoardFromUrlBloc
     extends Bloc<SelectBoardFromUrlEvent, SelectBoardFromUrlState> {
-  SelectBoardFromUrlBloc(this._boardsRepository);
+  SelectBoardFromUrlBloc(this._boardsRepository, this._pinsRepository);
 
   final BoardsRepository _boardsRepository;
+  final PinsRepository _pinsRepository;
 
   @override
   SelectBoardFromUrlState get initialState => LoadingState();
@@ -24,6 +26,14 @@ class SelectBoardFromUrlBloc
         } else {
           yield LoadedState(boards);
         }
+      } on Exception catch (e) {
+        yield ErrorState(e);
+      }
+    } else if (event is SavePin) {
+      yield LoadingState();
+      try {
+        await _pinsRepository.savePinFromUrl(event.pinRequestModel);
+        yield SavedPinState();
       } on Exception catch (e) {
         yield ErrorState(e);
       }
