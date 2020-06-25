@@ -91,8 +91,7 @@ class LoginWidget extends StatelessWidget {
           style: TextStyle(color: AppColors.darkGrey),
         ),
         onPressed: () {
-          Navigator.pushNamedAndRemoveUntil(
-              context, AppRoute.home, (_) => false);
+          Navigator.pushNamed(context, AppRoute.loginForm);
         },
       ),
     ); //TODO あとでformつくる

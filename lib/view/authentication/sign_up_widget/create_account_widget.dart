@@ -35,8 +35,7 @@ class SignUpWidget extends StatelessWidget {
         RedButton(
           title: 'メールアドレスで続行',
           onPressedCallback: () {
-            Navigator.pushNamedAndRemoveUntil(
-                context, AppRoute.home, (_) => false);
+            Navigator.pushNamed(context, AppRoute.signupForm);
           },
         ),
         FacebookButton(

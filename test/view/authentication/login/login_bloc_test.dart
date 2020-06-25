@@ -2,14 +2,13 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pintersest_clone/model/login_request_model.dart';
-import 'package:pintersest_clone/view/authentication/login_widget/bloc/login_bloc.dart';
-import 'package:pintersest_clone/view/authentication/login_widget/bloc/login_event.dart';
-import 'package:pintersest_clone/view/authentication/login_widget/bloc/login_state.dart';
-
+import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/login_bloc.dart';
+import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/login_event.dart';
+import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/login_state.dart';
 import '../mock_auth_repository.dart';
 
 const LoginRequestModel mockLoginRequest =
-    LoginRequestModel(email: 'mock@email.com', password: 'password');
+    LoginRequestModel(id: 'mock@email.com', password: 'password');
 
 void main() {
   MockAuthRepository mockAuthRepository;
