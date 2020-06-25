@@ -1,20 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
-import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/user_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/common_widget/rounded_tab_indicator.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/boards_list_widget.dart';
-import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
-import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
-import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 import 'package:pintersest_clone/view/main/pins_list_widget/pins_list_widget.dart';
 import 'package:pintersest_clone/view/main/user_detail_widget/user_detail_widget.dart';
 
@@ -66,9 +59,13 @@ class AccountWidget extends StatelessWidget {
             ),
           ),
           bottom: const TabBar(
-            indicatorColor: Colors.black87,
-            labelColor: Colors.black87,
-            labelStyle: TextStyle(fontSize: 10),
+            indicator: RoundedTabIndicator(height: 40, color: AppColors.black),
+            labelColor: AppColors.white,
+            unselectedLabelColor: AppColors.black,
+            isScrollable: true,
+            labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            labelPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
             tabs: <Widget>[
               Tab(text: 'ボード'),
               Tab(text: 'ピン'),

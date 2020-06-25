@@ -4,6 +4,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/common_widget/rounded_tab_indicator.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
@@ -11,6 +13,7 @@ import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.d
 
 class HomeWidget extends StatelessWidget {
   final double _topNavigationBarHeight = 48;
+  final double _tabIndicatorHeight = 40;
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +34,15 @@ class HomeWidget extends StatelessWidget {
             brightness: Brightness.light,
             elevation: 0,
             backgroundColor: Colors.white,
-            bottom: const TabBar(
-              indicatorColor: Colors.black87,
-              labelColor: Colors.black87,
-              labelStyle: TextStyle(fontSize: 10),
+            bottom: TabBar(
+              indicator: RoundedTabIndicator(
+                  height: _tabIndicatorHeight, color: AppColors.black),
+              labelColor: AppColors.white,
+              unselectedLabelColor: AppColors.black,
+              isScrollable: true,
+              labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              labelPadding:
+                  const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
               tabs: <Widget>[
                 Tab(text: 'あなたにおすすめ'),
                 Tab(text: 'ピックアップ'),
