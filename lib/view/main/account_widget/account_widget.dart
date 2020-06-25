@@ -9,6 +9,7 @@ import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/user_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/common_widget/rounded_tab_indicator.dart';
 import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
 import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
@@ -47,7 +48,8 @@ class _AccountWidgetState extends State<AccountWidget> {
     }
     _image = File(pickedFile.path);
     await Navigator.pushNamed(context, AppRoute.createPin,
-        arguments: CreatePinArguments(_image)).then(callback);
+            arguments: CreatePinArguments(_image))
+        .then(callback);
   }
 
   @override
@@ -85,9 +87,13 @@ class _AccountWidgetState extends State<AccountWidget> {
             ),
           ),
           bottom: const TabBar(
-            indicatorColor: Colors.black87,
-            labelColor: Colors.black87,
-            labelStyle: TextStyle(fontSize: 10),
+            indicator: RoundedTabIndicator(height: 40, color: AppColors.black),
+            labelColor: AppColors.white,
+            unselectedLabelColor: AppColors.black,
+            isScrollable: true,
+            labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            labelPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
             tabs: <Widget>[
               Tab(text: 'ボード'),
               Tab(text: 'ピン'),
