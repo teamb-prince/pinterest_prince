@@ -11,7 +11,10 @@ class PinsRepository {
 
   Future<PinModel> getPin(String id) => _pinsApi.getPin(id);
 
-  Future<List<PinModel>> getPins() => _pinsApi.getPins();
+  Future<List<PinModel>> getPins(
+          {String userId, String boardId, int limit, int offset}) =>
+      _pinsApi.getPins(
+          userId: userId, boardId: boardId, limit: limit, offset: offset);
 
   Future<List<PinModel>> getDiscoverPins() => _pinsApi.getDiscoverPins();
 
