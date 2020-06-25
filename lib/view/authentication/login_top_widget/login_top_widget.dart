@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/values/assets.dart';
-import 'package:pintersest_clone/view/main/common_widget/base_button_widget.dart';
+import 'package:pintersest_clone/view/common_widget/base_button_widget.dart';
 
 class LoginTopWidget extends StatelessWidget {
   final double _sizedBoxHeight = 40;
