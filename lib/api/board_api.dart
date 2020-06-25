@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:pintersest_clone/api/api_client.dart';
 import 'package:pintersest_clone/model/board_model.dart';
+import 'package:pintersest_clone/model/board_request_model.dart';
 
 abstract class BoardsApi {
   Future<BoardModel> getBoard(String id);
 
   Future<List<BoardModel>> getBoards();
+
+  Future<BoardModel> saveBoard(BoardRequestModel boardRequestModel);
 }
 
 class DefaultBoardsApi extends BoardsApi {
@@ -27,5 +30,12 @@ class DefaultBoardsApi extends BoardsApi {
         .map((board) => BoardModel.fromJson(board))
         .toList();
     return list;
+  }
+
+  @override
+  Future<BoardModel> saveBoard(BoardRequestModel boardRequestModel) async {
+    final response =
+        await _apiClient.post('/boards', body: boardRequestModel.toJson());
+    return BoardModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 }
