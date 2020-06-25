@@ -5,7 +5,7 @@ import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_event.dart';
 import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_state.dart';
-import 'package:pintersest_clone/view/main/select_board_from_url_widget/select_board_from_url_widget.dart';
+import 'package:pintersest_clone/view/main/edit_crawling_image_widget/edit_crawling_image_widget.dart';
 
 import 'bloc/crawling_image_bloc.dart';
 
@@ -58,7 +58,8 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
                 child: Column(
                   children: [
                     Expanded(child: _buildGetImage(imageUrls)),
-                    _buildFooter(args.url),
+                    _buildFooter(args.url, state.imageModel.title,
+                        state.imageModel.description),
                   ],
                 ),
               );
@@ -118,7 +119,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
     );
   }
 
-  Widget _buildFooter(String url) {
+  Widget _buildFooter(String url, String title, String description) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Container(
@@ -135,11 +136,15 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
               color: AppColors.red,
               onPressed: () {
                 if (_selectedIndex != -1) {
-                  Navigator.pushNamed(context, AppRoute.selectBoardFromUrl,
-                      arguments: SelectBoardFromUrlArguments(
+                  Navigator.pushNamed(
+                    context,
+                    AppRoute.editCrawlingImage,
+                    arguments: EditCrawlingImageArgs(
+                        url: url,
                         imageUrl: _selectedUrl,
-                        linkUrl: url,
-                      ));
+                        title: title,
+                        description: description),
+                  );
                 } else {
                   print('show alert'); //TODO 戻った時に、一覧画像を更新する作業
                 }

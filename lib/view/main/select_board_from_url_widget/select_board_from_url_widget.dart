@@ -14,10 +14,15 @@ import 'bloc/select_board_from_url_event.dart';
 
 class SelectBoardFromUrlArguments {
   SelectBoardFromUrlArguments(
-      {@required this.imageUrl, this.linkUrl}); //TODO ここの設計は要相談
+      {@required this.imageUrl,
+      @required this.url,
+      @required this.title,
+      @required this.description});
 
+  final String url;
   final String imageUrl;
-  final String linkUrl;
+  final String title;
+  final String description;
 }
 
 class SelectBoardFromUrlWidget extends StatelessWidget {
@@ -39,25 +44,22 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
         as SelectBoardFromUrlArguments;
 
     return BlocConsumer<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
-      listener: (context, state) {
-        if (state is SavedPinState) {
-          Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title:
-                const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
-            backgroundColor: AppColors.white,
-            iconTheme: const IconThemeData(color: AppColors.black),
-            brightness: Brightness.light,
-            elevation: 0,
-          ),
-          body: _buildBoardsListView(args),
-        );
-      },
-    );
+        listener: (context, state) {
+      if (state is SavedPinState) {
+        Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
+      }
+    }, builder: (context, state) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
+          backgroundColor: AppColors.white,
+          iconTheme: const IconThemeData(color: AppColors.black),
+          brightness: Brightness.light,
+          elevation: 0,
+        ),
+        body: _buildBoardsListView(args),
+      );
+    });
   }
 
   Widget _buildBoardsListView(SelectBoardFromUrlArguments args) {
@@ -91,12 +93,12 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
           final request = PinRequestModel(
             userId: 'mrypq',
             originalUserId: 'mrypq',
-            url: args.linkUrl,
+            url: args.url,
             imageUrl: args.imageUrl,
+            title: args.title,
+            description: args.description,
             boardId: board.id,
-            description: 'てきとう',
           );
-          //TODO ここでstateのSavedPinにstateがなったらpopuntilしたいのだが謎
           BlocProvider.of<SelectBoardFromUrlBloc>(context)
               .add(SavePin(pinRequestModel: request));
         },
