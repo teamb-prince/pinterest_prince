@@ -9,11 +9,12 @@ class ApiClient {
   ApiClient(this._client);
 
   static const _serverUrl = 'http://localhost:8080';
+  static const _serverDomain = 'localhost:8080';
   final Client _client;
 
-  Future<Response> get(String relativeUrl) async {
+  Future<Response> get(String relativeUrl, {Map<String, String> query}) async {
     return _makeRequestWithErrorHandler(
-      _client.get('$_serverUrl$relativeUrl'),
+      _client.get(Uri.http(_serverDomain, relativeUrl, query)),
     );
   }
 

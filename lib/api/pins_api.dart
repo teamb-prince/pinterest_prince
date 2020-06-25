@@ -31,21 +31,20 @@ class DefaultPinsApi extends PinsApi {
   @override
   Future<List<PinModel>> getPins(
       {String userId, String boardId, int limit, int offset}) async {
-    // ここもっといい書き方ないかな？
-    var urlWithQuery = '/pins?';
+    Map<String, String> query = {};
     if (userId != null) {
-      urlWithQuery += 'user_id=$userId&';
+      query['user_id'] = userId;
     }
     if (boardId != null) {
-      urlWithQuery += 'board_id=$boardId&';
+      query['board_id'] = boardId;
     }
     if (limit != null) {
-      urlWithQuery += 'limit=$limit&';
+      query['limit'] = limit.toString();
     }
     if (offset != null) {
-      urlWithQuery += 'offset=$offset';
+      query['offset'] = offset.toString();
     }
-    final response = await _apiClient.get(urlWithQuery);
+    final response = await _apiClient.get('/pins', query: query);
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((pin) => PinModel.fromJson(pin))
         .toList();
