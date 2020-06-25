@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:pintersest_clone/api/pins_api.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
@@ -14,6 +16,10 @@ class PinsRepository {
       _pinsApi.getPins(
           userId: userId, boardId: boardId, limit: limit, offset: offset);
 
-  Future<PinModel> savePin(PinRequestModel pinRequestModel) =>
-      _pinsApi.savePin(pinRequestModel);
+  Future<PinModel> savePinFromUrl(PinRequestModel pinRequestModel) =>
+      _pinsApi.savePinWithUrl(pinRequestModel);
+
+  Future<PinModel> savePinFromLocal(File image,
+      PinRequestModel pinRequestModel) =>
+      _pinsApi.savePinWithImage(image, pinRequestModel);
 }

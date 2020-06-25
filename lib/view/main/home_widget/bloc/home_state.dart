@@ -9,9 +9,9 @@ abstract class HomeState extends Equatable {
 class LoadingState extends HomeState {}
 
 class LoadedState extends HomeState {
-  final List<PinModel> pins;
-
   LoadedState(this.pins);
+
+  final List<PinModel> pins;
 
   @override
   List<Object> get props => [pins];
@@ -20,7 +20,7 @@ class LoadedState extends HomeState {
 class NoDataState extends HomeState {}
 
 class ErrorState extends HomeState {
-  final Exception exception;
-
   ErrorState(this.exception);
+
+  final Exception exception;
 }

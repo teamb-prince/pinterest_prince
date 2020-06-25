@@ -35,13 +35,11 @@ class AccountWidget extends StatefulWidget {
 }
 
 class _AccountWidgetState extends State<AccountWidget> {
-  final double _topNavigationBarHeight = 48;
-
   File _image;
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _searchTextController = TextEditingController();
 
-  Future _getImage(bool fromCamera) async {
+  Future _getImage(bool fromCamera, Function(Object) callback) async {
     PickedFile pickedFile;
     if (fromCamera) {
       pickedFile = await _picker.getImage(source: ImageSource.camera);
@@ -50,7 +48,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     }
     _image = File(pickedFile.path);
     await Navigator.pushNamed(context, AppRoute.createPin,
-        arguments: CreatePinArguments(_image));
+        arguments: CreatePinArguments(_image)).then(callback);
   }
 
   @override
@@ -87,13 +85,13 @@ class _AccountWidgetState extends State<AccountWidget> {
               ),
             ),
           ),
-          bottom: TabBar(
+          bottom: const TabBar(
             indicatorColor: Colors.black87,
             labelColor: Colors.black87,
-            labelStyle: const TextStyle(fontSize: 10),
+            labelStyle: TextStyle(fontSize: 10),
             tabs: <Widget>[
-              const Tab(text: 'ボード'),
-              const Tab(text: 'ピン'),
+              Tab(text: 'ボード'),
+              Tab(text: 'ピン'),
             ],
           ),
         ),
@@ -108,7 +106,6 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   Widget _buildScrollView(BuildContext context) {
-    final bloc = BlocProvider.of<HomeBloc>(context);
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state is LoadedState) {
         final pins = state.pins;
@@ -119,7 +116,7 @@ class _AccountWidgetState extends State<AccountWidget> {
               delegate: SliverChildListDelegate([
                 Column(
                   children: <Widget>[
-                    _buildSearchBar(bloc),
+                    _buildSearchBar(context),
                   ],
                 )
               ]),
@@ -139,7 +136,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     });
   }
 
-  Widget _buildSearchBar(HomeBloc bloc) {
+  Widget _buildSearchBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
@@ -149,7 +146,7 @@ class _AccountWidgetState extends State<AccountWidget> {
               controller: _searchTextController,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                prefixIcon: Icon(
+                prefixIcon: const Icon(
                   Icons.search,
                   size: 24,
                 ),
@@ -165,14 +162,14 @@ class _AccountWidgetState extends State<AccountWidget> {
           ),
           const SizedBox(width: 16),
           IconButton(
-            icon: Icon(Icons.sort),
+            icon: const Icon(Icons.sort),
             onPressed: () {},
           ),
           const SizedBox(width: 16),
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () {
-              _showModalBottomSheet(bloc);
+              _showModalBottomSheet(context);
             },
           ),
         ],
@@ -202,9 +199,11 @@ class _AccountWidgetState extends State<AccountWidget> {
         ));
   }
 
-  void _showModalBottomSheet(HomeBloc bloc) {
-    final _textStyle = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
-    final _heightRatio = 0.3;
+  void _showModalBottomSheet(BuildContext context) {
+    // ignore: close_sinks
+    final bloc = BlocProvider.of<HomeBloc>(context);
+    const _textStyle = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
+    const _heightRatio = 0.3;
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -215,26 +214,29 @@ class _AccountWidgetState extends State<AccountWidget> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 InkWell(
-                  child: Text('写真をとる', style: _textStyle),
+                  child: const Text('写真をとる', style: _textStyle),
                   onTap: () {
-                    _getImage(true);
+                    _getImage(true, (_) {
+                      bloc.add(LoadData());
+                    });
                   },
                 ),
                 const SizedBox(height: 16),
                 InkWell(
-                  child: Text('カメラロール', style: _textStyle),
+                  child: const Text('カメラロール', style: _textStyle),
                   onTap: () {
-                    _getImage(false);
+                    _getImage(false, (_) {
+                      bloc.add(LoadData());
+                    });
                   },
                 ),
                 const SizedBox(height: 16),
                 InkWell(
-                  child: Text('URLから追加', style: _textStyle),
+                  child: const Text('URLから追加', style: _textStyle),
                   onTap: () {
                     Navigator.pushNamed(context, AppRoute.inputUrl)
                         .then((value) {
                       bloc.add(LoadData());
-                      print("back");
                     });
                   },
                 ),

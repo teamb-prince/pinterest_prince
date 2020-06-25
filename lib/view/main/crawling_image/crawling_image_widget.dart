@@ -10,9 +10,9 @@ import 'package:pintersest_clone/view/main/select_board_from_url_widget/select_b
 import 'bloc/crawling_image_bloc.dart';
 
 class CrawlingImageArgs {
-  final String url;
-
   CrawlingImageArgs({@required this.url});
+
+  final String url;
 }
 
 class CrawlingImageWidget extends StatefulWidget {
@@ -22,8 +22,8 @@ class CrawlingImageWidget extends StatefulWidget {
 
 class _CrawlingImageState extends State<CrawlingImageWidget> {
   int _selectedIndex = -1;
+  final _footerHeight = 48.0;
   String _selectedUrl = '';
-  final double _footerHeight = 48;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
         ),
         backgroundColor: Colors.white,
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: BlocBuilder<CrawlingImageBloc, CrawlingImageState>(
               builder: (context, state) {
             if (state is LoadedState) {
@@ -80,7 +80,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
 
   Widget _buildGetImage(List<String> imageUrls) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: GridView.count(
         crossAxisCount: 2,
         shrinkWrap: true,
@@ -120,7 +120,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
 
   Widget _buildFooter(String url) {
     return Padding(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Container(
         height: _footerHeight,
         child: Row(
@@ -135,7 +135,7 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
               color: AppColors.red,
               onPressed: () {
                 if (_selectedIndex != -1) {
-                  Navigator.pushNamed(context, AppRoute.selectBoard,
+                  Navigator.pushNamed(context, AppRoute.selectBoardFromUrl,
                       arguments: SelectBoardFromUrlArguments(
                         imageUrl: _selectedUrl,
                         linkUrl: url,

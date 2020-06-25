@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:pintersest_clone/api/api_client.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
@@ -10,7 +11,10 @@ abstract class PinsApi {
   Future<List<PinModel>> getPins(
       {String userId, String boardId, int limit, int offset});
 
-  Future<PinModel> savePin(PinRequestModel pinRequestModel);
+  Future<PinModel> savePinWithUrl(PinRequestModel pinRequestModel);
+
+  Future<PinModel> savePinWithImage(
+      File image, PinRequestModel pinRequestModel);
 }
 
 class DefaultPinsApi extends PinsApi {
@@ -48,10 +52,17 @@ class DefaultPinsApi extends PinsApi {
   }
 
   @override
-  Future<PinModel> savePin(PinRequestModel pinRequestModel) async {
-    // jsonに
+  Future<PinModel> savePinWithUrl(PinRequestModel pinRequestModel) async {
     final response =
         await _apiClient.post('/pins/url', body: pinRequestModel.toJson());
     return PinModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+  }
+
+  @override
+  Future<PinModel> savePinWithImage(
+      File image, PinRequestModel pinRequestModel) async {
+    final response = await _apiClient.multiPartPost('/pins/local',
+        image: image, json: pinRequestModel.toJson());
+    return PinModel.fromJson(jsonDecode(response));
   }
 }

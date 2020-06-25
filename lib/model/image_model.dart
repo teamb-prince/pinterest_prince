@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 
 class ImageModel extends Equatable {
-  ImageModel(
+  const ImageModel(
       {@required this.url,
       @required this.imageUrls,
       @required this.title,

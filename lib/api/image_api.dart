@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:pintersest_clone/api/api_client.dart';
 import 'package:pintersest_clone/model/image_model.dart';
 
+// ignore: one_member_abstracts
 abstract class ImageApi {
   Future<ImageModel> crawlingImageFromUrl(String url);
 }

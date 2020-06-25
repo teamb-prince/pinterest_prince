@@ -8,8 +8,7 @@ import 'package:pintersest_clone/view/authentication/login_widget/bloc/login_sta
 
 import '../mock_auth_repository.dart';
 
-
-final LoginRequestModel mockLoginRequest =
+const LoginRequestModel mockLoginRequest =
     LoginRequestModel(email: 'mock@email.com', password: 'password');
 
 void main() {
@@ -27,6 +26,7 @@ void main() {
           .thenAnswer((_) => Future.value(null));
 
       return LoginBloc(mockAuthRepository);
+      // ignore: missing_return
     }, act: (bloc) {
       bloc.add(Login(loginRequestModel: mockLoginRequest));
     }, skip: 0, expect: [InitialState(), LoadingState(), SuccessState()]);
@@ -38,6 +38,7 @@ void main() {
           .thenAnswer((_) => Future.error(Exception()));
 
       return LoginBloc(mockAuthRepository);
+      // ignore: missing_return
     }, act: (bloc) {
       bloc.add(Login(loginRequestModel: mockLoginRequest));
     }, skip: 0, expect: [InitialState(), LoadingState(), isA<ErrorState>()]);
