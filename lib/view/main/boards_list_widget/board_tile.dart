@@ -29,42 +29,24 @@ class BoardTile extends StatelessWidget {
   }
 
   Widget _buildPinsView(BuildContext context) {
+    final imageUrl1 = (pins.isNotEmpty) ? pins[0].imageUrl : null;
+    final imageUrl2 = (pins.length >= 2) ? pins[1].imageUrl : null;
+    final imageUrl3 = (pins.length >= 3) ? pins[2].imageUrl : null;
     return Container(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Expanded(
-                flex: 2,
-                child: (pins.isNotEmpty)
-                    ? Image.network(
-                        pins[0].imageUrl,
-                        fit: BoxFit.cover,
-                      )
-                    : Container(color: AppColors.grey)),
+            _buildLargeImage(imageUrl1),
             const SizedBox(width: 2),
             Expanded(
               flex: 1,
               child: Column(
                 children: <Widget>[
-                  Expanded(
-                      flex: 1,
-                      child: (pins.length >= 2)
-                          ? Image.network(
-                              pins[1].imageUrl,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(color: AppColors.grey)),
+                  _buildSmallImage(imageUrl2),
                   const SizedBox(height: 2),
-                  Expanded(
-                      flex: 1,
-                      child: (pins.length >= 3)
-                          ? Image.network(
-                              pins[2].imageUrl,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(color: AppColors.grey)),
+                  _buildSmallImage(imageUrl3),
                 ],
               ),
             )
@@ -72,6 +54,22 @@ class BoardTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildLargeImage(String imageUrl) {
+    return Expanded(
+        flex: 2,
+        child: imageUrl != null
+            ? Image.network(imageUrl, fit: BoxFit.cover)
+            : Container(color: AppColors.grey));
+  }
+
+  Widget _buildSmallImage(String imageUrl) {
+    return Expanded(
+        flex: 1,
+        child: imageUrl != null
+            ? Image.network(imageUrl, fit: BoxFit.cover)
+            : Container(color: AppColors.grey));
   }
 
   Widget _buildInfoLabels(BuildContext context) {
