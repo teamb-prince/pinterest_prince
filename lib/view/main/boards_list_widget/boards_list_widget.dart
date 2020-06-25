@@ -95,7 +95,9 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              Navigator.pushNamed(context, AppRoute.createBoard);
+              Navigator.pushNamed(context, AppRoute.createBoard).then((_) {
+                BlocProvider.of<BoardsListBloc>(context).add(LoadData());
+              });
             },
           ),
         ],
