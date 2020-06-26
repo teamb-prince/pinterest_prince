@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
+import 'package:pintersest_clone/api/auth_api.dart';
 import 'package:pintersest_clone/api/board_api.dart';
 import 'package:pintersest_clone/api/image_api.dart';
 import 'package:pintersest_clone/api/pins_api.dart';
 import 'package:pintersest_clone/app_route.dart';
+import 'package:pintersest_clone/data/auth_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/util/authentication_preferences.dart';
 import 'package:pintersest_clone/view/authentication//login_top_widget/login_top_widget.dart';
 import 'package:pintersest_clone/view/authentication//login_widget/login_widget.dart';
 import 'package:pintersest_clone/view/authentication//sign_up_widget/create_account_widget.dart';
+import 'package:pintersest_clone/view/authentication/login_form_widget/login_form_widget.dart';
+import 'package:pintersest_clone/view/authentication/sign_up_form_widget/sign_up_form_widget.dart';
 import 'package:pintersest_clone/view/main/crawling_image/crawling_image_widget.dart';
 import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
 import 'package:pintersest_clone/view/main/edit_crawling_image_widget/edit_crawling_image_widget.dart';
@@ -43,7 +48,11 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<BoardsRepository>(
           create: (_) => BoardsRepository(DefaultBoardsApi(_apiClient)),
-        )
+        ),
+        RepositoryProvider<AuthRepository>(
+          create: (_) => AuthRepository(
+              DefaultAuthApi(_apiClient), AuthenticationPreferences()),
+        ),
       ],
       child: MaterialApp(
           title: 'Pinterest',
@@ -51,7 +60,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          initialRoute: AppRoute.home,
+          initialRoute: AppRoute.loginTop,
           routes: {
             AppRoute.home: (context) => MainNavigationPage(),
             AppRoute.pinDetail: (context) => PinDetailWidget(),
@@ -67,6 +76,8 @@ class MyApp extends StatelessWidget {
                 SelectBoardFromLocalWidget(),
             AppRoute.selectBoardFromUrl: (context) =>
                 SelectBoardFromUrlWidget(),
+            AppRoute.signupForm: (context) => SignUpFormWidget(),
+            AppRoute.loginForm: (context) => LoginFormWidget(),
           }),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:pintersest_clone/model/user_model.dart';
 
 abstract class SignUpState extends Equatable {
   @override
@@ -9,7 +10,11 @@ class InitialState extends SignUpState {}
 
 class LoadingState extends SignUpState {}
 
-class SuccessState extends SignUpState {}
+class SuccessState extends SignUpState {
+  SuccessState(this.userModel);
+
+  final UserModel userModel;
+}
 
 class ErrorState extends SignUpState {
   ErrorState(this.exception);

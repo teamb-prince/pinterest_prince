@@ -2,14 +2,18 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pintersest_clone/model/sign_up_request_model.dart';
-import 'package:pintersest_clone/view/authentication/sign_up_widget/bloc/sign_up_bloc.dart';
-import 'package:pintersest_clone/view/authentication/sign_up_widget/bloc/sign_up_event.dart';
-import 'package:pintersest_clone/view/authentication/sign_up_widget/bloc/sign_up_state.dart';
+import 'package:pintersest_clone/model/user_model.dart';
+import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_bloc.dart';
+import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_event.dart';
+import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_state.dart';
 
 import '../mock_auth_repository.dart';
 
 const SignUpRequestModel mockSignUpRequest = SignUpRequestModel(
-    email: 'test@email.com', password: 'password', confirmPassword: 'password');
+    id: 'test',
+    email: 'test@email.com',
+    password: 'password',
+    confirmPassword: 'password');
 
 void main() {
   MockAuthRepository mockAuthRepository;
@@ -29,7 +33,9 @@ void main() {
       // ignore: missing_return
     }, act: (bloc) {
       bloc.add(SignUp(signUpRequestModel: mockSignUpRequest));
-    }, skip: 0, expect: [InitialState(), LoadingState(), SuccessState()]);
+    },
+        skip: 0,
+        expect: [InitialState(), LoadingState(), SuccessState(UserModel())]);
 
     blocTest(
         'emit [InitialState(), LoadingState(), ErrorState()] when sign up request will fail',

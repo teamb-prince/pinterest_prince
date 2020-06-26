@@ -4,18 +4,18 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 class LoginRequestModel extends Equatable {
-  const LoginRequestModel({@required this.email, @required this.password});
+  const LoginRequestModel({@required this.id, @required this.password});
 
-  final String email;
+  final String id;
   final String password;
 
   String toJson() {
     return jsonEncode({
-      'email': email,
+      'id': id,
       'password': password,
     });
   }
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [id, password];
 }

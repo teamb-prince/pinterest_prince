@@ -5,17 +5,20 @@ import 'package:meta/meta.dart';
 
 class SignUpRequestModel extends Equatable {
   const SignUpRequestModel(
-      {@required this.email,
+      {@required this.id,
+      @required this.email,
       @required this.password,
       @required this.confirmPassword});
 
   // 他にもいろいろ項目はあるのかも
+  final String id;
   final String email;
   final String password;
   final String confirmPassword;
 
   String toJson() {
     return jsonEncode({
+      'id': id,
       'email': email,
       'password': password,
       'confirm_password': confirmPassword,
@@ -23,5 +26,5 @@ class SignUpRequestModel extends Equatable {
   }
 
   @override
-  List<Object> get props => [email, password, confirmPassword];
+  List<Object> get props => [id, email, password, confirmPassword];
 }
