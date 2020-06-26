@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/common_widget/base_text_field.dart';
 import 'package:pintersest_clone/view/main/select_board_from_local_widget/select_board_from_local_widget.dart';
 
 class CreatePinArguments {
@@ -39,14 +40,12 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
             padding: const EdgeInsets.all(8),
             child: FlatButton(
               onPressed: () {
-                Navigator.pushNamed(
-                  context, AppRoute.selectBoardFromLocal,
+                Navigator.pushNamed(context, AppRoute.selectBoardFromLocal,
                     arguments: SelectBoardFromLocalArguments(
                         image: args.image,
                         title: _titleTextController.text,
                         description: _descriptionTextController.text,
-                        linkUrl: _linkUrl)
-                );
+                        linkUrl: _linkUrl));
               },
               color: AppColors.red,
               shape: RoundedRectangleBorder(
@@ -74,14 +73,18 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
           const SliverPadding(
             padding: EdgeInsets.only(top: 16),
           ),
-          _CustomTextField(
-              title: 'タイトル',
-              hintText: 'ピンのタイトルを入力',
-              textEditingController: _titleTextController),
-          _CustomTextField(
-              title: '説明文',
-              hintText: 'このピンの説明文を入力してください',
-              textEditingController: _descriptionTextController),
+          SliverToBoxAdapter(
+            child: BaseTextField(
+                title: 'タイトル',
+                hintText: 'ピンのタイトルを入力',
+                textEditingController: _titleTextController),
+          ),
+          SliverToBoxAdapter(
+            child: BaseTextField(
+                title: '説明文',
+                hintText: 'このピンの説明文を入力してください',
+                textEditingController: _descriptionTextController),
+          ),
           SliverToBoxAdapter(
             child: _buildAddLinkButton(),
           )
@@ -106,39 +109,6 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class _CustomTextField extends StatelessWidget {
-  final String title;
-  final String hintText;
-  final TextEditingController textEditingController;
-
-  _CustomTextField(
-      {@required this.title,
-      @required this.hintText,
-      @required this.textEditingController});
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-              title,
-              textAlign: TextAlign.left,
-            ),
-            TextField(
-              controller: textEditingController,
-              decoration:
-                  InputDecoration(border: InputBorder.none, hintText: hintText),
-            ),
-          ],
-        ),
       ),
     );
   }

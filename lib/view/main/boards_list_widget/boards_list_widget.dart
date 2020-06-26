@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/bloc/boards_list_bloc.dart';
@@ -93,7 +94,11 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
           const SizedBox(width: 16),
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoute.createBoard).then((_) {
+                BlocProvider.of<BoardsListBloc>(context).add(LoadData());
+              });
+            },
           ),
         ],
       ),
