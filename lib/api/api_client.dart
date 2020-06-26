@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:pintersest_clone/util/authentication_preferences.dart';
 
 import 'errors/error.dart';
 
@@ -13,17 +14,21 @@ class ApiClient {
   final Client _client;
 
   Future<Response> get(String relativeUrl, {Map<String, String> query}) async {
+    final token = await AuthenticationPreferences().getAccessToken();
+    final header = {'token': token};
     return _makeRequestWithErrorHandler(
-      _client.get(Uri.http(_serverDomain, relativeUrl, query)),
+      _client.get(
+        Uri.http(_serverDomain, relativeUrl, query),
+        headers: header,
+      ),
     );
   }
 
   Future<Response> post(String relativeUrl, {String body}) async {
+    final token = await AuthenticationPreferences().getAccessToken();
+    final header = {'token': token};
     return _makeRequestWithErrorHandler(
-      _client.post(
-        '$_serverUrl$relativeUrl',
-        body: body,
-      ),
+      _client.post('$_serverUrl$relativeUrl', body: body, headers: header),
     );
   }
 
