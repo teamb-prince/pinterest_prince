@@ -16,7 +16,7 @@ class CreateBoardBloc extends Bloc<CreateBoardEvent, CreateBoardState> {
     if (event is SaveBoard) {
       yield LoadingState();
       try {
-        final _ = _boardsRepository.saveBoard(event.boardRequestModel);
+        await _boardsRepository.saveBoard(event.boardRequestModel);
         yield SuccessState();
       } on Exception catch (e) {
         yield ErrorState(e);
