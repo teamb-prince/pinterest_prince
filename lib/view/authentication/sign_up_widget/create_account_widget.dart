@@ -9,22 +9,24 @@ class SignUpWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: Column(
-        children: [
-          _buildHeader(),
-          const Text('登録方法の選択'),
-          _buildSelectAccountButton(context),
-          FlatButton(
-            child: const Text(
-              'アカウントをお持ちですか?ログインする',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, color: AppColors.black),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildHeader(),
+            const Text('登録方法の選択'),
+            _buildSelectAccountButton(context),
+            FlatButton(
+              child: const Text(
+                'アカウントをお持ちですか?ログインする',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: AppColors.black),
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoute.login);
+              },
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, AppRoute.login);
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
