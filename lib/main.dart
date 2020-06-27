@@ -5,6 +5,7 @@ import 'package:pintersest_clone/api/auth_api.dart';
 import 'package:pintersest_clone/api/board_api.dart';
 import 'package:pintersest_clone/api/image_api.dart';
 import 'package:pintersest_clone/api/pins_api.dart';
+import 'package:pintersest_clone/api/user_api.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/auth_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
@@ -28,6 +29,7 @@ import 'package:pintersest_clone/view/main/user_detail_widget/user_detail_widget
 import 'api/api_client.dart';
 import 'data/boards_repository.dart';
 import 'data/image_repository.dart';
+import 'data/users_repository.dart';
 
 void main() {
   runApp(MyApp());
@@ -53,6 +55,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<AuthRepository>(
           create: (_) => AuthRepository(
               DefaultAuthApi(_apiClient), AuthenticationPreferences()),
+        ),
+        RepositoryProvider<UsersRepository>(
+          create: (_) => UsersRepository(DefaultUsersApi(_apiClient)),
         ),
       ],
       child: MaterialApp(
