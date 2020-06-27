@@ -11,25 +11,27 @@ class LoginTopWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          _buildHeader(),
-          SizedBox(
-            height: _sizedBoxHeight,
-          ),
-          const Text(
-            'Pinterestへようこそ！',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildHeader(),
+            SizedBox(
+              height: _sizedBoxHeight,
             ),
-          ),
-          SizedBox(
-            height: _sizedBoxHeight,
-          ),
-          _buildCreateAccountButton(context),
-          _buildLoginButton(context),
-        ],
+            const Text(
+              'Pinterestへようこそ！',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              height: _sizedBoxHeight,
+            ),
+            _buildCreateAccountButton(context),
+            _buildLoginButton(context),
+          ],
+        ),
       ),
     );
   }
