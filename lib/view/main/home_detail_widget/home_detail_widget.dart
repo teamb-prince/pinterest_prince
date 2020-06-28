@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:pintersest_clone/api/api_client.dart';
 import 'package:pintersest_clone/api/pins_api.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/util/authentication_preferences.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
@@ -15,7 +16,8 @@ class HomeDetailWidget extends StatefulWidget {
 }
 
 class _HomeDetailWidgetState extends State<HomeDetailWidget> {
-  final PinsApi _pinsApi = DefaultPinsApi(ApiClient(Client()));
+  final PinsApi _pinsApi =
+      DefaultPinsApi(ApiClient(Client(), AuthenticationPreferences()));
   String url =
       'https://avatars2.githubusercontent.com/u/23512935?s=460&u=8f50efae6e531658b6a52e0e70381c26408d7843&v=4';
   final BoxDecoration _roundedContainerDecoration = BoxDecoration(

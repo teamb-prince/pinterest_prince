@@ -7,25 +7,26 @@ import 'package:pintersest_clone/util/authentication_preferences.dart';
 import 'errors/error.dart';
 
 class ApiClient {
-  ApiClient(this._client);
+  ApiClient(this._client, this._authenticationPreferences);
 
   static const _serverUrl = 'http://localhost:8080';
   static const _serverDomain = 'localhost:8080';
   final Client _client;
+  final AuthenticationPreferences _authenticationPreferences;
 
   Future<Response> get(String relativeUrl, {Map<String, String> query}) async {
-    final token = await AuthenticationPreferences().getAccessToken();
+    final token = await _authenticationPreferences.getAccessToken();
     final header = {'token': token};
     return _makeRequestWithErrorHandler(
       _client.get(
-        Uri.http(_serverDomain, relativeUrl, query),
+        Uri.http(_serverDomain, relativeUrl, query).toString(),
         headers: header,
       ),
     );
   }
 
   Future<Response> post(String relativeUrl, {String body}) async {
-    final token = await AuthenticationPreferences().getAccessToken();
+    final token = await _authenticationPreferences.getAccessToken();
     final header = {'token': token};
     return _makeRequestWithErrorHandler(
       _client.post('$_serverUrl$relativeUrl', body: body, headers: header),
