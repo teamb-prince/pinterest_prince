@@ -112,6 +112,10 @@ class SignUpFormWidget extends StatelessWidget {
         validator: (value) {
           if (value.isEmpty) {
             return 'passwordを入力してください';
+          } else if (value.length < 5) {
+            return 'パスワードが短すぎます';
+          } else if (value != _confirmPassword) {
+            return '確認用のパスワードが一致していません';
           }
           return null;
         },
@@ -133,6 +137,10 @@ class SignUpFormWidget extends StatelessWidget {
         validator: (value) {
           if (value.isEmpty) {
             return '確認用のpasswordを入力してください';
+          } else if (value.length < 5) {
+            return 'パスワードが短すぎます';
+          } else if (value != _password) {
+            return '確認用のパスワードが一致していません';
           }
           return null;
         },
