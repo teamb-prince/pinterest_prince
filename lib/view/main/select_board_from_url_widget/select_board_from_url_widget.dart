@@ -91,8 +91,6 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
       return GestureDetector(
         onTap: () {
           final request = PinRequestModel(
-            userId: 'mrypq',
-            originalUserId: 'mrypq',
             url: args.url,
             imageUrl: args.imageUrl,
             title: args.title,

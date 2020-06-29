@@ -5,8 +5,6 @@ import 'package:meta/meta.dart';
 
 class PinRequestModel extends Equatable {
   const PinRequestModel({
-    @required this.userId,
-    @required this.originalUserId,
     @required this.url,
     @required this.title,
     @required this.imageUrl,
@@ -14,8 +12,6 @@ class PinRequestModel extends Equatable {
     @required this.description,
   });
 
-  final String userId;
-  final String originalUserId;
   final String url;
   final String title;
   final String imageUrl;
@@ -24,8 +20,6 @@ class PinRequestModel extends Equatable {
 
   String toJson() {
     return jsonEncode({
-      'user_id': userId,
-      'original_user_id': originalUserId,
       'url': url,
       'title': title,
       'image_url': imageUrl,
@@ -36,6 +30,6 @@ class PinRequestModel extends Equatable {
 
   @override
   List<Object> get props {
-    return [userId, originalUserId, url, imageUrl, boardId, description];
+    return [url, imageUrl, boardId, description];
   }
 }

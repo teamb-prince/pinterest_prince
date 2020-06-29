@@ -5,6 +5,7 @@ class AuthenticationPreferences {
 
   Future<String> getAccessToken() async {
     final _sharedPreferences = await SharedPreferences.getInstance();
+    clearToken();
     return _sharedPreferences.getString(_authTokenKey);
   }
 

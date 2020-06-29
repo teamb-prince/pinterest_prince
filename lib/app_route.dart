@@ -1,5 +1,5 @@
 class AppRoute {
-  static const String home = '/';
+  static const String home = '/home';
   static const String pinDetail = '/pin_detail';
   static const String userDetail = '/user_detail';
   static const String inputUrl = '/input_url';
@@ -14,4 +14,5 @@ class AppRoute {
   static const String selectBoardFromUrl = '/select_board_from_url';
   static const String signupForm = '/signup_form';
   static const String loginForm = '/login_form';
+  static const String boardDetail = '/board_detail';
 }
