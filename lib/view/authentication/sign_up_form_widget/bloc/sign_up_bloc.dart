@@ -27,6 +27,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       } on Exception catch (e) {
         print(e);
         yield ErrorState(e);
+      } finally {
+        print(state);
       }
     }
   }

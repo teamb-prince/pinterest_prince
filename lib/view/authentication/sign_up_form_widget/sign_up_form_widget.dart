@@ -9,7 +9,12 @@ import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/si
 import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_event.dart';
 import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_state.dart';
 
-class SignUpFormWidget extends StatelessWidget {
+class SignUpFormWidget extends StatefulWidget {
+  @override
+  _SignUpFormWidgetState createState() => _SignUpFormWidgetState();
+}
+
+class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
   String _id = '';
@@ -63,10 +68,16 @@ class SignUpFormWidget extends StatelessWidget {
   }
 
   Widget _buildIdTextForm(BuildContext context) {
-    BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
+    return BlocConsumer<SignUpBloc, SignUpState>(listener: (context, state) {
+      print(state);
+
       if (state is ExistUserState) {
-        this._formKey.currentState.validate();
+        setState(() {
+          _existSameId = true;
+          _formKey.currentState.validate();
+        });
       }
+    }, builder: (context, state) {
       return Padding(
         padding: const EdgeInsets.only(top: 8, bottom: 8),
         child: TextFormField(
@@ -101,7 +112,7 @@ class SignUpFormWidget extends StatelessWidget {
         validator: (value) {
           if (value.isEmpty) {
             return 'emailを入力してください';
-          } else if (EmailValidator.validate(_email)) {
+          } else if (!EmailValidator.validate(value)) {
             return '正しいemailを入力してください';
           }
           return null;
@@ -139,7 +150,7 @@ class SignUpFormWidget extends StatelessWidget {
 
   Widget _buildConfirmPasswordTextForm() {
     return Padding(
-      padding: EdgeInsets.only(top: 8, bottom: 8),
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
         decoration: const InputDecoration(
           labelText: 'password',
@@ -173,6 +184,9 @@ class SignUpFormWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         onPressed: () {
+          setState(() {
+            _existSameId = false;
+          });
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
             final request = SignUpRequestModel(
