@@ -15,19 +15,24 @@ class LoginFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildScreen(context);
+    return BlocProvider<LoginBloc>(
+        create: (context) => LoginBloc(
+              RepositoryProvider.of<AuthRepository>(context),
+            ),
+        child: _buildScreen(context));
   }
 
   Widget _buildScreen(BuildContext context) {
-    return BlocProvider<LoginBloc>(
-      create: (context) => LoginBloc(
-        RepositoryProvider.of<AuthRepository>(context),
-      ),
-      child: Scaffold(
+    return BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
+      if (state is SuccessState) {
+        Navigator.pushReplacementNamed(context, AppRoute.home);
+      }
+    }, builder: (context, state) {
+      return Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
           brightness: Brightness.light,
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.black, //change your color here
           ),
           backgroundColor: AppColors.white,
@@ -38,7 +43,7 @@ class LoginFormWidget extends StatelessWidget {
           ),
         ),
         body: Container(
-          padding: EdgeInsets.all(32),
+          padding: const EdgeInsets.all(32),
           child: Form(
             key: _formKey,
             child: ListView(
@@ -51,8 +56,8 @@ class LoginFormWidget extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildIdTextForm() {
@@ -98,30 +103,24 @@ class LoginFormWidget extends StatelessWidget {
   }
 
   Widget _buildConfirmButton(BuildContext context) {
-    return BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
-      if (state is SuccessState) {
-        Navigator.pushNamed(context, AppRoute.home);
-      }
-    }, builder: (context, state) {
-      return RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-            final request = LoginRequestModel(
-              id: _id,
-              password: _password,
-            );
-            BlocProvider.of<LoginBloc>(context)
-                .add(Login(loginRequestModel: request));
-          }
-        },
-        textColor: AppColors.white,
-        color: AppColors.red,
-        child: const Text('ログイン'),
-      );
-    });
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      onPressed: () {
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState.save();
+          final request = LoginRequestModel(
+            id: _id,
+            password: _password,
+          );
+          BlocProvider.of<LoginBloc>(context)
+              .add(Login(loginRequestModel: request));
+        }
+      },
+      textColor: AppColors.white,
+      color: AppColors.red,
+      child: const Text('ログイン'),
+    );
   }
 }

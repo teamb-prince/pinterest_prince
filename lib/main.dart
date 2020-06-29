@@ -14,6 +14,7 @@ import 'package:pintersest_clone/view/authentication//login_widget/login_widget.
 import 'package:pintersest_clone/view/authentication//sign_up_widget/create_account_widget.dart';
 import 'package:pintersest_clone/view/authentication/login_form_widget/login_form_widget.dart';
 import 'package:pintersest_clone/view/authentication/sign_up_form_widget/sign_up_form_widget.dart';
+import 'package:pintersest_clone/view/main/board_detail_widget/board_detail_widget.dart';
 import 'package:pintersest_clone/view/main/crawling_image/crawling_image_widget.dart';
 import 'package:pintersest_clone/view/main/create_board_widget/create_board_widget.dart';
 import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
@@ -30,57 +31,74 @@ import 'data/boards_repository.dart';
 import 'data/image_repository.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(Pinterest());
 }
 
-class MyApp extends StatelessWidget {
+class Pinterest extends StatelessWidget {
   // This widget is the root of your application.
-  ApiClient _apiClient = ApiClient(Client());
-
   @override
   Widget build(BuildContext context) {
+    final authenticationPreferences = AuthenticationPreferences();
+    final apiClient = ApiClient(Client(), authenticationPreferences);
     return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider<ImageRepository>(
-          create: (_) => ImageRepository(DefaultImageApi(_apiClient)),
-        ),
-        RepositoryProvider<PinsRepository>(
-          create: (_) => PinsRepository(DefaultPinsApi(_apiClient)),
-        ),
-        RepositoryProvider<BoardsRepository>(
-          create: (_) => BoardsRepository(DefaultBoardsApi(_apiClient)),
-        ),
-        RepositoryProvider<AuthRepository>(
-          create: (_) => AuthRepository(
-              DefaultAuthApi(_apiClient), AuthenticationPreferences()),
-        ),
-      ],
-      child: MaterialApp(
+        providers: [
+          RepositoryProvider<ImageRepository>(
+            create: (_) => ImageRepository(DefaultImageApi(apiClient)),
+          ),
+          RepositoryProvider<PinsRepository>(
+            create: (_) => PinsRepository(DefaultPinsApi(apiClient)),
+          ),
+          RepositoryProvider<BoardsRepository>(
+            create: (_) => BoardsRepository(DefaultBoardsApi(apiClient)),
+          ),
+          RepositoryProvider<AuthRepository>(
+            create: (_) => AuthRepository(
+                DefaultAuthApi(apiClient), authenticationPreferences),
+          ),
+        ],
+        child: MaterialApp(
           title: 'Pinterest',
           theme: ThemeData(
             primarySwatch: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          initialRoute: AppRoute.loginTop,
-          routes: {
-            AppRoute.home: (context) => MainNavigationPage(),
-            AppRoute.pinDetail: (context) => PinDetailWidget(),
-            AppRoute.userDetail: (context) => UserDetailWidget(),
-            AppRoute.inputUrl: (context) => InputUrlWidget(),
-            AppRoute.crawlingImage: (context) => CrawlingImageWidget(),
-            AppRoute.loginTop: (context) => LoginTopWidget(),
-            AppRoute.createAccount: (context) => SignUpWidget(),
-            AppRoute.login: (context) => LoginWidget(),
-            AppRoute.createPin: (context) => CreatePinWidget(),
-            AppRoute.createBoard: (context) => CreateBoardWidget(),
-            AppRoute.editCrawlingImage: (context) => EditCrawlingImageWidget(),
-            AppRoute.selectBoardFromLocal: (context) =>
-                SelectBoardFromLocalWidget(),
-            AppRoute.selectBoardFromUrl: (context) =>
-                SelectBoardFromUrlWidget(),
-            AppRoute.signupForm: (context) => SignUpFormWidget(),
-            AppRoute.loginForm: (context) => LoginFormWidget(),
-          }),
-    );
+          home: FutureBuilder<String>(
+            future: authenticationPreferences.getAccessToken(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              return snapshot.data?.isNotEmpty ?? false
+                  ? MainNavigationPage()
+                  : LoginTopWidget();
+            },
+          ),
+          routes: _configureRoutes(context),
+        ));
+  }
+
+  Map<String, WidgetBuilder> _configureRoutes(BuildContext context) {
+    return {
+      AppRoute.home: (context) => MainNavigationPage(),
+      AppRoute.pinDetail: (context) => PinDetailWidget(),
+      AppRoute.userDetail: (context) => UserDetailWidget(),
+      AppRoute.inputUrl: (context) => InputUrlWidget(),
+      AppRoute.crawlingImage: (context) => CrawlingImageWidget(),
+      AppRoute.loginTop: (context) => LoginTopWidget(),
+      AppRoute.createAccount: (context) => SignUpWidget(),
+      AppRoute.login: (context) => LoginWidget(),
+      AppRoute.createPin: (context) => CreatePinWidget(),
+      AppRoute.createBoard: (context) => CreateBoardWidget(),
+      AppRoute.editCrawlingImage: (context) => EditCrawlingImageWidget(),
+      AppRoute.selectBoardFromLocal: (context) => SelectBoardFromLocalWidget(),
+      AppRoute.selectBoardFromUrl: (context) => SelectBoardFromUrlWidget(),
+      AppRoute.signupForm: (context) => SignUpFormWidget(),
+      AppRoute.loginForm: (context) => LoginFormWidget(),
+      AppRoute.boardDetail: (context) => BoardDetailWidget(),
+    };
   }
 }

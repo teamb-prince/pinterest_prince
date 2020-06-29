@@ -16,7 +16,7 @@ class PinsListBloc extends Bloc<PinsListEvent, PinsListState> {
     if (event is LoadData) {
       yield LoadingState();
       try {
-        final pins = await _pinsRepository.getPins();
+        final pins = await _pinsRepository.getTokenUserPins();
         yield LoadedState(pins);
       } on Exception catch (e) {
         yield ErrorState(e);

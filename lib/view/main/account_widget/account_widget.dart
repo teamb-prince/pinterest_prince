@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/app_route.dart';
-import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/user_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/common_widget/rounded_tab_indicator.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/boards_list_widget.dart';
-import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
-import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
 import 'package:pintersest_clone/view/main/pins_list_widget/pins_list_widget.dart';
 import 'package:pintersest_clone/view/main/user_detail_widget/user_detail_widget.dart';
 
@@ -26,11 +22,7 @@ final UserModel sampleUser = UserModel(
 class AccountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeBloc>(
-      create: (context) =>
-          HomeBloc(context.repository<PinsRepository>())..add(LoadData()),
-      child: _buildScreen(context),
-    );
+    return _buildScreen(context);
   }
 
   Widget _buildScreen(BuildContext context) {
