@@ -14,6 +14,7 @@ import 'package:pintersest_clone/view/authentication//login_widget/login_widget.
 import 'package:pintersest_clone/view/authentication//sign_up_widget/create_account_widget.dart';
 import 'package:pintersest_clone/view/authentication/login_form_widget/login_form_widget.dart';
 import 'package:pintersest_clone/view/authentication/sign_up_form_widget/sign_up_form_widget.dart';
+import 'package:pintersest_clone/view/main/board_detail_widget/board_detail_widget.dart';
 import 'package:pintersest_clone/view/main/crawling_image/crawling_image_widget.dart';
 import 'package:pintersest_clone/view/main/create_board_widget/create_board_widget.dart';
 import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
@@ -35,7 +36,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  ApiClient _apiClient = ApiClient(Client());
+  final _apiClient = ApiClient(Client(), AuthenticationPreferences());
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +81,7 @@ class MyApp extends StatelessWidget {
                 SelectBoardFromUrlWidget(),
             AppRoute.signupForm: (context) => SignUpFormWidget(),
             AppRoute.loginForm: (context) => LoginFormWidget(),
+            AppRoute.boardDetail: (context) => BoardDetailWidget(),
           }),
     );
   }

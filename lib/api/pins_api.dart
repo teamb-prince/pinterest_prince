@@ -13,6 +13,8 @@ abstract class PinsApi {
 
   Future<List<PinModel>> getDiscoverPins();
 
+  Future<List<PinModel>> getTokenUserPins();
+
   Future<PinModel> savePinWithUrl(PinRequestModel pinRequestModel);
 
   Future<PinModel> savePinWithImage(
@@ -47,6 +49,14 @@ class DefaultPinsApi extends PinsApi {
       query['offset'] = offset.toString();
     }
     final response = await _apiClient.get('/pins', query: query);
+    return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
+        .map((pin) => PinModel.fromJson(pin))
+        .toList();
+  }
+
+  @override
+  Future<List<PinModel>> getTokenUserPins() async {
+    final response = await _apiClient.get('/profile/pins');
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((pin) => PinModel.fromJson(pin))
         .toList();
