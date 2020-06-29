@@ -15,32 +15,33 @@ class ApiClient {
   final AuthenticationPreferences _authenticationPreferences;
 
   Future<Response> get(String relativeUrl, {Map<String, String> query}) async {
-    final token = await _authenticationPreferences.getAccessToken();
-    final header = {'token': token};
+    final headers = await _headers;
     return _makeRequestWithErrorHandler(
       _client.get(
         Uri.http(_serverDomain, relativeUrl, query).toString(),
-        headers: header,
+        headers: headers,
       ),
     );
   }
 
   Future<Response> post(String relativeUrl, {String body}) async {
-    final token = await _authenticationPreferences.getAccessToken();
-    final header = {'token': token};
+    final headers = await _headers;
     return _makeRequestWithErrorHandler(
-      _client.post('$_serverUrl$relativeUrl', body: body, headers: header),
+      _client.post('$_serverUrl$relativeUrl', body: body, headers: headers),
     );
   }
 
   Future<String> multiPartPost(String relativeUrl,
       {File image, String json}) async {
     final request =
-        http.MultipartRequest('POST', Uri.parse('$_serverUrl$relativeUrl'));
-    request.fields['json'] = json;
-    request.files.add(http.MultipartFile.fromBytes(
-        'image', image.readAsBytesSync(),
-        filename: 'image'));
+        http.MultipartRequest('POST', Uri.parse('$_serverUrl$relativeUrl'))
+          ..fields['json'] = json
+          ..files.add(http.MultipartFile.fromBytes(
+              'image', image.readAsBytesSync(),
+              filename: 'image'));
+    request.headers['token'] =
+        await _authenticationPreferences.getAccessToken();
+    print(request.headers);
     final response = await request.send();
     return response.stream.bytesToString();
   }
@@ -54,6 +55,11 @@ class ApiClient {
     }
 
     return response;
+  }
+
+  Future<Map<String, String>> get _headers async {
+    final token = await _authenticationPreferences.getAccessToken();
+    return {'token': token};
   }
 
   static DefaultError _handleError(
