@@ -31,29 +31,46 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: mainPageDestinations[_currentIndex].body,
-      bottomNavigationBar: _buildBottomNavigationBar(),
-    );
+        body: Stack(
+      children: <Widget>[
+        mainPageDestinations[_currentIndex].body,
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 32,
+          child: _buildBottomNavigationBar(context),
+        )
+      ],
+    ));
   }
 
-  Widget _buildBottomNavigationBar() {
-    return Material(
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        currentIndex: _currentIndex,
-        items: mainPageDestinations
-            .map((item) => BottomNavigationBarItem(
-                  icon: Icon(item.iconData),
-                  title: Text(item.title),
-                ))
-            .toList(),
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    return MediaQuery.removePadding(
+      context: context,
+      removeBottom: true,
+      child: Container(
+        color: Colors.transparent,
+        padding: const EdgeInsets.symmetric(horizontal: 48),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(32)),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Theme.of(context).primaryColor,
+            unselectedItemColor: Colors.grey,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            currentIndex: _currentIndex,
+            items: mainPageDestinations
+                .map((item) => BottomNavigationBarItem(
+                      icon: Icon(item.iconData),
+                      title: Text(item.title),
+                    ))
+                .toList(),
+          ),
+        ),
       ),
     );
   }
