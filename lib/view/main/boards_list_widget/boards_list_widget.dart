@@ -36,7 +36,7 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
         final boards = state.boards;
         final pins = state.pins;
         return Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: CustomScrollView(slivers: <Widget>[
             SliverList(
               delegate: SliverChildListDelegate([
