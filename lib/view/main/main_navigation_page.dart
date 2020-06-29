@@ -28,6 +28,9 @@ class MainNavigationPage extends StatefulWidget {
 
 class _MainNavigationPageState extends State<MainNavigationPage> {
   int _currentIndex = 0;
+  final double _bottomNavBarPosition = 32;
+  final double _bottomNavBarCornerRadius = 32;
+  final double _bottomNavBarHorizontalPadding = 48;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         Positioned(
           left: 0,
           right: 0,
-          bottom: 32,
+          bottom: _bottomNavBarPosition,
           child: _buildBottomNavigationBar(context),
         )
       ],
@@ -50,11 +53,13 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
       context: context,
       removeBottom: true,
       child: Container(
-        color: Colors.transparent,
-        padding: const EdgeInsets.symmetric(horizontal: 48),
+        padding:
+            EdgeInsets.symmetric(horizontal: _bottomNavBarHorizontalPadding),
         child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(32)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(_bottomNavBarCornerRadius)),
           child: BottomNavigationBar(
+            backgroundColor: AppColors.white,
             type: BottomNavigationBarType.fixed,
             selectedItemColor: AppColors.black,
             unselectedItemColor: Colors.grey,
