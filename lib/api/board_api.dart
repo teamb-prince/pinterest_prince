@@ -25,7 +25,7 @@ class DefaultBoardsApi extends BoardsApi {
 
   @override
   Future<List<BoardModel>> getBoards() async {
-    final response = await _apiClient.get('/boards');
+    final response = await _apiClient.get('/profile/boards');
     final list = (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((board) => BoardModel.fromJson(board))
         .toList();
