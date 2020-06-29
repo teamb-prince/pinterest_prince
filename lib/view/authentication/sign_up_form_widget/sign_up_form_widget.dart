@@ -17,19 +17,26 @@ class SignUpFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildScreen(context);
+    return BlocProvider<SignUpBloc>(
+        create: (context) => SignUpBloc(
+              RepositoryProvider.of<AuthRepository>(context),
+            ),
+        child: _buildScreen(context));
   }
 
   Widget _buildScreen(BuildContext context) {
-    return BlocProvider<SignUpBloc>(
-      create: (context) => SignUpBloc(
-        RepositoryProvider.of<AuthRepository>(context),
-      ),
-      child: Scaffold(
+    return BlocConsumer<SignUpBloc, SignUpState>(listener: (context, state) {
+      if (state is SuccessState) {
+        final userModel = state.userModel;
+        print(userModel.id);
+        Navigator.pushReplacementNamed(context, AppRoute.loginTop);
+      }
+    }, builder: (context, state) {
+      return Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
           brightness: Brightness.light,
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.black, //change your color here
           ),
           backgroundColor: AppColors.white,
@@ -55,8 +62,8 @@ class SignUpFormWidget extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildIdTextForm() {
@@ -144,34 +151,26 @@ class SignUpFormWidget extends StatelessWidget {
   }
 
   Widget _buildConfirmButton(BuildContext context) {
-    return BlocConsumer<SignUpBloc, SignUpState>(listener: (context, state) {
-      if (state is SuccessState) {
-        final userModel = state.userModel;
-        print(userModel.id);
-        Navigator.popUntil(context, ModalRoute.withName(AppRoute.loginTop));
-      }
-    }, builder: (context, state) {
-      return RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-            final request = SignUpRequestModel(
-              id: _id,
-              email: _email,
-              password: _password,
-              confirmPassword: _confirmPassword,
-            );
-            BlocProvider.of<SignUpBloc>(context)
-                .add(SignUp(signUpRequestModel: request));
-          }
-        },
-        textColor: AppColors.white,
-        color: AppColors.red,
-        child: const Text('保存'),
-      );
-    });
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      onPressed: () {
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState.save();
+          final request = SignUpRequestModel(
+            id: _id,
+            email: _email,
+            password: _password,
+            confirmPassword: _confirmPassword,
+          );
+          BlocProvider.of<SignUpBloc>(context)
+              .add(SignUp(signUpRequestModel: request));
+        }
+      },
+      textColor: AppColors.white,
+      color: AppColors.red,
+      child: const Text('保存'),
+    );
   }
 }
