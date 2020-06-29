@@ -93,12 +93,11 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
       return GestureDetector(
         onTap: () {
           final request = PinRequestModel(
-            userId: 'mrypq',
-            originalUserId: 'mrypq',
             url: args.linkUrl,
+            title: args.title,
             imageUrl: '',
             boardId: board.id,
-            description: 'てきとう',
+            description: args.description,
           );
           BlocProvider.of<SelectBoardFromLocalBloc>(context)
               .add(SavePin(image: args.image, pinRequestModel: request));
