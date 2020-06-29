@@ -15,7 +15,13 @@ class LoginFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildScreen(context);
+    return BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
+      if (state is SuccessState) {
+        Navigator.pushReplacementNamed(context, AppRoute.home);
+      }
+    }, builder: (context, state) {
+      return _buildScreen(context);
+    });
   }
 
   Widget _buildScreen(BuildContext context) {
@@ -98,30 +104,24 @@ class LoginFormWidget extends StatelessWidget {
   }
 
   Widget _buildConfirmButton(BuildContext context) {
-    return BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
-      if (state is SuccessState) {
-        Navigator.pushNamed(context, AppRoute.home);
-      }
-    }, builder: (context, state) {
-      return RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-            final request = LoginRequestModel(
-              id: _id,
-              password: _password,
-            );
-            BlocProvider.of<LoginBloc>(context)
-                .add(Login(loginRequestModel: request));
-          }
-        },
-        textColor: AppColors.white,
-        color: AppColors.red,
-        child: const Text('ログイン'),
-      );
-    });
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      onPressed: () {
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState.save();
+          final request = LoginRequestModel(
+            id: _id,
+            password: _password,
+          );
+          BlocProvider.of<LoginBloc>(context)
+              .add(Login(loginRequestModel: request));
+        }
+      },
+      textColor: AppColors.white,
+      color: AppColors.red,
+      child: const Text('ログイン'),
+    );
   }
 }

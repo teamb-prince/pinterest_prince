@@ -17,7 +17,15 @@ class SignUpFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildScreen(context);
+    return BlocConsumer<SignUpBloc, SignUpState>(listener: (context, state) {
+      if (state is SuccessState) {
+        final userModel = state.userModel;
+        print(userModel.id);
+        Navigator.pushReplacementNamed(context, AppRoute.loginTop);
+      }
+    }, builder: (context, state) {
+      return _buildScreen(context);
+    });
   }
 
   Widget _buildScreen(BuildContext context) {
@@ -144,34 +152,26 @@ class SignUpFormWidget extends StatelessWidget {
   }
 
   Widget _buildConfirmButton(BuildContext context) {
-    return BlocConsumer<SignUpBloc, SignUpState>(listener: (context, state) {
-      if (state is SuccessState) {
-        final userModel = state.userModel;
-        print(userModel.id);
-        Navigator.popUntil(context, ModalRoute.withName(AppRoute.loginTop));
-      }
-    }, builder: (context, state) {
-      return RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-            final request = SignUpRequestModel(
-              id: _id,
-              email: _email,
-              password: _password,
-              confirmPassword: _confirmPassword,
-            );
-            BlocProvider.of<SignUpBloc>(context)
-                .add(SignUp(signUpRequestModel: request));
-          }
-        },
-        textColor: AppColors.white,
-        color: AppColors.red,
-        child: const Text('保存'),
-      );
-    });
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      onPressed: () {
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState.save();
+          final request = SignUpRequestModel(
+            id: _id,
+            email: _email,
+            password: _password,
+            confirmPassword: _confirmPassword,
+          );
+          BlocProvider.of<SignUpBloc>(context)
+              .add(SignUp(signUpRequestModel: request));
+        }
+      },
+      textColor: AppColors.white,
+      color: AppColors.red,
+      child: const Text('保存'),
+    );
   }
 }
