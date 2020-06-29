@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/account_widget/account_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/home_widget.dart';
 import 'package:pintersest_clone/view/main/notification_widget/notification_widget.dart';
@@ -27,33 +28,55 @@ class MainNavigationPage extends StatefulWidget {
 
 class _MainNavigationPageState extends State<MainNavigationPage> {
   int _currentIndex = 0;
+  final double _bottomNavBarPosition = 32;
+  final double _bottomNavBarCornerRadius = 32;
+  final double _bottomNavBarHorizontalPadding = 48;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: mainPageDestinations[_currentIndex].body,
-      bottomNavigationBar: _buildBottomNavigationBar(),
-    );
+        body: Stack(
+      children: <Widget>[
+        mainPageDestinations[_currentIndex].body,
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: _bottomNavBarPosition,
+          child: _buildBottomNavigationBar(context),
+        )
+      ],
+    ));
   }
 
-  Widget _buildBottomNavigationBar() {
-    return Material(
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        currentIndex: _currentIndex,
-        items: mainPageDestinations
-            .map((item) => BottomNavigationBarItem(
-                  icon: Icon(item.iconData),
-                  title: Text(item.title),
-                ))
-            .toList(),
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    return MediaQuery.removePadding(
+      context: context,
+      removeBottom: true,
+      child: Container(
+        padding:
+            EdgeInsets.symmetric(horizontal: _bottomNavBarHorizontalPadding),
+        child: ClipRRect(
+          borderRadius:
+              BorderRadius.all(Radius.circular(_bottomNavBarCornerRadius)),
+          child: BottomNavigationBar(
+            backgroundColor: AppColors.white,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: AppColors.black,
+            unselectedItemColor: Colors.grey,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            currentIndex: _currentIndex,
+            items: mainPageDestinations
+                .map((item) => BottomNavigationBarItem(
+                      icon: Icon(item.iconData),
+                      title: Text(item.title),
+                    ))
+                .toList(),
+          ),
+        ),
       ),
     );
   }
