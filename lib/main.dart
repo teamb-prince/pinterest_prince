@@ -53,7 +53,7 @@ class Pinterest extends StatelessWidget {
           ),
           RepositoryProvider<AuthRepository>(
             create: (_) => AuthRepository(
-                DefaultAuthApi(apiClient), AuthenticationPreferences()),
+                DefaultAuthApi(apiClient), authenticationPreferences),
           ),
         ],
         child: MaterialApp(
