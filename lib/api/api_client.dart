@@ -41,7 +41,6 @@ class ApiClient {
               filename: 'image'));
     request.headers['token'] =
         await _authenticationPreferences.getAccessToken();
-    print(request.headers);
     final response = await request.send();
     return response.stream.bytesToString();
   }
