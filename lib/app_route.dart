@@ -1,5 +1,5 @@
 class AppRoute {
-  static const String home = '/';
+  static const String home = '/home';
   static const String pinDetail = '/pin_detail';
   static const String userDetail = '/user_detail';
   static const String inputUrl = '/input_url';
