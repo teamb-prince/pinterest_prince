@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/account_widget/account_widget.dart';
 import 'package:pintersest_clone/view/main/home_widget/home_widget.dart';
 import 'package:pintersest_clone/view/main/notification_widget/notification_widget.dart';
@@ -55,7 +56,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           borderRadius: const BorderRadius.all(Radius.circular(32)),
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            selectedItemColor: Theme.of(context).primaryColor,
+            selectedItemColor: AppColors.black,
             unselectedItemColor: Colors.grey,
             onTap: (index) {
               setState(() {

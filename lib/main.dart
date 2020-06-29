@@ -65,7 +65,6 @@ class Pinterest extends StatelessWidget {
           home: FutureBuilder<String>(
             future: authenticationPreferences.getAccessToken(),
             builder: (context, snapshot) {
-              authenticationPreferences.clearToken();
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Scaffold(
                   body: Center(
