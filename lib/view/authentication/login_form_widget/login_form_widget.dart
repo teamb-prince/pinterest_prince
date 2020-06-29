@@ -15,25 +15,24 @@ class LoginFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider<LoginBloc>(
+        create: (context) => LoginBloc(
+              RepositoryProvider.of<AuthRepository>(context),
+            ),
+        child: _buildScreen(context));
+  }
+
+  Widget _buildScreen(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
       if (state is SuccessState) {
         Navigator.pushReplacementNamed(context, AppRoute.home);
       }
     }, builder: (context, state) {
-      return _buildScreen(context);
-    });
-  }
-
-  Widget _buildScreen(BuildContext context) {
-    return BlocProvider<LoginBloc>(
-      create: (context) => LoginBloc(
-        RepositoryProvider.of<AuthRepository>(context),
-      ),
-      child: Scaffold(
+      return Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
           brightness: Brightness.light,
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.black, //change your color here
           ),
           backgroundColor: AppColors.white,
@@ -44,7 +43,7 @@ class LoginFormWidget extends StatelessWidget {
           ),
         ),
         body: Container(
-          padding: EdgeInsets.all(32),
+          padding: const EdgeInsets.all(32),
           child: Form(
             key: _formKey,
             child: ListView(
@@ -57,8 +56,8 @@ class LoginFormWidget extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildIdTextForm() {

@@ -17,6 +17,14 @@ class SignUpFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider<SignUpBloc>(
+        create: (context) => SignUpBloc(
+              RepositoryProvider.of<AuthRepository>(context),
+            ),
+        child: _buildScreen(context));
+  }
+
+  Widget _buildScreen(BuildContext context) {
     return BlocConsumer<SignUpBloc, SignUpState>(listener: (context, state) {
       if (state is SuccessState) {
         final userModel = state.userModel;
@@ -24,20 +32,11 @@ class SignUpFormWidget extends StatelessWidget {
         Navigator.pushReplacementNamed(context, AppRoute.loginTop);
       }
     }, builder: (context, state) {
-      return _buildScreen(context);
-    });
-  }
-
-  Widget _buildScreen(BuildContext context) {
-    return BlocProvider<SignUpBloc>(
-      create: (context) => SignUpBloc(
-        RepositoryProvider.of<AuthRepository>(context),
-      ),
-      child: Scaffold(
+      return Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
           brightness: Brightness.light,
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.black, //change your color here
           ),
           backgroundColor: AppColors.white,
@@ -63,8 +62,8 @@ class SignUpFormWidget extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildIdTextForm() {
