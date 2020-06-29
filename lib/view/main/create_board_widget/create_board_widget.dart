@@ -61,11 +61,8 @@ class _CreateBoardWidgetState extends State<CreateBoardWidget> {
         padding: const EdgeInsets.all(8),
         child: FlatButton(
           onPressed: () {
-            final boardRequest = BoardRequestModel(
-                userId: 'mrypq',
-                name: _textEditingController.text,
-                topicId: '8083e9df-e30e-457f-b853-2bb70fbb025b',
-                description: 'description');
+            final boardRequest =
+                BoardRequestModel(name: _textEditingController.text);
 
             BlocProvider.of<CreateBoardBloc>(context)
                 .add(SaveBoard(boardRequest));
