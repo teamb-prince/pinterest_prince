@@ -24,3 +24,12 @@ class ErrorState extends SignUpState {
   @override
   List<Object> get props => [exception];
 }
+
+class ConflictState extends SignUpState {
+  ConflictState(this.exception);
+
+  final Exception exception;
+
+  @override
+  List<Object> get props => [exception];
+}

@@ -60,6 +60,8 @@ class ApiClient {
       return ForbiddenServerError();
     } else if (statusCode == 404) {
       return NotFoundError(url);
+    } else if (statusCode == 409) {
+      return ConflictError();
     } else if (statusCode >= 500 && statusCode <= 599) {
       return UnknownServerError(errorResponse, statusCode);
     } else {
