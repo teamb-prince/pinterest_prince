@@ -30,11 +30,21 @@ import 'api/api_client.dart';
 import 'data/boards_repository.dart';
 import 'data/image_repository.dart';
 
-void main() {
-  runApp(Pinterest());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final authenticationPreferences = AuthenticationPreferences();
+  await authenticationPreferences.clearToken();
+  final token = await authenticationPreferences.getAccessToken();
+  final initialRoute =
+      token?.isNotEmpty ?? false ? AppRoute.home : AppRoute.loginTop;
+  runApp(Pinterest(initialRoute));
 }
 
 class Pinterest extends StatelessWidget {
+  const Pinterest(this.initialRoute);
+
+  final String initialRoute;
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -62,21 +72,7 @@ class Pinterest extends StatelessWidget {
             primarySwatch: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          home: FutureBuilder<String>(
-            future: authenticationPreferences.getAccessToken(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-              return snapshot.data?.isNotEmpty ?? false
-                  ? MainNavigationPage()
-                  : LoginTopWidget();
-            },
-          ),
+          initialRoute: initialRoute,
           routes: _configureRoutes(context),
         ));
   }
