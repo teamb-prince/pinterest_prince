@@ -22,6 +22,8 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   String _password = '';
   String _confirmPassword = '';
   bool _existSameId = false;
+  bool _obscurePassword = false;
+  bool _obscureConfirmPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
           ),
         ),
         body: Container(
-          padding: EdgeInsets.all(32),
+          padding: const EdgeInsets.all(32),
           child: Form(
             key: _formKey,
             child: ListView(
@@ -69,8 +71,6 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
 
   Widget _buildIdTextForm(BuildContext context) {
     return BlocConsumer<SignUpBloc, SignUpState>(listener: (context, state) {
-      print(state);
-
       if (state is ExistUserState) {
         setState(() {
           _existSameId = true;
@@ -79,7 +79,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
       }
     }, builder: (context, state) {
       return Padding(
-        padding: const EdgeInsets.only(top: 8, bottom: 8),
+        padding: EdgeInsets.only(top: 8, bottom: 8),
         child: TextFormField(
           decoration: const InputDecoration(
             labelText: 'id',
@@ -126,13 +126,23 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
 
   Widget _buildPasswordTextForm() {
     return Padding(
-      padding: EdgeInsets.only(top: 8, bottom: 8),
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
         controller: _passwordController,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           labelText: 'password',
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
+          suffixIcon: IconButton(
+            icon: Icon(
+                _obscurePassword ? Icons.visibility : Icons.visibility_off),
+            onPressed: () {
+              setState(() {
+                _obscurePassword = !_obscurePassword;
+              });
+            },
+          ),
         ),
+        obscureText: _obscurePassword,
         validator: (value) {
           if (value.isEmpty) {
             return 'passwordを入力してください';
@@ -152,10 +162,21 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           labelText: 'password',
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
+          suffixIcon: IconButton(
+            icon: Icon(_obscureConfirmPassword
+                ? Icons.visibility
+                : Icons.visibility_off),
+            onPressed: () {
+              setState(() {
+                _obscureConfirmPassword = !_obscureConfirmPassword;
+              });
+            },
+          ),
         ),
+        obscureText: _obscureConfirmPassword,
         validator: (value) {
           if (value.isEmpty) {
             return '確認用のpasswordを入力してください';
@@ -201,7 +222,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
         },
         textColor: AppColors.white,
         color: AppColors.red,
-        child: const Text('保存'),
+        child: Text('保存'),
       );
     });
   }
