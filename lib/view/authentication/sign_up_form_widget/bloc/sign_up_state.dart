@@ -25,8 +25,8 @@ class ErrorState extends SignUpState {
   List<Object> get props => [exception];
 }
 
-class ConflictState extends SignUpState {
-  ConflictState(this.exception);
+class ExistUserState extends SignUpState {
+  ExistUserState(this.exception);
 
   final Exception exception;
 

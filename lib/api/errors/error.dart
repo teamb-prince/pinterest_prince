@@ -31,11 +31,6 @@ class UnauthorizedError implements DefaultError {
   String getMessage() => '(401) Unauthorized connection';
 }
 
-class ConflictError implements DefaultError {
-  @override
-  String getMessage() => '(409) Conflict';
-}
-
 class UnknownClientError implements DefaultError {
   UnknownClientError(this._error);
 

@@ -21,9 +21,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
             await _authRepository.signUp(event.signUpRequestModel);
 
         yield SuccessState(userModel);
-      } on ConflictError catch (e) {
+      } on ForbiddenServerError catch (e) {
         print(e);
-        yield ConflictState(e);
+        yield ExistUserState(e);
       } on Exception catch (e) {
         print(e);
         yield ErrorState(e);
