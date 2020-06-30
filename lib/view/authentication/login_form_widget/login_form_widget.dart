@@ -71,6 +71,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
+        key: const Key('login_id_text_form'),
         decoration: const InputDecoration(
           labelText: 'id',
           border: OutlineInputBorder(),
@@ -99,6 +100,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       return Padding(
         padding: const EdgeInsets.only(top: 8, bottom: 8),
         child: TextFormField(
+          key: const Key('login_password_text_form'),
           obscureText: _obscurePassword,
           decoration: InputDecoration(
             labelText: 'password',
@@ -131,6 +133,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
   Widget _buildConfirmButton(BuildContext context) {
     return RaisedButton(
+      key: const Key('login_confirm_button'),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),

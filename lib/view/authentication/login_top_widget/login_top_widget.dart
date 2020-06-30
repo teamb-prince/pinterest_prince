@@ -43,6 +43,7 @@ class LoginTopWidget extends StatelessWidget {
   Widget _buildCreateAccountButton(BuildContext context) {
     return RedButton(
       title: 'アカウントを無料登録',
+      key: const Key('signup_button'),
       onPressedCallback: () {
         Navigator.pushNamed(context, AppRoute.createAccount);
       },
@@ -51,6 +52,7 @@ class LoginTopWidget extends StatelessWidget {
 
   Widget _buildLoginButton(BuildContext context) {
     return FlatButton(
+      key: const Key('login_button'),
       child: const Text(
         'ログイン',
         style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
