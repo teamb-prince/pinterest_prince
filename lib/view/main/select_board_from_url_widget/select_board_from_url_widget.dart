@@ -72,7 +72,7 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
             return Container(
               child: ListView.builder(
                 itemBuilder: (context, index) => index == boards.length
-                    ? _buildAddNewBoardButton()
+                    ? _buildAddNewBoardButton(context)
                     : _buildBoardTile(context, boards[index], args),
                 itemCount: boards.length + 1,
               ),
@@ -129,20 +129,25 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildAddNewBoardButton() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: <Widget>[
-          const CircleAvatar(
-            backgroundColor: AppColors.red,
-            child: Icon(Icons.add, color: AppColors.white),
+  Widget _buildAddNewBoardButton(BuildContext context) {
+    return GestureDetector(
+        onTap: () async {
+          await Navigator.of(context).pushNamed(AppRoute.createBoard);
+          BlocProvider.of<SelectBoardFromUrlBloc>(context).add(LoadData());
+        },
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: <Widget>[
+              const CircleAvatar(
+                backgroundColor: AppColors.red,
+                child: Icon(Icons.add, color: AppColors.white),
+              ),
+              const SizedBox(width: 16),
+              const Text('新規ボードを作成',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ],
           ),
-          const SizedBox(width: 16),
-          const Text('新規ボードを作成',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
+        ));
   }
 }

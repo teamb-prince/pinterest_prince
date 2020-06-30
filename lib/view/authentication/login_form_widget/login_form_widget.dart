@@ -18,6 +18,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   String _id = '';
   String _password = '';
   bool _existError = false;
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -96,11 +97,21 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       }
     }, builder: (context, state) {
       return Padding(
-        padding: EdgeInsets.only(top: 8, bottom: 8),
+        padding: const EdgeInsets.only(top: 8, bottom: 8),
         child: TextFormField(
-          decoration: const InputDecoration(
+          obscureText: _obscurePassword,
+          decoration: InputDecoration(
             labelText: 'password',
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
+            suffixIcon: IconButton(
+              icon: Icon(
+                  _obscurePassword ? Icons.visibility : Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  _obscurePassword = !_obscurePassword;
+                });
+              },
+            ),
           ),
           validator: (value) {
             if (value.isEmpty) {
