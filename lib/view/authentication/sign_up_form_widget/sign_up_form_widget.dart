@@ -22,8 +22,8 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   String _password = '';
   String _confirmPassword = '';
   bool _existSameId = false;
-  bool _obscurePassword = false;
-  bool _obscureConfirmPassword = false;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   Widget build(BuildContext context) {
