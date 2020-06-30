@@ -34,6 +34,6 @@ class DefaultAuthApi extends AuthApi {
 
   @override
   Future<void> signOut() async {
-    await _apiClient.post('logout');
+    await _apiClient.post('/logout');
   }
 }
