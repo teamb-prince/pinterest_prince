@@ -73,15 +73,20 @@ class HomeWidget extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state is LoadedState) {
         final pins = state.pins;
-        return StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.all(8),
-          primary: false,
-          crossAxisCount: 4,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-          itemBuilder: (context, index) => _getChild(context, pins[index]),
-          staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
-          itemCount: pins.length,
+        return RefreshIndicator(
+          onRefresh: () async {
+            BlocProvider.of<HomeBloc>(context).add(LoadData());
+          },
+          child: StaggeredGridView.countBuilder(
+            padding: const EdgeInsets.all(8),
+            primary: false,
+            crossAxisCount: 4,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            itemBuilder: (context, index) => _getChild(context, pins[index]),
+            staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+            itemCount: pins.length,
+          ),
         );
       }
       return Container();
