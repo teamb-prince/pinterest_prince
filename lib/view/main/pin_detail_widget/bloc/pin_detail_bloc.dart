@@ -21,7 +21,7 @@ class PinDetailBloc extends Bloc<PinDetailEvent, PinDetailState> {
       yield LoadingState();
       UserModel user;
       try {
-        // ここのuserの扱いが若干怖い
+        // ここのuserの扱いが若干怖い。そもそもエラーにgetPinの404エラーでLoadedStateを判定しているのが若干怪しい気もする…
         user = await _usersRepository.getUser(event.userId);
 
         final tokenUser = await _usersRepository.getAccountInfo();
@@ -30,10 +30,8 @@ class PinDetailBloc extends Bloc<PinDetailEvent, PinDetailState> {
 
         yield LoadedState(user, true);
       } on NotFoundError catch (e) {
-        print(e);
         yield LoadedState(user, false);
       } on Exception catch (e) {
-        print(e);
         yield ErrorState(e);
       }
     }

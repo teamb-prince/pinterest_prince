@@ -315,7 +315,6 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     return BlocBuilder<PinDetailBloc, PinDetailState>(
       builder: (context, state) {
         if (state is LoadedState) {
-          print(state.userModel);
           final user = state.userModel;
           return _buildUser(user);
         } else if (state is NoDataState) {

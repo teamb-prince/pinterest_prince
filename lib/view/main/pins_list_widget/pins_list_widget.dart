@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
-
-import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 import 'package:pintersest_clone/view/main/pins_list_widget/bloc/pins_list_bloc.dart';
 
@@ -139,9 +138,6 @@ class _PinsListWidgetState extends State<PinsListWidget> {
         onTap: () {
           Navigator.of(context).pushNamed(AppRoute.pinDetail,
               arguments: PinDetailWidgetArguments(pin));
-          /*
-          Navigator.pushNamed(context, AppRoute.pinDetail,
-              arguments: PinDetailWidgetArguments(pin));*/
         },
         child: Container(
           child: Column(
