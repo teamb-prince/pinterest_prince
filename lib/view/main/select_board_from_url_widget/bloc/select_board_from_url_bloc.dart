@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_event.dart';
 import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_state.dart';
 
@@ -21,10 +22,16 @@ class SelectBoardFromUrlBloc
       yield LoadingState();
       try {
         final boards = await _boardsRepository.getBoards();
+        final pins = <String, List<PinModel>>{};
+        boards.forEach((board) async {
+          pins[board.id] =
+              await _pinsRepository.getPins(boardId: board.id, limit: 1);
+        });
+
         if (boards.isEmpty) {
           yield NoDataState();
         } else {
-          yield LoadedState(boards);
+          yield LoadedState(boards, pins);
         }
       } on Exception catch (e) {
         yield ErrorState(e);
