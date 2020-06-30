@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pintersest_clone/data/auth_repository.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/main/settting_widget/bloc/setting_bloc.dart';
+import 'package:pintersest_clone/view/main/settting_widget/bloc/setting_state.dart';
 
 class SettingItem {
   SettingItem({@required this.iconData, @required this.text});
@@ -15,6 +19,13 @@ final List<SettingItem> settingItems = [
 class SettingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return BlocProvider<SettingBloc>(
+      create: (context) => SettingBloc(context.repository<AuthRepository>()),
+      child: _buildScreen(context),
+    );
+  }
+
+  Widget _buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -30,18 +41,20 @@ class SettingWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildScreen(BuildContext context) {
-    return Container();
-  }
-
   Widget _buildListView(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        itemBuilder: (context, index) =>
-            _buildListTile(context, settingItems[index]),
-        itemCount: settingItems.length,
-      ),
-    );
+    return BlocListener<SettingBloc, SettingState>(
+        listener: (context, state) {
+          if (state is SuccessState) {
+            print('logged out');
+          }
+        },
+        child: Container(
+          child: ListView.builder(
+            itemBuilder: (context, index) =>
+                _buildListTile(context, settingItems[index]),
+            itemCount: settingItems.length,
+          ),
+        ));
   }
 
   Widget _buildListTile(BuildContext context, SettingItem settingItem) {
