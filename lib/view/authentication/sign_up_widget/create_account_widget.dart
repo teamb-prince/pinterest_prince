@@ -36,6 +36,7 @@ class SignUpWidget extends StatelessWidget {
       children: [
         RedButton(
           title: 'メールアドレスで続行',
+          key: const Key('create_account_from_mail_button'),
           onPressedCallback: () {
             Navigator.pushNamed(context, AppRoute.signupForm);
           },

@@ -85,6 +85,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
+        key: const Key('id_text_form'),
         decoration: const InputDecoration(
           labelText: 'id',
           border: OutlineInputBorder(),
@@ -108,6 +109,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
+        key: const Key('email_text_form'),
         decoration: const InputDecoration(
           labelText: 'email',
           border: OutlineInputBorder(),
@@ -132,6 +134,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
         controller: _passwordController,
+        key: const Key('password_text_form'),
         decoration: InputDecoration(
           labelText: 'password',
           border: const OutlineInputBorder(),
@@ -165,6 +168,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
+        key: const Key('confirm_password_text_form'),
         decoration: InputDecoration(
           labelText: 'password',
           border: const OutlineInputBorder(),
@@ -199,6 +203,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
 
   Widget _buildConfirmButton(BuildContext context) {
     return RaisedButton(
+      key: const Key('confirm_button'),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
