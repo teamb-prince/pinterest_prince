@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/app_route.dart';
@@ -8,12 +9,21 @@ import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/si
 import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_event.dart';
 import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_state.dart';
 
-class SignUpFormWidget extends StatelessWidget {
+class SignUpFormWidget extends StatefulWidget {
+  @override
+  _SignUpFormWidgetState createState() => _SignUpFormWidgetState();
+}
+
+class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   final _formKey = GlobalKey<FormState>();
+  final _passwordController = TextEditingController();
   String _id = '';
   String _email = '';
   String _password = '';
   String _confirmPassword = '';
+  bool _existSameId = false;
+  bool _obscurePassword = false;
+  bool _obscureConfirmPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +40,11 @@ class SignUpFormWidget extends StatelessWidget {
         final userModel = state.userModel;
         print(userModel.id);
         Navigator.pushReplacementNamed(context, AppRoute.loginTop);
+      } else if (state is ExistUserState) {
+        setState(() {
+          _existSameId = true;
+          _formKey.currentState.validate();
+        });
       }
     }, builder: (context, state) {
       return Scaffold(
@@ -47,13 +62,13 @@ class SignUpFormWidget extends StatelessWidget {
           ),
         ),
         body: Container(
-          padding: EdgeInsets.all(32),
+          padding: const EdgeInsets.all(32),
           child: Form(
             key: _formKey,
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: 16),
               children: [
-                _buildIdTextForm(),
+                _buildIdTextForm(context),
                 _buildEmailTextForm(),
                 _buildPasswordTextForm(),
                 _buildConfirmPasswordTextForm(),
@@ -66,7 +81,7 @@ class SignUpFormWidget extends StatelessWidget {
     });
   }
 
-  Widget _buildIdTextForm() {
+  Widget _buildIdTextForm(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
@@ -77,6 +92,8 @@ class SignUpFormWidget extends StatelessWidget {
         validator: (value) {
           if (value.isEmpty) {
             return 'idを入力してください';
+          } else if (_existSameId) {
+            return '同じidを使用しているユーザーがいます';
           }
           return null;
         },
@@ -98,6 +115,8 @@ class SignUpFormWidget extends StatelessWidget {
         validator: (value) {
           if (value.isEmpty) {
             return 'emailを入力してください';
+          } else if (!EmailValidator.validate(value)) {
+            return '正しいemailを入力してください';
           }
           return null;
         },
@@ -110,15 +129,28 @@ class SignUpFormWidget extends StatelessWidget {
 
   Widget _buildPasswordTextForm() {
     return Padding(
-      padding: EdgeInsets.only(top: 8, bottom: 8),
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
-        decoration: const InputDecoration(
+        controller: _passwordController,
+        decoration: InputDecoration(
           labelText: 'password',
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
+          suffixIcon: IconButton(
+            icon: Icon(
+                _obscurePassword ? Icons.visibility : Icons.visibility_off),
+            onPressed: () {
+              setState(() {
+                _obscurePassword = !_obscurePassword;
+              });
+            },
+          ),
         ),
+        obscureText: _obscurePassword,
         validator: (value) {
           if (value.isEmpty) {
             return 'passwordを入力してください';
+          } else if (value.length < 5) {
+            return 'パスワードが短すぎます';
           }
           return null;
         },
@@ -131,15 +163,30 @@ class SignUpFormWidget extends StatelessWidget {
 
   Widget _buildConfirmPasswordTextForm() {
     return Padding(
-      padding: EdgeInsets.only(top: 8, bottom: 8),
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           labelText: 'password',
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
+          suffixIcon: IconButton(
+            icon: Icon(_obscureConfirmPassword
+                ? Icons.visibility
+                : Icons.visibility_off),
+            onPressed: () {
+              setState(() {
+                _obscureConfirmPassword = !_obscureConfirmPassword;
+              });
+            },
+          ),
         ),
+        obscureText: _obscureConfirmPassword,
         validator: (value) {
           if (value.isEmpty) {
             return '確認用のpasswordを入力してください';
+          } else if (value.length < 5) {
+            return 'パスワードが短すぎます';
+          } else if (value != _passwordController.text) {
+            return 'パスワードが一致していません';
           }
           return null;
         },
@@ -156,6 +203,9 @@ class SignUpFormWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       onPressed: () {
+        setState(() {
+          _existSameId = false;
+        });
         if (_formKey.currentState.validate()) {
           _formKey.currentState.save();
           final request = SignUpRequestModel(
@@ -170,7 +220,7 @@ class SignUpFormWidget extends StatelessWidget {
       },
       textColor: AppColors.white,
       color: AppColors.red,
-      child: const Text('保存'),
+      child: Text('保存'),
     );
   }
 }

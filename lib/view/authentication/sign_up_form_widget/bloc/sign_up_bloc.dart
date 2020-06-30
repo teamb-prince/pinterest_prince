@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:pintersest_clone/api/errors/error.dart';
 import 'package:pintersest_clone/data/auth_repository.dart';
 import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_event.dart';
 import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_state.dart';
@@ -20,8 +21,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
             await _authRepository.signUp(event.signUpRequestModel);
 
         yield SuccessState(userModel);
+      } on ForbiddenServerError catch (e) {
+        yield ExistUserState(e);
       } on Exception catch (e) {
-        print(e);
         yield ErrorState(e);
       }
     }
