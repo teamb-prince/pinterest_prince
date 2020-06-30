@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pintersest_clone/app_route.dart';
+import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/board_model.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/main/board_detail_widget/bloc/board_detail_bloc.dart';
+import 'package:pintersest_clone/view/main/board_detail_widget/bloc/board_detail_event.dart';
+import 'package:pintersest_clone/view/main/board_detail_widget/bloc/board_detail_state.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 
 class BoardDetailArgs {
-  BoardDetailArgs({@required this.board, @required this.pins});
+  BoardDetailArgs({@required this.board});
 
   final BoardModel board;
-  final List<PinModel> pins;
 }
 
 class BoardDetailWidget extends StatelessWidget {
@@ -28,29 +32,36 @@ class BoardDetailWidget extends StatelessWidget {
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.black),
       ),
-      body: _buildScreen(context, args.pins),
+      body: BlocProvider(
+        create: (context) =>
+            BoardDetailBloc(RepositoryProvider.of<PinsRepository>(context))
+              ..add(LoadPins(boardId: args.board.id)),
+        child: _buildScreen(context),
+      ),
     );
   }
 
-  Widget _buildScreen(BuildContext context, List<PinModel> pins) {
-    return _buildStaggeredGridView(pins);
+  Widget _buildScreen(BuildContext context) {
+    return _buildStaggeredGridView();
   }
 
-  Widget _buildHeader(BoardModel board) {
-    return Text(board.name);
-  }
-
-  Widget _buildStaggeredGridView(List<PinModel> pins) {
-    return StaggeredGridView.countBuilder(
-      padding: const EdgeInsets.all(8),
-      primary: false,
-      crossAxisCount: 4,
-      crossAxisSpacing: 8,
-      mainAxisSpacing: 8,
-      itemBuilder: (context, index) => _getChild(context, pins[index]),
-      staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
-      itemCount: pins.length,
-    );
+  Widget _buildStaggeredGridView() {
+    return BlocBuilder<BoardDetailBloc, BoardDetailState>(
+        builder: (context, state) {
+      if (state is LoadedState) {
+        return StaggeredGridView.countBuilder(
+            padding: const EdgeInsets.all(8),
+            primary: false,
+            crossAxisCount: 4,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            itemBuilder: (context, index) =>
+                _getChild(context, state.pins[index]),
+            staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+            itemCount: state.pins.length);
+      }
+      return Container();
+    });
   }
 
   Widget _getChild(BuildContext context, PinModel pin) {

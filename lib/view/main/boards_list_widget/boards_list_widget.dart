@@ -71,9 +71,7 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushNamed(AppRoute.boardDetail,
-                        arguments: BoardDetailArgs(
-                            board: boards[index],
-                            pins: pins[boards[index].id]));
+                        arguments: BoardDetailArgs(board: boards[index]));
                   },
                   child: BoardTile(
                       board: boards[index], pins: pins[boards[index].id]),
