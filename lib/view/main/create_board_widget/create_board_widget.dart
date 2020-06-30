@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/model/board_request_model.dart';
-import 'package:pintersest_clone/app_route.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/common_widget/base_text_field.dart';
 import 'package:pintersest_clone/view/main/create_board_widget/bloc/create_board_state.dart';
 
@@ -31,7 +30,7 @@ class _CreateBoardWidgetState extends State<CreateBoardWidget> {
     return BlocConsumer<CreateBoardBloc, CreateBoardState>(
         listener: (context, state) {
       if (state is SuccessState) {
-        Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
+        Navigator.pop(context);
       }
     }, builder: (context, state) {
       return Scaffold(
