@@ -44,25 +44,24 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
         as SelectBoardFromLocalArguments;
 
     return BlocConsumer<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
-      listener: (context, state) {
-        if (state is SavedPinState) {
-          Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title:
-                const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
-            backgroundColor: AppColors.white,
-            iconTheme: const IconThemeData(color: AppColors.black),
-            brightness: Brightness.light,
-            elevation: 0,
-          ),
-          body: _buildBoardsListView(args),
-        );
-      },
-    );
+        listener: (context, state) {
+      if (state is SavedPinState) {
+        Navigator.popUntil(context, ModalRoute.withName(AppRoute.home));
+      }
+    }, builder: (context, state) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
+          backgroundColor: AppColors.white,
+          iconTheme: const IconThemeData(color: AppColors.black),
+          brightness: Brightness.light,
+          elevation: 0,
+        ),
+        body: state is LoadingState
+            ? const Center(child: CircularProgressIndicator())
+            : _buildBoardsListView(args),
+      );
+    });
   }
 
   Widget _buildBoardsListView(SelectBoardFromLocalArguments args) {

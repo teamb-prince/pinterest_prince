@@ -58,7 +58,9 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
           brightness: Brightness.light,
           elevation: 0,
         ),
-        body: _buildBoardsListView(args),
+        body: state is LoadingState
+            ? const Center(child: CircularProgressIndicator())
+            : _buildBoardsListView(args),
       );
     });
   }
