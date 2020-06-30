@@ -52,7 +52,7 @@ class _PinsListWidgetState extends State<PinsListWidget> {
       if (state is LoadedState) {
         final pins = state.pins;
         return Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: CustomScrollView(slivers: <Widget>[
             SliverList(
               delegate: SliverChildListDelegate([
