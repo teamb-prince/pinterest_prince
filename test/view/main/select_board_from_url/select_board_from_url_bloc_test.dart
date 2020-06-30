@@ -31,7 +31,6 @@ void main() {
     imageUrl: 'imageUrl',
     title: 'title',
     description: 'description',
-    board: 'boardId',
   );
 
   group('SelectBoardFromUrlBloc test', () {
