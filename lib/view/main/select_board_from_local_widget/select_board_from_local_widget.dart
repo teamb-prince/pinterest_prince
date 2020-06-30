@@ -7,6 +7,7 @@ import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/board_model.dart';
+import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 
@@ -70,12 +71,12 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
         builder: (context, state) {
           if (state is LoadedState) {
             final boards = state.boards;
-
+            final pins = state.pins;
             return Container(
               child: ListView.builder(
                 itemBuilder: (context, index) => index == boards.length
                     ? _buildAddNewBoardButton(context)
-                    : _buildBoardTile(context, boards[index], args),
+                    : _buildBoardTile(context, boards[index], pins, args),
                 itemCount: boards.length + 1,
               ),
             );
@@ -87,9 +88,12 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
   }
 
   Widget _buildBoardTile(BuildContext context, BoardModel board,
-      SelectBoardFromLocalArguments args) {
+      Map<String, List<PinModel>> pins, SelectBoardFromLocalArguments args) {
     return BlocBuilder<SelectBoardFromLocalBloc, SelectBoardFromLocalState>(
         builder: (context, state) {
+      final pinImageUrl =
+          pins[board.id].isNotEmpty ? pins[board.id][0].imageUrl : null;
+
       return GestureDetector(
         onTap: () {
           final request = PinRequestModel(
@@ -102,12 +106,12 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
           BlocProvider.of<SelectBoardFromLocalBloc>(context)
               .add(SavePin(image: args.image, pinRequestModel: request));
         },
-        child: _buildTile(board),
+        child: _buildTile(board, pinImageUrl),
       );
     });
   }
 
-  Widget _buildTile(BoardModel board) {
+  Widget _buildTile(BoardModel board, String pinImageUrl) {
     return Container(
       padding: const EdgeInsets.all(8),
       child: Row(
@@ -117,10 +121,9 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
               width: _iconImageSize,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                    // 適当な画像です。
-                    'https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349',
-                    fit: BoxFit.cover),
+                child: pinImageUrl == null
+                    ? Container(color: AppColors.grey)
+                    : Image.network(pinImageUrl, fit: BoxFit.cover),
               )),
           const SizedBox(width: 16),
           Text(board.name,
