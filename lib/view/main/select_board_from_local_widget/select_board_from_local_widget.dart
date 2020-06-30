@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/board_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 
-import 'package:pintersest_clone/app_route.dart';
 import 'bloc/select_board_from_local_bloc.dart';
 import 'bloc/select_board_from_local_event.dart';
 import 'bloc/select_board_from_local_state.dart';
@@ -74,7 +74,7 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
             return Container(
               child: ListView.builder(
                 itemBuilder: (context, index) => index == boards.length
-                    ? _buildAddNewBoardButton()
+                    ? _buildAddNewBoardButton(context)
                     : _buildBoardTile(context, boards[index], args),
                 itemCount: boards.length + 1,
               ),
@@ -131,19 +131,25 @@ class SelectBoardFromLocalWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildAddNewBoardButton() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: <Widget>[
-          const CircleAvatar(
-            backgroundColor: AppColors.red,
-            child: Icon(Icons.add, color: AppColors.white),
-          ),
-          const SizedBox(width: 16),
-          const Text('新規ボードを作成',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        ],
+  Widget _buildAddNewBoardButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        await Navigator.of(context).pushNamed(AppRoute.createBoard);
+        BlocProvider.of<SelectBoardFromLocalBloc>(context).add(LoadBoards());
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: <Widget>[
+            const CircleAvatar(
+              backgroundColor: AppColors.red,
+              child: Icon(Icons.add, color: AppColors.white),
+            ),
+            const SizedBox(width: 16),
+            const Text('新規ボードを作成',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ],
+        ),
       ),
     );
   }
