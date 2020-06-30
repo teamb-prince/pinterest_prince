@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/view/main/select_board_from_local_widget/bloc/select_board_from_local_event.dart';
 import 'package:pintersest_clone/view/main/select_board_from_local_widget/bloc/select_board_from_local_state.dart';
 
@@ -29,11 +30,17 @@ class SelectBoardFromLocalBloc
     yield LoadingState();
     try {
       final boards = await _boardsRepository.getBoards();
+      final pins = <String, List<PinModel>>{};
+      for (var i = 0; i < boards.length; i++) {
+        pins[boards[i].id] =
+            await _pinsRepository.getPins(boardId: boards[i].id, limit: 1);
+      }
+
       if (boards.isEmpty) {
         yield NoBoardsState();
-      } else {
-        yield LoadedState(boards);
       }
+
+      yield LoadedState(boards, pins);
     } on Exception catch (e) {
       yield ErrorState(e);
     }

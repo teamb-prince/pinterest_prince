@@ -23,16 +23,15 @@ class SelectBoardFromUrlBloc
       try {
         final boards = await _boardsRepository.getBoards();
         final pins = <String, List<PinModel>>{};
-        boards.forEach((board) async {
-          pins[board.id] =
-              await _pinsRepository.getPins(boardId: board.id, limit: 1);
-        });
+        for (var i = 0; i < boards.length; i++) {
+          pins[boards[i].id] =
+              await _pinsRepository.getPins(boardId: boards[i].id, limit: 1);
+        }
 
         if (boards.isEmpty) {
           yield NoDataState();
-        } else {
-          yield LoadedState(boards, pins);
         }
+        yield LoadedState(boards, pins);
       } on Exception catch (e) {
         yield ErrorState(e);
       }
