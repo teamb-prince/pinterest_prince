@@ -26,6 +26,7 @@ import 'package:pintersest_clone/view/main/main_navigation_page.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 import 'package:pintersest_clone/view/main/select_board_from_local_widget/select_board_from_local_widget.dart';
 import 'package:pintersest_clone/view/main/select_board_from_url_widget/select_board_from_url_widget.dart';
+import 'package:pintersest_clone/view/main/settting_widget/setting_widget.dart';
 import 'package:pintersest_clone/view/main/user_detail_widget/user_detail_widget.dart';
 
 import 'api/api_client.dart';
@@ -83,22 +84,28 @@ class Pinterest extends StatelessWidget {
 
   Map<String, WidgetBuilder> _configureRoutes(BuildContext context) {
     return {
-      AppRoute.home: (context) => MainNavigationPage(),
-      AppRoute.pinDetail: (context) => PinDetailWidget(),
-      AppRoute.userDetail: (context) => UserDetailWidget(),
-      AppRoute.inputUrl: (context) => InputUrlWidget(),
-      AppRoute.crawlingImage: (context) => CrawlingImageWidget(),
+      // Authentication
       AppRoute.loginTop: (context) => LoginTopWidget(),
-      AppRoute.createAccount: (context) => SignUpWidget(),
       AppRoute.login: (context) => LoginWidget(),
+      AppRoute.loginForm: (context) => LoginFormWidget(),
+      AppRoute.createAccount: (context) => SignUpWidget(),
+      AppRoute.signupForm: (context) => SignUpFormWidget(),
+
+      // Main
+      AppRoute.home: (context) => MainNavigationPage(),
+      AppRoute.userDetail: (context) => UserDetailWidget(),
+      AppRoute.pinDetail: (context) => PinDetailWidget(),
+      AppRoute.boardDetail: (context) => BoardDetailWidget(),
       AppRoute.createPin: (context) => CreatePinWidget(),
       AppRoute.createBoard: (context) => CreateBoardWidget(),
+      AppRoute.inputUrl: (context) => InputUrlWidget(),
+      AppRoute.crawlingImage: (context) => CrawlingImageWidget(),
       AppRoute.editCrawlingImage: (context) => EditCrawlingImageWidget(),
       AppRoute.selectBoardFromLocal: (context) => SelectBoardFromLocalWidget(),
       AppRoute.selectBoardFromUrl: (context) => SelectBoardFromUrlWidget(),
-      AppRoute.signupForm: (context) => SignUpFormWidget(),
-      AppRoute.loginForm: (context) => LoginFormWidget(),
-      AppRoute.boardDetail: (context) => BoardDetailWidget(),
+
+      // Others
+      AppRoute.setting: (context) => SettingWidget(),
     };
   }
 }
