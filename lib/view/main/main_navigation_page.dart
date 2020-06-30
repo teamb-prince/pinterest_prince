@@ -37,7 +37,11 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
     return Scaffold(
         body: Stack(
       children: <Widget>[
-        mainPageDestinations[_currentIndex].body,
+        IndexedStack(
+            index: _currentIndex,
+            children: mainPageDestinations
+                .map((destination) => destination.body)
+                .toList()),
         Positioned(
           left: 0,
           right: 0,
