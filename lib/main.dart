@@ -5,9 +5,11 @@ import 'package:pintersest_clone/api/auth_api.dart';
 import 'package:pintersest_clone/api/board_api.dart';
 import 'package:pintersest_clone/api/image_api.dart';
 import 'package:pintersest_clone/api/pins_api.dart';
+import 'package:pintersest_clone/api/users_api.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/auth_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/data/users_repository.dart';
 import 'package:pintersest_clone/util/authentication_preferences.dart';
 import 'package:pintersest_clone/view/authentication//login_top_widget/login_top_widget.dart';
 import 'package:pintersest_clone/view/authentication//login_widget/login_widget.dart';
@@ -59,6 +61,9 @@ class Pinterest extends StatelessWidget {
           ),
           RepositoryProvider<BoardsRepository>(
             create: (_) => BoardsRepository(DefaultBoardsApi(apiClient)),
+          ),
+          RepositoryProvider<UsersRepository>(
+            create: (_) => UsersRepository(DefaultUsersApi(apiClient)),
           ),
           RepositoryProvider<AuthRepository>(
             create: (_) => AuthRepository(
