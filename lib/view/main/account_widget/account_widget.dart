@@ -39,6 +39,12 @@ class AccountWidget extends StatelessWidget {
               elevation: 0,
               backgroundColor: Colors.white,
               leading: _buildAccountIcon(context, state.user),
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.settings, color: AppColors.black),
+                )
+              ],
               bottom: const TabBar(
                 indicator:
                     RoundedTabIndicator(height: 40, color: AppColors.black),
