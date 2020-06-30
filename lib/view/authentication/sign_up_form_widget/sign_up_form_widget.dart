@@ -40,6 +40,11 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
         final userModel = state.userModel;
         print(userModel.id);
         Navigator.pushReplacementNamed(context, AppRoute.loginTop);
+      } else if (state is ExistUserState) {
+        setState(() {
+          _existSameId = true;
+          _formKey.currentState.validate();
+        });
       }
     }, builder: (context, state) {
       return Scaffold(
@@ -77,35 +82,26 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   }
 
   Widget _buildIdTextForm(BuildContext context) {
-    return BlocConsumer<SignUpBloc, SignUpState>(listener: (context, state) {
-      if (state is ExistUserState) {
-        setState(() {
-          _existSameId = true;
-          _formKey.currentState.validate();
-        });
-      }
-    }, builder: (context, state) {
-      return Padding(
-        padding: EdgeInsets.only(top: 8, bottom: 8),
-        child: TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'id',
-            border: OutlineInputBorder(),
-          ),
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'idを入力してください';
-            } else if (_existSameId) {
-              return '同じidを使用しているユーザーがいます';
-            }
-            return null;
-          },
-          onSaved: (value) {
-            _id = value;
-          },
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'id',
+          border: OutlineInputBorder(),
         ),
-      );
-    });
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'idを入力してください';
+          } else if (_existSameId) {
+            return '同じidを使用しているユーザーがいます';
+          }
+          return null;
+        },
+        onSaved: (value) {
+          _id = value;
+        },
+      ),
+    );
   }
 
   Widget _buildEmailTextForm() {

@@ -22,13 +22,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
         yield SuccessState(userModel);
       } on ForbiddenServerError catch (e) {
-        print(e);
         yield ExistUserState(e);
       } on Exception catch (e) {
-        print(e);
         yield ErrorState(e);
-      } finally {
-        print(state);
       }
     }
   }
