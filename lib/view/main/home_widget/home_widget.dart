@@ -20,7 +20,10 @@ class HomeWidget extends StatelessWidget {
     return BlocProvider<HomeBloc>(
       create: (context) =>
           HomeBloc(context.repository<PinsRepository>())..add(LoadData()),
-      child: _buildScreen(context),
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: _buildScreen(context),
+      ),
     );
   }
 

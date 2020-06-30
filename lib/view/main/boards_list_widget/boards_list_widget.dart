@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
@@ -33,6 +34,21 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
   Widget _buildScrollView(BuildContext context) {
     return BlocBuilder<BoardsListBloc, BoardsListState>(
         builder: (context, state) {
+      if (state is LoadingState) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      if (state is NoDataState) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            children: <Widget>[
+              _buildSearchBar(context),
+            ],
+          ),
+        );
+      }
       if (state is LoadedDataState) {
         final boards = state.boards;
         final pins = state.pins;

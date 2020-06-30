@@ -8,10 +8,16 @@ import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/logi
 import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/login_event.dart';
 import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/login_state.dart';
 
-class LoginFormWidget extends StatelessWidget {
+class LoginFormWidget extends StatefulWidget {
+  @override
+  _LoginFormWidgetState createState() => _LoginFormWidgetState();
+}
+
+class _LoginFormWidgetState extends State<LoginFormWidget> {
   final _formKey = GlobalKey<FormState>();
   String _id = '';
   String _password = '';
+  bool _existError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -82,24 +88,34 @@ class LoginFormWidget extends StatelessWidget {
   }
 
   Widget _buildPasswordTextForm() {
-    return Padding(
-      padding: EdgeInsets.only(top: 8, bottom: 8),
-      child: TextFormField(
-        decoration: const InputDecoration(
-          labelText: 'password',
-          border: OutlineInputBorder(),
+    return BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
+      if (state is ErrorState) {
+        setState(() {
+          _existError = true;
+        });
+      }
+    }, builder: (context, state) {
+      return Padding(
+        padding: EdgeInsets.only(top: 8, bottom: 8),
+        child: TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'password',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'passwordを入力してください';
+            } else if (_existError) {
+              return 'idかpasswordが間違っています';
+            }
+            return null;
+          },
+          onSaved: (value) {
+            _password = value;
+          },
         ),
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'passwordを入力してください';
-          }
-          return null;
-        },
-        onSaved: (value) {
-          _password = value;
-        },
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildConfirmButton(BuildContext context) {

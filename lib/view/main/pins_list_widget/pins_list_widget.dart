@@ -49,6 +49,21 @@ class _PinsListWidgetState extends State<PinsListWidget> {
 
   Widget _buildScrollView(BuildContext context) {
     return BlocBuilder<PinsListBloc, PinsListState>(builder: (context, state) {
+      if (state is LoadingState) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      if (state is NoDataState) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            children: <Widget>[
+              _buildSearchBar(context),
+            ],
+          ),
+        );
+      }
       if (state is LoadedState) {
         final pins = state.pins;
         return Container(

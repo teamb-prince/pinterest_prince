@@ -80,7 +80,6 @@ class LoginWidget extends StatelessWidget {
   }
 
   Widget _buildLoginForm(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     return Container(
       width: _buttonWidth,
       child: RaisedButton(
@@ -94,6 +93,6 @@ class LoginWidget extends StatelessWidget {
           Navigator.pushNamed(context, AppRoute.loginForm);
         },
       ),
-    ); //TODO あとでformつくる
+    );
   }
 }
