@@ -5,6 +5,7 @@ import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/board_model.dart';
+import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_bloc.dart';
@@ -68,12 +69,12 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
         builder: (context, state) {
           if (state is LoadedState) {
             final boards = state.boards;
-
+            final pins = state.pins;
             return Container(
               child: ListView.builder(
                 itemBuilder: (context, index) => index == boards.length
-                    ? _buildAddNewBoardButton()
-                    : _buildBoardTile(context, boards[index], args),
+                    ? _buildAddNewBoardButton(context)
+                    : _buildBoardTile(context, boards[index], pins, args),
                 itemCount: boards.length + 1,
               ),
             );
@@ -85,14 +86,14 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
   }
 
   Widget _buildBoardTile(BuildContext context, BoardModel board,
-      SelectBoardFromUrlArguments args) {
+      Map<String, List<PinModel>> pins, SelectBoardFromUrlArguments args) {
     return BlocBuilder<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
         builder: (context, state) {
+      final pinImageUrl =
+          pins[board.id].isNotEmpty ? pins[board.id][0].imageUrl : null;
       return GestureDetector(
         onTap: () {
           final request = PinRequestModel(
-            userId: 'mrypq',
-            originalUserId: 'mrypq',
             url: args.url,
             imageUrl: args.imageUrl,
             title: args.title,
@@ -102,12 +103,12 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
           BlocProvider.of<SelectBoardFromUrlBloc>(context)
               .add(SavePin(pinRequestModel: request));
         },
-        child: _buildTile(board),
+        child: _buildTile(board, pinImageUrl),
       );
     });
   }
 
-  Widget _buildTile(BoardModel board) {
+  Widget _buildTile(BoardModel board, String pinImageUrl) {
     return Container(
       padding: const EdgeInsets.all(8),
       child: Row(
@@ -117,10 +118,9 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
               width: _iconImageSize,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                    // 適当な画像です。
-                    'https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349',
-                    fit: BoxFit.cover),
+                child: pinImageUrl == null
+                    ? Container(color: AppColors.grey)
+                    : Image.network(pinImageUrl, fit: BoxFit.cover),
               )),
           const SizedBox(width: 16),
           Text(board.name,
@@ -131,20 +131,25 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildAddNewBoardButton() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: <Widget>[
-          const CircleAvatar(
-            backgroundColor: AppColors.red,
-            child: Icon(Icons.add, color: AppColors.white),
+  Widget _buildAddNewBoardButton(BuildContext context) {
+    return GestureDetector(
+        onTap: () async {
+          await Navigator.of(context).pushNamed(AppRoute.createBoard);
+          BlocProvider.of<SelectBoardFromUrlBloc>(context).add(LoadData());
+        },
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: <Widget>[
+              const CircleAvatar(
+                backgroundColor: AppColors.red,
+                child: Icon(Icons.add, color: AppColors.white),
+              ),
+              const SizedBox(width: 16),
+              const Text('新規ボードを作成',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ],
           ),
-          const SizedBox(width: 16),
-          const Text('新規ボードを作成',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
+        ));
   }
 }

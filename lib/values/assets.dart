@@ -8,4 +8,5 @@ class Assets {
   static const String testBoardResponse = '$mockAssetsPath/test_board.json';
   static const String testUserResponse = '$mockAssetsPath/test_user.json';
   static const String testImagesResponse = '$mockAssetsPath/test_images.json';
+  static const String testPinResponse = '$mockAssetsPath/test_pin.json';
 }

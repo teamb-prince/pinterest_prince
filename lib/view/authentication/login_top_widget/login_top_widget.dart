@@ -11,25 +11,27 @@ class LoginTopWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          _buildHeader(),
-          SizedBox(
-            height: _sizedBoxHeight,
-          ),
-          const Text(
-            'Pinterestへようこそ！',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildHeader(),
+            SizedBox(
+              height: _sizedBoxHeight,
             ),
-          ),
-          SizedBox(
-            height: _sizedBoxHeight,
-          ),
-          _buildCreateAccountButton(context),
-          _buildLoginButton(context),
-        ],
+            const Text(
+              'Pinterestへようこそ！',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              height: _sizedBoxHeight,
+            ),
+            _buildCreateAccountButton(context),
+            _buildLoginButton(context),
+          ],
+        ),
       ),
     );
   }
@@ -41,6 +43,7 @@ class LoginTopWidget extends StatelessWidget {
   Widget _buildCreateAccountButton(BuildContext context) {
     return RedButton(
       title: 'アカウントを無料登録',
+      key: const Key('signup_button'),
       onPressedCallback: () {
         Navigator.pushNamed(context, AppRoute.createAccount);
       },
@@ -49,6 +52,7 @@ class LoginTopWidget extends StatelessWidget {
 
   Widget _buildLoginButton(BuildContext context) {
     return FlatButton(
+      key: const Key('login_button'),
       child: const Text(
         'ログイン',
         style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),

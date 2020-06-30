@@ -18,8 +18,6 @@ void main() {
   BoardsRepository mockBoardRepository;
   MockPinRepository mockPinRepository;
   const _pinRequestModel = PinRequestModel(
-    userId: 'mrypq',
-    originalUserId: 'mrypq',
     url: 'url',
     imageUrl: 'imageUrl',
     title: 'title',

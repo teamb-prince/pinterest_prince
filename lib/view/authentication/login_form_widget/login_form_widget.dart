@@ -8,26 +8,38 @@ import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/logi
 import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/login_event.dart';
 import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/login_state.dart';
 
-class LoginFormWidget extends StatelessWidget {
+class LoginFormWidget extends StatefulWidget {
+  @override
+  _LoginFormWidgetState createState() => _LoginFormWidgetState();
+}
+
+class _LoginFormWidgetState extends State<LoginFormWidget> {
   final _formKey = GlobalKey<FormState>();
   String _id = '';
   String _password = '';
+  bool _existError = false;
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
-    return _buildScreen(context);
+    return BlocProvider<LoginBloc>(
+        create: (context) => LoginBloc(
+              RepositoryProvider.of<AuthRepository>(context),
+            ),
+        child: _buildScreen(context));
   }
 
   Widget _buildScreen(BuildContext context) {
-    return BlocProvider<LoginBloc>(
-      create: (context) => LoginBloc(
-        RepositoryProvider.of<AuthRepository>(context),
-      ),
-      child: Scaffold(
+    return BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
+      if (state is SuccessState) {
+        Navigator.pushReplacementNamed(context, AppRoute.home);
+      }
+    }, builder: (context, state) {
+      return Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
           brightness: Brightness.light,
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.black, //change your color here
           ),
           backgroundColor: AppColors.white,
@@ -38,7 +50,7 @@ class LoginFormWidget extends StatelessWidget {
           ),
         ),
         body: Container(
-          padding: EdgeInsets.all(32),
+          padding: const EdgeInsets.all(32),
           child: Form(
             key: _formKey,
             child: ListView(
@@ -51,14 +63,15 @@ class LoginFormWidget extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildIdTextForm() {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: TextFormField(
+        key: const Key('login_id_text_form'),
         decoration: const InputDecoration(
           labelText: 'id',
           border: OutlineInputBorder(),
@@ -77,51 +90,67 @@ class LoginFormWidget extends StatelessWidget {
   }
 
   Widget _buildPasswordTextForm() {
-    return Padding(
-      padding: EdgeInsets.only(top: 8, bottom: 8),
-      child: TextFormField(
-        decoration: const InputDecoration(
-          labelText: 'password',
-          border: OutlineInputBorder(),
+    return BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
+      if (state is ErrorState) {
+        setState(() {
+          _existError = true;
+        });
+      }
+    }, builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 8, bottom: 8),
+        child: TextFormField(
+          key: const Key('login_password_text_form'),
+          obscureText: _obscurePassword,
+          decoration: InputDecoration(
+            labelText: 'password',
+            border: const OutlineInputBorder(),
+            suffixIcon: IconButton(
+              icon: Icon(
+                  _obscurePassword ? Icons.visibility : Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  _obscurePassword = !_obscurePassword;
+                });
+              },
+            ),
+          ),
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'passwordを入力してください';
+            } else if (_existError) {
+              return 'idかpasswordが間違っています';
+            }
+            return null;
+          },
+          onSaved: (value) {
+            _password = value;
+          },
         ),
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'passwordを入力してください';
-          }
-          return null;
-        },
-        onSaved: (value) {
-          _password = value;
-        },
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildConfirmButton(BuildContext context) {
-    return BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
-      if (state is SuccessState) {
-        Navigator.pushNamed(context, AppRoute.home);
-      }
-    }, builder: (context, state) {
-      return RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-            final request = LoginRequestModel(
-              id: _id,
-              password: _password,
-            );
-            BlocProvider.of<LoginBloc>(context)
-                .add(Login(loginRequestModel: request));
-          }
-        },
-        textColor: AppColors.white,
-        color: AppColors.red,
-        child: const Text('ログイン'),
-      );
-    });
+    return RaisedButton(
+      key: const Key('login_confirm_button'),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      onPressed: () {
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState.save();
+          final request = LoginRequestModel(
+            id: _id,
+            password: _password,
+          );
+          BlocProvider.of<LoginBloc>(context)
+              .add(Login(loginRequestModel: request));
+        }
+      },
+      textColor: AppColors.white,
+      color: AppColors.red,
+      child: const Text('ログイン'),
+    );
   }
 }

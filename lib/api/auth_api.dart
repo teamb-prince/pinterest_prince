@@ -9,6 +9,8 @@ abstract class AuthApi {
   Future<String> signIn(LoginRequestModel loginRequestModel);
 
   Future<UserModel> signUp(SignUpRequestModel signUpRequestModel);
+
+  Future<void> signOut();
 }
 
 class DefaultAuthApi extends AuthApi {
@@ -20,13 +22,6 @@ class DefaultAuthApi extends AuthApi {
   Future<String> signIn(LoginRequestModel loginRequestModel) async {
     final response =
         await _apiClient.post('/login', body: loginRequestModel.toJson());
-    /*
-    {
-      "token": {JWT}
-    }
-    みたいな形式を想定してるので、とりあえずこの形で。
-    サーバー側の実装に応じて変更します。
-     */
     return jsonDecode(response.body)['token'] as String;
   }
 
@@ -35,5 +30,10 @@ class DefaultAuthApi extends AuthApi {
     final response =
         await _apiClient.post('/users', body: signUpRequestModel.toJson());
     return UserModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+  }
+
+  @override
+  Future<void> signOut() async {
+    await _apiClient.post('/logout');
   }
 }

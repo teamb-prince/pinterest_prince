@@ -10,6 +10,8 @@ class PinModel extends Equatable {
     @required this.imageUrl,
     @required this.uploadType,
     @required this.description,
+    @required this.label,
+    @required this.createdAt,
   });
 
   factory PinModel.fromJson(dynamic json) {
@@ -21,6 +23,8 @@ class PinModel extends Equatable {
       imageUrl: json['image_url'] as String,
       uploadType: json['upload_type'] as String,
       description: json['description'] as String,
+      label: json['label'] as String,
+      createdAt: json['created_at'] as String,
     );
   }
 
@@ -29,8 +33,11 @@ class PinModel extends Equatable {
   final String url;
   final String title;
   final String imageUrl;
-  final String uploadType;
+
   final String description;
+  final String uploadType;
+  final String label;
+  final String createdAt;
 
   @override
   List<Object> get props => [
@@ -41,5 +48,8 @@ class PinModel extends Equatable {
         imageUrl,
         uploadType,
         description,
+        uploadType,
+        label,
+        createdAt,
       ];
 }

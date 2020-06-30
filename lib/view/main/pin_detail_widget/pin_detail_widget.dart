@@ -203,22 +203,32 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   }
 
   Widget _buildActionButton() {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildIcon(Icon(Icons.share)), //TODO シェア機能いる?
+    return BlocBuilder<PinDetailBloc, PinDetailState>(
+      builder: (context, state) {
+        if (state is LoadedState) {
+          return Container(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildIcon(Icon(Icons.share)),
+                  //TODO シェア機能いる?
 
-            uploadType == uploadTypeList[0]
-                ? _buildAccessButton()
-                : _buildMoreViewButton(),
-            _buildSaveBoardButton(), // TODO 保存ずみ/未保存で表示を変える
-            _buildIcon(Icon(Icons.more_horiz)), //TODO その他の操作いる?
-          ],
-        ),
-      ),
+                  uploadType == uploadTypeList[0]
+                      ? _buildAccessButton()
+                      : _buildMoreViewButton(),
+                  state.saved ? _buildSavedButton() : _buildSaveBoardButton(),
+                  // TODO 保存ずみ/未保存で表示を変える
+                  _buildIcon(Icon(Icons.more_horiz)),
+                  //TODO その他の操作いる?
+                ],
+              ),
+            ),
+          );
+        }
+        return Container();
+      },
     );
   }
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/view/main/board_detail_widget/board_detail_widget.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/bloc/boards_list_bloc.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/bloc/boards_list_event.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/bloc/boards_list_state.dart';
@@ -32,11 +34,26 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
   Widget _buildScrollView(BuildContext context) {
     return BlocBuilder<BoardsListBloc, BoardsListState>(
         builder: (context, state) {
+      if (state is LoadingState) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      if (state is NoDataState) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            children: <Widget>[
+              _buildSearchBar(context),
+            ],
+          ),
+        );
+      }
       if (state is LoadedDataState) {
         final boards = state.boards;
         final pins = state.pins;
         return Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: CustomScrollView(slivers: <Widget>[
             SliverList(
               delegate: SliverChildListDelegate([
@@ -51,8 +68,16 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1, mainAxisSpacing: 16),
               delegate: SliverChildBuilderDelegate((context, index) {
-                return BoardTile(
-                    board: boards[index], pins: pins[boards[index].id]);
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(AppRoute.boardDetail,
+                        arguments: BoardDetailArgs(
+                            board: boards[index],
+                            pins: pins[boards[index].id]));
+                  },
+                  child: BoardTile(
+                      board: boards[index], pins: pins[boards[index].id]),
+                );
               }, childCount: boards.length),
             )
           ]),

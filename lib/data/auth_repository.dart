@@ -17,4 +17,9 @@ class AuthRepository {
 
   Future<UserModel> signUp(SignUpRequestModel signUpRequestModel) =>
       _authApi.signUp(signUpRequestModel);
+
+  Future<void> signOut() async {
+    await _authApi.signOut();
+    await _authenticationPreferences.clearToken();
+  }
 }
