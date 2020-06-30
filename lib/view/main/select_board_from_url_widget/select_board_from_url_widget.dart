@@ -89,9 +89,8 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
       Map<String, List<PinModel>> pins, SelectBoardFromUrlArguments args) {
     return BlocBuilder<SelectBoardFromUrlBloc, SelectBoardFromUrlState>(
         builder: (context, state) {
-      final pinImageUrl = pins[board.id].isNotEmpty
-          ? pins[board.id][0].imageUrl
-          : 'https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349';
+      final pinImageUrl =
+          pins[board.id].isNotEmpty ? pins[board.id][0].imageUrl : null;
       return GestureDetector(
         onTap: () {
           final request = PinRequestModel(
@@ -119,7 +118,9 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
               width: _iconImageSize,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(pinImageUrl, fit: BoxFit.cover),
+                child: pinImageUrl == null
+                    ? Container(color: AppColors.grey)
+                    : Image.network(pinImageUrl, fit: BoxFit.cover),
               )),
           const SizedBox(width: 16),
           Text(board.name,
