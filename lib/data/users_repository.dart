@@ -7,4 +7,6 @@ class UsersRepository {
   final UsersApi _usersApi;
 
   Future<UserModel> getUser(String id) => _usersApi.getUser(id);
+
+  Future<UserModel> getAccountInfo() => _usersApi.getAccountInfo();
 }

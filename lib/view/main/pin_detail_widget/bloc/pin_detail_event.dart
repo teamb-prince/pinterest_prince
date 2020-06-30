@@ -5,8 +5,9 @@ abstract class PinDetailEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class RequestUser extends PinDetailEvent {
-  RequestUser(this.id);
+class LoadData extends PinDetailEvent {
+  LoadData(this.userId, this.pinId);
 
-  final String id;
+  final String userId;
+  final String pinId;
 }

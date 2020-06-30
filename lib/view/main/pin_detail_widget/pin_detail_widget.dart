@@ -1,17 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
+import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/data/users_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/user_model.dart';
-
+import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/bloc/pin_detail_bloc.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/bloc/pin_detail_event.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/bloc/pin_detail_state.dart';
+import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
 class PinDetailWidgetArguments {
   PinDetailWidgetArguments(this.pin);
@@ -62,23 +60,24 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   static const double menuButtonSize = 45;
   static const double menuButtonFontSize = 17;
 
-  String title;
-  String description;
+  String pinId;
+  String pinTitle;
+  String pinDescription;
   String url;
   String uploadType;
   String userId;
   String imageUrl;
-  dynamic args;
 
   void getPinData() {
-    args =
+    final args =
         ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
-    title = args.pin.title.toString();
-    description = args.pin.description.toString();
-    url = args.pin.url.toString();
-    uploadType = args.pin.uploadType.toString();
-    userId = args.pin.userId.toString();
-    imageUrl = args.pin.imageUrl.toString();
+    pinId = args.pin.id;
+    pinTitle = args.pin.title;
+    pinDescription = args.pin.description;
+    url = args.pin.url;
+    uploadType = args.pin.uploadType;
+    userId = args.pin.userId;
+    imageUrl = args.pin.imageUrl;
   }
 
   void _saveBoard() {
@@ -108,32 +107,37 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   @override
   Widget build(BuildContext context) {
     getPinData();
-    return Scaffold(
-      backgroundColor: AppColors.pinsDetailBackgroundColor,
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Column(
-                    children: [
-                      _buildPinImage(),
-                    ],
-                  )
-                ],
+    return BlocProvider<PinDetailBloc>(
+      create: (context) => PinDetailBloc(context.repository<UsersRepository>(),
+          context.repository<PinsRepository>())
+        ..add(LoadData(userId, pinId)),
+      child: Scaffold(
+        backgroundColor: AppColors.pinsDetailBackgroundColor,
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Column(
+                      children: [
+                        _buildPinImage(),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            SliverGrid(
-              // TODO 細かいUIは後で
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return _buildSmallImage(imageList[index]);
-              }, childCount: imageList.length),
-            )
-          ],
+              SliverGrid(
+                // TODO 細かいUIは後で
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return _buildSmallImage(imageList[index]);
+                }, childCount: imageList.length),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -279,7 +283,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
           padding: const EdgeInsets.symmetric(vertical: 7.0),
           child: Container(
             child: Text(
-              title,
+              pinTitle,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -290,7 +294,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
           ),
         ),
         Text(
-          description,
+          pinDescription,
           style: const TextStyle(fontSize: 15),
         ),
       ],
@@ -298,24 +302,21 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   }
 
   Widget _buildUserInfomation() {
-    return BlocProvider<PinDetailBloc>(
-      create: (context) => PinDetailBloc(context.repository<UsersRepository>())
-        ..add(RequestUser(userId)),
-      child: BlocBuilder<PinDetailBloc, PinDetailState>(
-        builder: (context, state) {
-          if (state is LoadedState) {
-            final user = state.userModel;
-            return _buildUser(user);
-          } else if (state is NoDataState) {
-            return const Text('No User.');
-          } else if (state is ErrorState) {
-            return Text(state.exception.toString());
-          } else if (state is LoadingState) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return Container();
-        },
-      ),
+    return BlocBuilder<PinDetailBloc, PinDetailState>(
+      builder: (context, state) {
+        if (state is LoadedState) {
+          print(state.userModel);
+          final user = state.userModel;
+          return _buildUser(user);
+        } else if (state is NoDataState) {
+          return const Text('No User.');
+        } else if (state is ErrorState) {
+          return Text(state.exception.toString());
+        } else if (state is LoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Container();
+      },
     );
   }
 
@@ -323,7 +324,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     final userName = '${user.lastName} ${user.firstName}';
     final profileImageUrl = user.profileImageUrl;
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(2),
       child: Container(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -352,12 +353,12 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
                   children: <Widget>[
                     Text(
                       userName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
+                    const Text(
                       dummyFollowerText,
                       style: TextStyle(
                         fontSize: 12,
