@@ -14,7 +14,7 @@ class DefaultUsersApi extends UsersApi {
 
   @override
   Future<UserModel> getAccountInfo() async {
-    final response = await _apiClient.get('/user/profile');
+    final response = await _apiClient.get('/profile/user');
     return UserModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 }
