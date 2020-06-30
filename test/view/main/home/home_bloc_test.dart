@@ -17,14 +17,12 @@ void main() {
         url: 'url 1',
         title: 'title 1',
         imageUrl: 'imageUrl 1',
-        board: 'board 1',
         description: 'description 1'),
     PinModel(
         id: 'id 2',
         url: 'url 2',
         title: 'title 2',
         imageUrl: 'imageUrl 2',
-        board: 'board 2',
         description: 'description 2'),
   ];
 
