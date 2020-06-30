@@ -41,7 +41,9 @@ class AccountWidget extends StatelessWidget {
               leading: _buildAccountIcon(context, state.user),
               actions: <Widget>[
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoute.setting);
+                  },
                   icon: Icon(Icons.settings, color: AppColors.black),
                 )
               ],
