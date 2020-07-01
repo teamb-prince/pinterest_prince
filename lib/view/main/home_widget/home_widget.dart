@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -105,9 +106,13 @@ class HomeWidget extends StatelessWidget {
             children: <Widget>[
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  pin.imageUrl,
-                  fit: BoxFit.cover,
+                child: CachedNetworkImage(
+                  imageUrl: pin.imageUrl,
+                  placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.grey),
+                  )),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
             ],
