@@ -142,7 +142,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     );
   }
 
-  Widget _buildActionButton(String uploadType) {
+  Widget _buildActionButton(String uploadType, String url) {
     return BlocBuilder<PinDetailBloc, PinDetailState>(
       builder: (context, state) {
         if (state is LoadedState) {
@@ -157,7 +157,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
                     width: 8,
                   ),
                   uploadType == uploadTypeList[0]
-                      ? _buildAccessButton()
+                      ? _buildAccessButton(url)
                       : _buildMoreViewButton(),
                   const SizedBox(
                     width: 8,
@@ -200,12 +200,12 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         onPressedCallback: () => print('tap saved'));
   }
 
-  Widget _buildAccessButton() {
+  Widget _buildAccessButton(String url) {
     return BaseButton(
         title: 'アクセス',
         buttonColor: AppColors.grey,
         buttonTextColor: AppColors.black,
-        onPressedCallback: () => print('tap save'));
+        onPressedCallback: () => widget.browser.open(url: url));
   }
 
   Widget _buildMoreViewButton() {
@@ -230,7 +230,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
       child: Column(
         children: [
           _buildPinInformation(pin),
-          _buildActionButton(pin.uploadType),
+          _buildActionButton(pin.uploadType, pin.url),
         ],
       ),
     );
