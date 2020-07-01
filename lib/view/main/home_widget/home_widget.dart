@@ -39,7 +39,9 @@ class HomeWidget extends StatelessWidget {
               labelColor: AppColors.white,
               unselectedLabelColor: AppColors.black,
               isScrollable: true,
-              labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              labelStyle: TextStyle(
+                fontSize: 14,
+              ),
               labelPadding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
               tabs: <Widget>[
@@ -73,6 +75,8 @@ class HomeWidget extends StatelessWidget {
           onRefresh: () async {
             BlocProvider.of<HomeBloc>(context).add(LoadData());
           },
+          backgroundColor: AppColors.black,
+          color: AppColors.white,
           child: StaggeredGridView.countBuilder(
             padding: const EdgeInsets.all(8),
             primary: false,
