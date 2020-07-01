@@ -9,13 +9,13 @@ abstract class PinDetailState extends Equatable {
 class LoadingState extends PinDetailState {}
 
 class LoadedState extends PinDetailState {
-  LoadedState(this.userModel, this.saved);
+  LoadedState(this.user, this.saved);
 
-  final UserModel userModel;
+  final UserModel user;
   final bool saved;
 
   @override
-  List<Object> get props => [userModel];
+  List<Object> get props => [user];
 }
 
 class NoDataState extends PinDetailState {}
