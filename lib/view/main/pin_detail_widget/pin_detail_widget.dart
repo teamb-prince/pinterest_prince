@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/data/users_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
@@ -13,9 +14,10 @@ import 'package:pintersest_clone/view/main/pin_detail_widget/bloc/pin_detail_sta
 import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
 class PinDetailWidgetArguments {
-  PinDetailWidgetArguments(this.pin);
+  PinDetailWidgetArguments({@required this.pin, @required this.heroTag});
 
   final PinModel pin;
+  final String heroTag;
 }
 
 class PinDetailWidget extends StatefulWidget {
@@ -49,36 +51,51 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
-    return BlocProvider<PinDetailBloc>(
-      create: (context) => PinDetailBloc(context.repository<UsersRepository>(),
-          context.repository<PinsRepository>())
-        ..add(LoadData(args.pin.userId, args.pin.id)),
-      child: Scaffold(
-        backgroundColor: AppColors.pinsDetailBackgroundColor,
-        body: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Column(
-                      children: [
-                        _buildPinImage(args.pin),
-                      ],
-                    )
-                  ],
-                ),
+    return Hero(
+      tag: args.heroTag,
+      child: Material(
+        type: MaterialType.transparency,
+        child: BlocProvider<PinDetailBloc>(
+          create: (context) => PinDetailBloc(
+              context.repository<UsersRepository>(),
+              context.repository<PinsRepository>())
+            ..add(LoadData(args.pin.userId, args.pin.id)),
+          child: _buildScreen(context, args),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScreen(BuildContext context, PinDetailWidgetArguments args) {
+    return Scaffold(
+      backgroundColor: AppColors.pinsDetailBackgroundColor,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Column(
+                    children: [
+                      _buildPinImage(args.pin),
+                    ],
+                  )
+                ],
               ),
-              SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  return _buildSmallImage(imageList[index]);
-                }, childCount: imageList.length),
-              )
-            ],
-          ),
+            ),
+            SliverStaggeredGrid(
+              gridDelegate: SliverStaggeredGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+                staggeredTileCount: imageList.length,
+              ),
+              delegate: SliverChildBuilderDelegate((context, index) {
+                return _buildSmallImage(imageList[index]);
+              }),
+            ),
+          ],
         ),
       ),
     );
