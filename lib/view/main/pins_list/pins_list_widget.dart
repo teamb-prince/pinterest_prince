@@ -78,7 +78,8 @@ class _PinsListWidgetState extends State<PinsListWidget> {
               crossAxisCount: 4,
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
-              itemBuilder: (context, index) => PinTile(pin: pins[index]),
+              itemBuilder: (context, index) =>
+                  PinTile(pin: pins[index], heroTag: pins[index].id),
               staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
               itemCount: pins.length,
             ),
