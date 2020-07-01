@@ -9,7 +9,7 @@ abstract class PinsApi {
   Future<PinModel> getPin(String id, {String userId});
 
   Future<List<PinModel>> getPins(
-      {String userId, String boardId, int limit, int offset});
+      {String userId, String boardId, int limit, int offset, String label});
 
   Future<List<PinModel>> getDiscoverPins();
 
@@ -38,7 +38,11 @@ class DefaultPinsApi extends PinsApi {
 
   @override
   Future<List<PinModel>> getPins(
-      {String userId, String boardId, int limit, int offset}) async {
+      {String userId,
+      String boardId,
+      int limit,
+      int offset,
+      String label}) async {
     Map<String, String> query = {};
     if (userId != null) {
       query['user_id'] = userId;
@@ -51,6 +55,9 @@ class DefaultPinsApi extends PinsApi {
     }
     if (offset != null) {
       query['offset'] = offset.toString();
+    }
+    if (label != null) {
+      query['label'] = label;
     }
     final response = await _apiClient.get('/pins', query: query);
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
