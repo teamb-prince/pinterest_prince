@@ -9,7 +9,7 @@ import 'package:pintersest_clone/view/main/boards_list_widget/bloc/boards_list_b
 import 'package:pintersest_clone/view/main/boards_list_widget/bloc/boards_list_event.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/bloc/boards_list_state.dart';
 
-import 'board_tile.dart';
+import '../../common_widget/board_tile.dart';
 
 class BoardsListWidget extends StatefulWidget {
   @override
