@@ -5,9 +5,8 @@ import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/view/main/board_detail_widget/board_detail_widget.dart';
-
+import 'package:pintersest_clone/view/common_widget/board_tile.dart';
 import 'bloc/bloc.dart';
-import 'board_tile.dart';
 
 class BoardsListWidget extends StatefulWidget {
   @override

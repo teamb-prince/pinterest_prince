@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pintersest_clone/model/board_model.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
@@ -29,9 +30,9 @@ class BoardTile extends StatelessWidget {
   }
 
   Widget _buildPinsView(BuildContext context) {
-    final imageUrl1 = (pins.isNotEmpty) ? pins[0].imageUrl : null;
-    final imageUrl2 = (pins.length >= 2) ? pins[1].imageUrl : null;
-    final imageUrl3 = (pins.length >= 3) ? pins[2].imageUrl : null;
+    final imageUrl1 = (pins.isNotEmpty) ? pins[0].imageUrl : '';
+    final imageUrl2 = (pins.length >= 2) ? pins[1].imageUrl : '';
+    final imageUrl3 = (pins.length >= 3) ? pins[2].imageUrl : '';
     return Container(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
@@ -57,19 +58,23 @@ class BoardTile extends StatelessWidget {
   }
 
   Widget _buildLargeImage(String imageUrl) {
-    return Expanded(
-        flex: 2,
-        child: imageUrl != null
-            ? Image.network(imageUrl, fit: BoxFit.cover)
-            : Container(color: AppColors.grey));
+    return Expanded(flex: 2, child: _buildImage(imageUrl));
   }
 
   Widget _buildSmallImage(String imageUrl) {
-    return Expanded(
-        flex: 1,
-        child: imageUrl != null
-            ? Image.network(imageUrl, fit: BoxFit.cover)
-            : Container(color: AppColors.grey));
+    return Expanded(flex: 1, child: _buildImage(imageUrl));
+  }
+
+  Widget _buildImage(String imageUrl) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      placeholder: (context, url) => const Center(
+          child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(AppColors.grey),
+      )),
+      errorWidget: (context, url, error) => Container(color: AppColors.grey),
+      fit: BoxFit.cover,
+    );
   }
 
   Widget _buildInfoLabels(BuildContext context) {

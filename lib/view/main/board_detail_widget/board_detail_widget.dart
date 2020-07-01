@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/board_model.dart';
-import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
-
+import 'package:pintersest_clone/view/common_widget/pin_tile.dart';
 import 'bloc/bloc.dart';
 
 class BoardDetailArgs {
@@ -54,34 +51,11 @@ class BoardDetailWidget extends StatelessWidget {
             crossAxisCount: 4,
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
-            itemBuilder: (context, index) =>
-                _getChild(context, state.pins[index]),
+            itemBuilder: (context, index) => PinTile(pin: state.pins[index]),
             staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
             itemCount: state.pins.length);
       }
       return Container();
     });
-  }
-
-  Widget _getChild(BuildContext context, PinModel pin) {
-    return GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, AppRoute.pinDetail,
-              arguments: PinDetailWidgetArguments(pin));
-        },
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  pin.imageUrl,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
-          ),
-        ));
   }
 }
