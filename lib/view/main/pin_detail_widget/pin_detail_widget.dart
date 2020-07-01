@@ -104,27 +104,26 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   Widget _buildPinImage(PinModel pin) {
     return Stack(
       children: [
-        Container(
-            decoration: _roundedContainerDecoration,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(32),
+          child: Container(
+            color: AppColors.white,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildImage(pin),
                 _buildInformation(pin),
               ],
-            )),
+            ),
+          ),
+        ),
         _buildBackButton(),
       ],
     );
   }
 
   Widget _buildImage(PinModel pin) {
-    return ClipRRect(
-      child: Image.network(pin.imageUrl),
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(16),
-      ),
-    );
+    return Image.network(pin.imageUrl, fit: BoxFit.cover);
   }
 
   Widget _buildSmallImage(String imageUrl) {
@@ -163,27 +162,24 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   Widget _buildActionButton(String uploadType) {
     return BlocBuilder<PinDetailBloc, PinDetailState>(
       builder: (context, state) {
+        if (state is LoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        }
         if (state is LoadedState) {
           return Container(
             child: Padding(
-              padding: const EdgeInsets.only(top: 12.0),
+              padding: const EdgeInsets.only(top: 12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildIcon(Icon(Icons.share)),
-                  const SizedBox(
-                    width: 8,
-                  ),
+                  const SizedBox(width: 8),
                   uploadType == uploadTypeList[0]
                       ? _buildAccessButton()
                       : _buildMoreViewButton(),
-                  const SizedBox(
-                    width: 8,
-                  ),
+                  const SizedBox(width: 8),
                   state.saved ? _buildSavedButton() : _buildSaveBoardButton(),
-                  const SizedBox(
-                    width: 8,
-                  ),
+                  const SizedBox(width: 8),
                   _buildIcon(const Icon(Icons.more_horiz)),
                 ],
               ),
