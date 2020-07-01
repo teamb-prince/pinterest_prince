@@ -69,7 +69,9 @@ class _HomeWidgetState extends State<HomeWidget> {
               labelColor: AppColors.white,
               unselectedLabelColor: AppColors.black,
               isScrollable: true,
-              labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              labelStyle: TextStyle(
+                fontSize: 14,
+              ),
               labelPadding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
               tabs: <Widget>[
@@ -104,6 +106,8 @@ class _HomeWidgetState extends State<HomeWidget> {
           onRefresh: () async {
             bloc.add(LoadData());
           },
+          backgroundColor: AppColors.black,
+          color: AppColors.white,
           child: StaggeredGridView.countBuilder(
             controller: _scrollController,
             padding: const EdgeInsets.all(8),
@@ -114,7 +118,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             itemBuilder: (context, index) {
               return index >= state.pins.length
                   ? BottomLoaderWidget()
-                  : PinTile(pin: pins[index]);
+                  : PinTile(pin: pins[index], heroTag: pins[index].id);
             },
             staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
             itemCount: pins.length,

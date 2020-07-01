@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/data/users_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
@@ -12,9 +13,10 @@ import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 import 'bloc/bloc.dart';
 
 class PinDetailWidgetArguments {
-  PinDetailWidgetArguments(this.pin);
+  PinDetailWidgetArguments({@required this.pin, @required this.heroTag});
 
   final PinModel pin;
+  final String heroTag;
 }
 
 class PinDetailWidget extends StatefulWidget {
@@ -25,11 +27,6 @@ class PinDetailWidget extends StatefulWidget {
 }
 
 class _PinDetailWidgetState extends State<PinDetailWidget> {
-  final BoxDecoration _roundedContainerDecoration = BoxDecoration(
-    color: AppColors.white,
-    borderRadius: BorderRadius.circular(16),
-  );
-
   final List<String> imageList = [
     'https://automaton-media.com/wp-content/uploads/2019/05/20190501-91106-001.jpg',
     'https://c2.staticflickr.com/2/1496/26433173610_10a5654b94_o.jpg',
@@ -48,36 +45,51 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
-    return BlocProvider<PinDetailBloc>(
-      create: (context) => PinDetailBloc(context.repository<UsersRepository>(),
-          context.repository<PinsRepository>())
-        ..add(LoadData(args.pin.userId, args.pin.id)),
-      child: Scaffold(
-        backgroundColor: AppColors.pinsDetailBackgroundColor,
-        body: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Column(
-                      children: [
-                        _buildPinImage(args.pin),
-                      ],
-                    )
-                  ],
-                ),
+    return Hero(
+      tag: args.heroTag,
+      child: Material(
+        type: MaterialType.transparency,
+        child: BlocProvider<PinDetailBloc>(
+          create: (context) => PinDetailBloc(
+              context.repository<UsersRepository>(),
+              context.repository<PinsRepository>())
+            ..add(LoadData(args.pin.userId, args.pin.id)),
+          child: _buildScreen(context, args),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScreen(BuildContext context, PinDetailWidgetArguments args) {
+    return Scaffold(
+      backgroundColor: AppColors.pinsDetailBackgroundColor,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Column(
+                    children: [
+                      _buildPinImage(args.pin),
+                    ],
+                  )
+                ],
               ),
-              SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  return _buildSmallImage(imageList[index]);
-                }, childCount: imageList.length),
-              )
-            ],
-          ),
+            ),
+            SliverStaggeredGrid(
+              gridDelegate: SliverStaggeredGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+                staggeredTileCount: imageList.length,
+              ),
+              delegate: SliverChildBuilderDelegate((context, index) {
+                return _buildSmallImage(imageList[index]);
+              }),
+            ),
+          ],
         ),
       ),
     );
@@ -86,27 +98,26 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   Widget _buildPinImage(PinModel pin) {
     return Stack(
       children: [
-        Container(
-            decoration: _roundedContainerDecoration,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(32),
+          child: Container(
+            color: AppColors.white,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildImage(pin),
                 _buildInformation(pin),
               ],
-            )),
+            ),
+          ),
+        ),
         _buildBackButton(),
       ],
     );
   }
 
   Widget _buildImage(PinModel pin) {
-    return ClipRRect(
-      child: Image.network(pin.imageUrl),
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(16),
-      ),
-    );
+    return Image.network(pin.imageUrl, fit: BoxFit.cover);
   }
 
   Widget _buildSmallImage(String imageUrl) {
@@ -145,28 +156,25 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   Widget _buildActionButton(String uploadType, String url) {
     return BlocBuilder<PinDetailBloc, PinDetailState>(
       builder: (context, state) {
+        if (state is LoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        }
         if (state is LoadedState) {
           return Container(
             child: Padding(
-              padding: const EdgeInsets.only(top: 12.0),
+              padding: const EdgeInsets.only(top: 12),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildIcon(Icon(Icons.share)),
-                  const SizedBox(
-                    width: 8,
-                  ),
+                  Flexible(child: Icon(Icons.share)),
+                  const SizedBox(width: 8),
                   uploadType == uploadTypeList[0]
                       ? _buildAccessButton(url)
                       : _buildMoreViewButton(),
-                  const SizedBox(
-                    width: 8,
-                  ),
+                  const SizedBox(width: 8),
                   state.saved ? _buildSavedButton() : _buildSaveBoardButton(),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  _buildIcon(const Icon(Icons.more_horiz)),
+                  const SizedBox(width: 8),
+                  Flexible(child: Icon(Icons.more_horiz)),
                 ],
               ),
             ),
@@ -174,13 +182,6 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         }
         return Container();
       },
-    );
-  }
-
-  Widget _buildIcon(Icon icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6),
-      child: icon,
     );
   }
 
