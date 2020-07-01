@@ -8,10 +8,8 @@ import 'package:pintersest_clone/model/board_model.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_bloc.dart';
-import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/select_board_from_url_state.dart';
 
-import 'bloc/select_board_from_url_event.dart';
+import 'bloc/bloc.dart';
 
 class SelectBoardFromUrlArguments {
   SelectBoardFromUrlArguments(

@@ -6,10 +6,9 @@ import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/board_model.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/main/board_detail_widget/bloc/board_detail_bloc.dart';
-import 'package:pintersest_clone/view/main/board_detail_widget/bloc/board_detail_event.dart';
-import 'package:pintersest_clone/view/main/board_detail_widget/bloc/board_detail_state.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
+
+import 'bloc/bloc.dart';
 
 class BoardDetailArgs {
   BoardDetailArgs({@required this.board});
