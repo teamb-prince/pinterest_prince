@@ -28,11 +28,6 @@ class PinDetailWidget extends StatefulWidget {
 }
 
 class _PinDetailWidgetState extends State<PinDetailWidget> {
-  final BoxDecoration _roundedContainerDecoration = BoxDecoration(
-    color: AppColors.white,
-    borderRadius: BorderRadius.circular(16),
-  );
-
   final List<String> imageList = [
     'https://automaton-media.com/wp-content/uploads/2019/05/20190501-91106-001.jpg',
     'https://c2.staticflickr.com/2/1496/26433173610_10a5654b94_o.jpg',
@@ -170,9 +165,9 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
             child: Padding(
               padding: const EdgeInsets.only(top: 12),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildIcon(Icon(Icons.share)),
+                  Flexible(child: Icon(Icons.share)),
                   const SizedBox(width: 8),
                   uploadType == uploadTypeList[0]
                       ? _buildAccessButton()
@@ -180,7 +175,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
                   const SizedBox(width: 8),
                   state.saved ? _buildSavedButton() : _buildSaveBoardButton(),
                   const SizedBox(width: 8),
-                  _buildIcon(const Icon(Icons.more_horiz)),
+                  Flexible(child: Icon(Icons.more_horiz)),
                 ],
               ),
             ),
@@ -188,13 +183,6 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         }
         return Container();
       },
-    );
-  }
-
-  Widget _buildIcon(Icon icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6),
-      child: icon,
     );
   }
 
