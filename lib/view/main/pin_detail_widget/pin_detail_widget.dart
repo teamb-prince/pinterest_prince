@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/data/users_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/model/user_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/common_widget/base_button_widget.dart';
+import 'package:pintersest_clone/view/main/pin_detail_widget/bloc/pin_detail_bloc.dart';
+import 'package:pintersest_clone/view/main/pin_detail_widget/bloc/pin_detail_event.dart';
+import 'package:pintersest_clone/view/main/pin_detail_widget/bloc/pin_detail_state.dart';
 import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
 class PinDetailWidgetArguments {
@@ -23,10 +31,6 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     borderRadius: BorderRadius.circular(16),
   );
 
-  final RoundedRectangleBorder _buttonDecoration = RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(32),
-  );
-
   final List<String> imageList = [
     'https://automaton-media.com/wp-content/uploads/2019/05/20190501-91106-001.jpg',
     'https://c2.staticflickr.com/2/1496/26433173610_10a5654b94_o.jpg',
@@ -39,52 +43,56 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     'https://pbs.twimg.com/media/EZoZKkBUMAARw9Z.jpg',
   ];
 
+  final List<String> uploadTypeList = ['url', 'local'];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.pinsDetailBackgroundColor,
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Column(
-                    children: [
-                      _buildPinImage(),
-                    ],
-                  )
-                ],
+    final args =
+        ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
+    return BlocProvider<PinDetailBloc>(
+      create: (context) => PinDetailBloc(context.repository<UsersRepository>(),
+          context.repository<PinsRepository>())
+        ..add(LoadData(args.pin.userId, args.pin.id)),
+      child: Scaffold(
+        backgroundColor: AppColors.pinsDetailBackgroundColor,
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Column(
+                      children: [
+                        _buildPinImage(args.pin),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            SliverGrid(
-              // TODO 細かいUIは後で
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return _buildSmallImage(imageList[index]);
-              }, childCount: imageList.length),
-            )
-          ],
+              SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return _buildSmallImage(imageList[index]);
+                }, childCount: imageList.length),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildPinImage() {
-    final args =
-        ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
-
+  Widget _buildPinImage(PinModel pin) {
     return Stack(
       children: [
         Container(
             decoration: _roundedContainerDecoration,
             child: Column(
               children: [
-                _buildImage(args.pin.imageUrl),
-                _buildInformation(
-                    args.pin.title, args.pin.description, args.pin.url),
+                _buildImage(pin),
+                _buildInformation(pin),
               ],
             )),
         _buildBackButton(),
@@ -92,9 +100,9 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     );
   }
 
-  Widget _buildImage(String imageUrl) {
+  Widget _buildImage(PinModel pin) {
     return ClipRRect(
-      child: Image.network(imageUrl),
+      child: Image.network(pin.imageUrl),
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(16),
         topRight: Radius.circular(16),
@@ -135,75 +143,206 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     );
   }
 
-  Widget _buildInformation(String title, String description, String url) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 32, right: 32, bottom: 16, top: 16),
-      child: Column(
-        children: [
-          _buildImageInformation(title, description),
-          _buildActionButton(url),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildImageInformation(String title, String description) {
-    return Container(
-      child: Center(
-        child: Column(
-          children: [
-            Text('ピンもと: $title'),
-            Text(
-              description,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+  Widget _buildActionButton(String uploadType) {
+    return BlocBuilder<PinDetailBloc, PinDetailState>(
+      builder: (context, state) {
+        if (state is LoadedState) {
+          return Container(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildIcon(Icon(Icons.share)),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  uploadType == uploadTypeList[0]
+                      ? _buildAccessButton()
+                      : _buildMoreViewButton(),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  state.saved ? _buildSavedButton() : _buildSaveBoardButton(),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  _buildIcon(const Icon(Icons.more_horiz)),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionButton(String url) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Icon(Icons.share), //TODO シェア機能いる?
-          _buildVisitSiteButton(url),
-          _buildSaveBoardButton(),
-          const Icon(Icons.more_horiz), //TODO その他の操作いる?
-        ],
-      ),
-    );
-  }
-
-  Widget _buildVisitSiteButton(String url) {
-    return FlatButton(
-      shape: _buttonDecoration,
-      color: AppColors.grey,
-      child: const Text(
-        'アクセス',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      onPressed: () {
-        widget.browser.open(url: url);
+          );
+        }
+        return Container();
       },
+    );
+  }
+
+  Widget _buildIcon(Icon icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: icon,
     );
   }
 
   Widget _buildSaveBoardButton() {
-    return FlatButton(
-      shape: _buttonDecoration,
-      child: const Text(
-        '保存',
-        style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.white),
+    return BaseButton(
+        title: '保存',
+        buttonColor: AppColors.red,
+        buttonTextColor: AppColors.white,
+        onPressedCallback: () => print('tap save'));
+  }
+
+  Widget _buildSavedButton() {
+    return BaseButton(
+        title: '保存しました!',
+        buttonColor: AppColors.grey,
+        buttonTextColor: AppColors.black,
+        onPressedCallback: () => print('tap saved'));
+  }
+
+  Widget _buildAccessButton() {
+    return BaseButton(
+        title: 'アクセス',
+        buttonColor: AppColors.grey,
+        buttonTextColor: AppColors.black,
+        onPressedCallback: () => print('tap save'));
+  }
+
+  Widget _buildMoreViewButton() {
+    return BaseButton(
+        title: '表示',
+        buttonColor: AppColors.grey,
+        buttonTextColor: AppColors.black,
+        onPressedCallback: () => print('tap more view'));
+  }
+
+  Widget _buildFollowButton() {
+    return BaseButton(
+        title: 'フォロー',
+        buttonColor: AppColors.grey,
+        buttonTextColor: AppColors.black,
+        onPressedCallback: () => print('tap follow'));
+  }
+
+  Widget _buildInformation(PinModel pin) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+      child: Column(
+        children: [
+          _buildPinInformation(pin),
+          _buildActionButton(pin.uploadType),
+        ],
       ),
-      color: AppColors.red,
-      onPressed: () {
-        print('save tapped'); // TODO boardへの保存処理
+    );
+  }
+
+  Widget _buildUrlInformation(String url) {
+    return Text(
+      'ピンもと:  $url',
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget _buildPinInformation(PinModel pin) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        pin.uploadType == uploadTypeList[0]
+            ? _buildUrlInformation(pin.url)
+            : _buildUserInformation(),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 7.0),
+          child: Container(
+            child: Text(
+              pin.title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                height: 1.2,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+        Text(
+          pin.description,
+          style: const TextStyle(fontSize: 15),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildUserInformation() {
+    return BlocBuilder<PinDetailBloc, PinDetailState>(
+      builder: (context, state) {
+        if (state is LoadedState) {
+          final user = state.user;
+          return _buildUser(user);
+        } else if (state is NoDataState) {
+          return const Text('No User.');
+        } else if (state is ErrorState) {
+          return Text(state.exception.toString());
+        } else if (state is LoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Container();
       },
+    );
+  }
+
+  Widget _buildUser(UserModel user) {
+    final userName = '${user.lastName} ${user.firstName}';
+    final profileImageUrl = user.profileImageUrl;
+    return Padding(
+      padding: const EdgeInsets.all(2),
+      child: Container(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 10,
+                  ),
+                  child: GestureDetector(
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(profileImageUrl),
+                      radius: 20,
+                    ),
+                    onTap: () {
+                      print('tap user icon');
+                    },
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      userName,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Text(
+                      'フォロワー  3人',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            _buildFollowButton(),
+          ],
+        ),
+      ),
     );
   }
 }

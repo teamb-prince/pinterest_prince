@@ -95,7 +95,7 @@ class HomeWidget extends StatelessWidget {
   Widget _getChild(BuildContext context, PinModel pin) {
     return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, AppRoute.pinDetail,
+          Navigator.of(context).pushNamed(AppRoute.pinDetail,
               arguments: PinDetailWidgetArguments(pin));
         },
         child: Container(

@@ -5,7 +5,7 @@ import 'package:pintersest_clone/api/auth_api.dart';
 import 'package:pintersest_clone/api/board_api.dart';
 import 'package:pintersest_clone/api/image_api.dart';
 import 'package:pintersest_clone/api/pins_api.dart';
-import 'package:pintersest_clone/api/users_api.dart';
+import 'package:pintersest_clone/api/user_api.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/auth_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
@@ -32,6 +32,7 @@ import 'package:pintersest_clone/view/main/user_detail_widget/user_detail_widget
 import 'api/api_client.dart';
 import 'data/boards_repository.dart';
 import 'data/image_repository.dart';
+import 'data/users_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,24 +52,24 @@ class Pinterest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authenticationPreferences = AuthenticationPreferences();
-    final apiClient = ApiClient(Client(), authenticationPreferences);
+    final _apiClient = ApiClient(Client(), authenticationPreferences);
     return MultiRepositoryProvider(
         providers: [
           RepositoryProvider<ImageRepository>(
-            create: (_) => ImageRepository(DefaultImageApi(apiClient)),
+            create: (_) => ImageRepository(DefaultImageApi(_apiClient)),
           ),
           RepositoryProvider<PinsRepository>(
-            create: (_) => PinsRepository(DefaultPinsApi(apiClient)),
+            create: (_) => PinsRepository(DefaultPinsApi(_apiClient)),
           ),
           RepositoryProvider<BoardsRepository>(
-            create: (_) => BoardsRepository(DefaultBoardsApi(apiClient)),
-          ),
-          RepositoryProvider<UsersRepository>(
-            create: (_) => UsersRepository(DefaultUsersApi(apiClient)),
+            create: (_) => BoardsRepository(DefaultBoardsApi(_apiClient)),
           ),
           RepositoryProvider<AuthRepository>(
             create: (_) => AuthRepository(
-                DefaultAuthApi(apiClient), authenticationPreferences),
+                DefaultAuthApi(_apiClient), AuthenticationPreferences()),
+          ),
+          RepositoryProvider<UsersRepository>(
+            create: (_) => UsersRepository(DefaultUsersApi(_apiClient)),
           ),
         ],
         child: MaterialApp(

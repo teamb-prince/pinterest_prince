@@ -8,8 +8,8 @@ class PinModel extends Equatable {
     @required this.url,
     @required this.title,
     @required this.imageUrl,
-    @required this.description,
     @required this.uploadType,
+    @required this.description,
     @required this.label,
     @required this.createdAt,
   });
@@ -21,8 +21,8 @@ class PinModel extends Equatable {
       url: json['url'] as String,
       title: json['title'] as String,
       imageUrl: json['image_url'] as String,
-      description: json['description'] as String,
       uploadType: json['upload_type'] as String,
+      description: json['description'] as String,
       label: json['label'] as String,
       createdAt: json['created_at'] as String,
     );
@@ -33,6 +33,7 @@ class PinModel extends Equatable {
   final String url;
   final String title;
   final String imageUrl;
+
   final String description;
   final String uploadType;
   final String label;
@@ -45,6 +46,7 @@ class PinModel extends Equatable {
         url,
         title,
         imageUrl,
+        uploadType,
         description,
         uploadType,
         label,

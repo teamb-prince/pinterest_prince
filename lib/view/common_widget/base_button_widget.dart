@@ -7,31 +7,31 @@ class BaseButton extends StatelessWidget {
     Key key,
     @required this.title,
     @required this.buttonColor,
+    @required this.buttonTextColor,
     @required this.onPressedCallback,
+    this.buttonWidth,
   }) : super(key: key);
-
-  double get _buttonWidth => 350;
 
   RoundedRectangleBorder get _buttonShape => RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       );
 
-  TextStyle get _buttonTextStyle => const TextStyle(color: AppColors.white);
-
   final String title;
   final Color buttonColor;
+  final Color buttonTextColor;
   final VoidCallback onPressedCallback;
+  final double buttonWidth;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: _buttonWidth,
+      width: buttonWidth,
       child: RaisedButton(
         color: buttonColor,
         shape: _buttonShape,
         child: Text(
           title,
-          style: _buttonTextStyle,
+          style: TextStyle(color: buttonTextColor),
         ),
         onPressed: onPressedCallback,
       ),
@@ -49,6 +49,8 @@ class RedButton extends BaseButton {
           title: title,
           onPressedCallback: onPressedCallback,
           buttonColor: AppColors.red,
+          buttonWidth: 350,
+          buttonTextColor: AppColors.white,
         );
 }
 
@@ -62,6 +64,8 @@ class FacebookButton extends BaseButton {
           title: title,
           onPressedCallback: onPressedCallback,
           buttonColor: AppColors.facebookButtonColor,
+          buttonWidth: 350,
+          buttonTextColor: AppColors.white,
         );
 }
 
@@ -75,6 +79,8 @@ class GoogleButton extends BaseButton {
           title: title,
           onPressedCallback: onPressedCallback,
           buttonColor: AppColors.googleButtonColor,
+          buttonWidth: 350,
+          buttonTextColor: AppColors.white,
         );
 }
 
@@ -88,5 +94,7 @@ class AppleButton extends BaseButton {
           title: title,
           onPressedCallback: onPressedCallback,
           buttonColor: AppColors.black,
+          buttonWidth: 350,
+          buttonTextColor: AppColors.white,
         );
 }
