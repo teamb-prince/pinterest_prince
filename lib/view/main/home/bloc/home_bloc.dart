@@ -16,6 +16,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is LoadData) {
       try {
+        LoadingState();
         List<PinModel> pins;
         List<PinModel> currentPins;
         if (state is LoadedState) {
@@ -32,9 +33,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         if (pins.isEmpty) {
           yield NoDataState();
-        } else {
-          yield LoadedState(currentPins + pins);
+          return;
         }
+
+        yield LoadedState(currentPins + pins);
       } on Exception catch (e) {
         yield ErrorState(e);
       }
