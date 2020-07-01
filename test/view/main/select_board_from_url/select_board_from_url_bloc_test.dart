@@ -6,7 +6,7 @@ import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
-import 'package:pintersest_clone/view/main/select_board_from_url_widget/bloc/bloc.dart';
+import 'package:pintersest_clone/view/main/select_board_from_url/bloc/bloc.dart';
 
 class MockBoardRepository extends Mock implements BoardsRepository {}
 
