@@ -5,9 +5,7 @@ import 'package:pintersest_clone/api/auth_api.dart';
 import 'package:pintersest_clone/api/board_api.dart';
 import 'package:pintersest_clone/api/image_api.dart';
 import 'package:pintersest_clone/api/pins_api.dart';
-
 import 'package:pintersest_clone/api/user_api.dart';
-
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/auth_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';

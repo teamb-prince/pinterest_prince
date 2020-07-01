@@ -6,6 +6,7 @@ import 'package:pintersest_clone/data/users_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/user_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/common_widget/base_button_widget.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/bloc/pin_detail_bloc.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/bloc/pin_detail_event.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/bloc/pin_detail_state.dart';
@@ -30,10 +31,6 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     borderRadius: BorderRadius.circular(16),
   );
 
-  final RoundedRectangleBorder _buttonDecoration = RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(32),
-  );
-
   final List<String> imageList = [
     'https://automaton-media.com/wp-content/uploads/2019/05/20190501-91106-001.jpg',
     'https://c2.staticflickr.com/2/1496/26433173610_10a5654b94_o.jpg',
@@ -46,71 +43,16 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     'https://pbs.twimg.com/media/EZoZKkBUMAARw9Z.jpg',
   ];
 
-  static const String accessText = 'アクセス';
-  static const String saveText = '保存';
-  static const String savedText = '保存しました！';
-  static const String moreViewText = '表示';
-  static const String urlText = 'ピンもと: ';
-  static const String followText = 'フォロー';
-
-  static const String dummyFollowerText = 'フォロワー  3人';
-
   final List<String> uploadTypeList = ['url', 'local'];
-
-  static const double menuButtonSize = 45;
-  static const double menuButtonFontSize = 17;
-
-  String pinId;
-  String pinTitle;
-  String pinDescription;
-  String url;
-  String uploadType;
-  String userId;
-  String imageUrl;
-
-  void getPinData() {
-    final args =
-        ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
-    pinId = args.pin.id;
-    pinTitle = args.pin.title;
-    pinDescription = args.pin.description;
-    url = args.pin.url;
-    uploadType = args.pin.uploadType;
-    userId = args.pin.userId;
-    imageUrl = args.pin.imageUrl;
-  }
-
-  void _saveBoard() {
-    // TODO ボードを保存する処理
-    print('tap save');
-  }
-
-  void _moveToBoard() {
-    // TODO 自分がこのピンを保存したボードに移動する処理？
-    print('tap already saved');
-  }
-
-  void _accessSite() {
-    widget.browser.open(url: url);
-  }
-
-  void _moreView() {
-    // TODO 類似画像を表示する処理
-    print('tap more view');
-  }
-
-  void _follow() {
-    // TODO フォローする処理
-    print('tap follow button');
-  }
 
   @override
   Widget build(BuildContext context) {
-    getPinData();
+    final args =
+        ModalRoute.of(context).settings.arguments as PinDetailWidgetArguments;
     return BlocProvider<PinDetailBloc>(
       create: (context) => PinDetailBloc(context.repository<UsersRepository>(),
           context.repository<PinsRepository>())
-        ..add(LoadData(userId, pinId)),
+        ..add(LoadData(args.pin.userId, args.pin.id)),
       child: Scaffold(
         backgroundColor: AppColors.pinsDetailBackgroundColor,
         body: SafeArea(
@@ -121,14 +63,13 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
                   [
                     Column(
                       children: [
-                        _buildPinImage(),
+                        _buildPinImage(args.pin),
                       ],
                     )
                   ],
                 ),
               ),
               SliverGrid(
-                // TODO 細かいUIは後で
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                 ),
@@ -143,15 +84,15 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     );
   }
 
-  Widget _buildPinImage() {
+  Widget _buildPinImage(PinModel pin) {
     return Stack(
       children: [
         Container(
             decoration: _roundedContainerDecoration,
             child: Column(
               children: [
-                _buildImage(imageUrl),
-                _buildInformation(),
+                _buildImage(pin),
+                _buildInformation(pin),
               ],
             )),
         _buildBackButton(),
@@ -159,9 +100,9 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     );
   }
 
-  Widget _buildImage(String imageUrl) {
+  Widget _buildImage(PinModel pin) {
     return ClipRRect(
-      child: Image.network(imageUrl),
+      child: Image.network(pin.imageUrl),
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(16),
         topRight: Radius.circular(16),
@@ -202,7 +143,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     );
   }
 
-  Widget _buildActionButton() {
+  Widget _buildActionButton(String uploadType) {
     return BlocBuilder<PinDetailBloc, PinDetailState>(
       builder: (context, state) {
         if (state is LoadedState) {
@@ -213,15 +154,20 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildIcon(Icon(Icons.share)),
-                  //TODO シェア機能いる?
-
+                  const SizedBox(
+                    width: 8,
+                  ),
                   uploadType == uploadTypeList[0]
                       ? _buildAccessButton()
                       : _buildMoreViewButton(),
+                  const SizedBox(
+                    width: 8,
+                  ),
                   state.saved ? _buildSavedButton() : _buildSaveBoardButton(),
-                  // TODO 保存ずみ/未保存で表示を変える
-                  _buildIcon(Icon(Icons.more_horiz)),
-                  //TODO その他の操作いる?
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  _buildIcon(const Icon(Icons.more_horiz)),
                 ],
               ),
             ),
@@ -240,60 +186,76 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   }
 
   Widget _buildSaveBoardButton() {
-    return _buildButton(saveText, AppColors.white, AppColors.red,
-        menuButtonSize, menuButtonFontSize);
+    return BaseButton(
+        title: '保存',
+        buttonColor: AppColors.red,
+        buttonTextColor: AppColors.white,
+        onPressedCallback: () => print('tap save'));
   }
 
   Widget _buildSavedButton() {
-    return _buildButton(savedText, AppColors.black, AppColors.grey,
-        menuButtonSize, menuButtonFontSize);
+    return BaseButton(
+        title: '保存しました!',
+        buttonColor: AppColors.grey,
+        buttonTextColor: AppColors.black,
+        onPressedCallback: () => print('tap saved'));
   }
 
   Widget _buildAccessButton() {
-    return _buildButton(accessText, AppColors.black, AppColors.grey,
-        menuButtonSize, menuButtonFontSize);
+    return BaseButton(
+        title: 'アクセス',
+        buttonColor: AppColors.grey,
+        buttonTextColor: AppColors.black,
+        onPressedCallback: () => print('tap save'));
   }
 
   Widget _buildMoreViewButton() {
-    return _buildButton(moreViewText, AppColors.black, AppColors.grey,
-        menuButtonSize, menuButtonFontSize);
+    return BaseButton(
+        title: '表示',
+        buttonColor: AppColors.grey,
+        buttonTextColor: AppColors.black,
+        onPressedCallback: () => print('tap more view'));
   }
 
   Widget _buildFollowButton() {
-    return _buildButton(followText, AppColors.black, AppColors.grey, 40, 13);
+    return BaseButton(
+        title: 'フォロー',
+        buttonColor: AppColors.grey,
+        buttonTextColor: AppColors.black,
+        onPressedCallback: () => print('tap follow'));
   }
 
-  Widget _buildInformation() {
+  Widget _buildInformation(PinModel pin) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
       child: Column(
         children: [
-          _buildPinInformation(),
-          _buildActionButton(),
+          _buildPinInformation(pin),
+          _buildActionButton(pin.uploadType),
         ],
       ),
     );
   }
 
-  Widget _buildUrlInformation() {
+  Widget _buildUrlInformation(String url) {
     return Text(
-      '$urlText $url',
+      'ピンもと:  $url',
       textAlign: TextAlign.center,
     );
   }
 
-  Widget _buildPinInformation() {
+  Widget _buildPinInformation(PinModel pin) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        uploadType == uploadTypeList[0]
-            ? _buildUrlInformation()
-            : _buildUserInfomation(),
+        pin.uploadType == uploadTypeList[0]
+            ? _buildUrlInformation(pin.url)
+            : _buildUserInformation(),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 7.0),
           child: Container(
             child: Text(
-              pinTitle,
+              pin.title,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -304,14 +266,14 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
           ),
         ),
         Text(
-          pinDescription,
+          pin.description,
           style: const TextStyle(fontSize: 15),
         ),
       ],
     );
   }
 
-  Widget _buildUserInfomation() {
+  Widget _buildUserInformation() {
     return BlocBuilder<PinDetailBloc, PinDetailState>(
       builder: (context, state) {
         if (state is LoadedState) {
@@ -368,7 +330,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
                       ),
                     ),
                     const Text(
-                      dummyFollowerText,
+                      'フォロワー  3人',
                       style: TextStyle(
                         fontSize: 12,
                       ),
@@ -379,47 +341,6 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
             ),
             _buildFollowButton(),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildButton(String text, Color textColor, Color buttonColor,
-      double height, double fontSize) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6, right: 6),
-      child: Container(
-        height: height,
-        child: FlatButton(
-          shape: _buttonDecoration,
-          color: buttonColor,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontSize: fontSize,
-            ),
-          ),
-          onPressed: () {
-            switch (text) {
-              case saveText:
-                _saveBoard();
-                break;
-              case savedText:
-                _moveToBoard();
-                break;
-              case accessText:
-                _accessSite();
-                break;
-              case moreViewText:
-                _moreView();
-                break;
-              case followText:
-                _follow();
-                break;
-              default:
-            }
-          },
         ),
       ),
     );
