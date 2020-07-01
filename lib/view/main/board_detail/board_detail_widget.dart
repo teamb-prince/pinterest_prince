@@ -52,8 +52,11 @@ class BoardDetailWidget extends StatelessWidget {
             crossAxisCount: 4,
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
-            itemBuilder: (context, index) =>
-                PinTile(pin: state.pins[index], heroTag: state.pins[index].id),
+            itemBuilder: (context, index) {
+              final heroTag = '${state.pins[index].id}-board';
+              return PinTile(
+                  pin: state.pins[index], heroTag: heroTag);
+            },
             staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
             itemCount: state.pins.length);
       }
