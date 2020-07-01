@@ -5,17 +5,22 @@ import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
 import 'package:pintersest_clone/app_route.dart';
 
-class PinTile extends StatelessWidget {
+class PinTile extends StatefulWidget {
   const PinTile({@required this.pin});
 
   final PinModel pin;
 
   @override
+  _PinTileState createState() => _PinTileState();
+}
+
+class _PinTileState extends State<PinTile> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
           Navigator.pushNamed(context, AppRoute.pinDetail,
-              arguments: PinDetailWidgetArguments(pin));
+              arguments: PinDetailWidgetArguments(widget.pin));
         },
         child: Container(
           child: Column(
@@ -24,7 +29,7 @@ class PinTile extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: CachedNetworkImage(
-                  imageUrl: pin.imageUrl,
+                  imageUrl: widget.pin.imageUrl,
                   placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(AppColors.grey),
