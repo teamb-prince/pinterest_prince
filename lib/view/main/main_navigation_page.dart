@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/main/account_widget/account_widget.dart';
-import 'package:pintersest_clone/view/main/home_widget/home_widget.dart';
-import 'package:pintersest_clone/view/main/notification_widget/notification_widget.dart';
-import 'package:pintersest_clone/view/main/search_widget/search_widget.dart';
+import 'package:pintersest_clone/view/main/account/account_widget.dart';
+import 'package:pintersest_clone/view/main/home/home_widget.dart';
+import 'package:pintersest_clone/view/main/notification/notification_widget.dart';
+import 'package:pintersest_clone/view/main/search/search_widget.dart';
 
 class MainPageDestination {
   MainPageDestination(this.index, this.title, this.body, this.iconData);

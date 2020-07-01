@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
-import 'package:pintersest_clone/view/main/home_widget/bloc/bloc.dart';
+import 'package:pintersest_clone/view/main/home/bloc/bloc.dart';
 
 class MockPinsRepository extends Mock implements PinsRepository {}
 

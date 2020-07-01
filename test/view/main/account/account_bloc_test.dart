@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pintersest_clone/data/users_repository.dart';
 import 'package:pintersest_clone/model/user_model.dart';
-import 'package:pintersest_clone/view/main/account_widget/bloc/bloc.dart';
+import 'package:pintersest_clone/view/main/account/bloc/bloc.dart';
 
 class MockUsersRepository extends Mock implements UsersRepository {}
 
