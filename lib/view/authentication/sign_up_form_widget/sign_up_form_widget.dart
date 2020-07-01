@@ -5,9 +5,8 @@ import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/auth_repository.dart';
 import 'package:pintersest_clone/model/sign_up_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_bloc.dart';
-import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_event.dart';
-import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/sign_up_state.dart';
+
+import 'bloc/bloc.dart';
 
 class SignUpFormWidget extends StatefulWidget {
   @override

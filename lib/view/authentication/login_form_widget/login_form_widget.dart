@@ -4,9 +4,8 @@ import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/auth_repository.dart';
 import 'package:pintersest_clone/model/login_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/login_bloc.dart';
-import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/login_event.dart';
-import 'package:pintersest_clone/view/authentication/login_form_widget/bloc/login_state.dart';
+
+import 'bloc/bloc.dart';
 
 class LoginFormWidget extends StatefulWidget {
   @override

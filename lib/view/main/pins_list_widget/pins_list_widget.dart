@@ -4,16 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/view/main/create_pin_widget/create_pin_widget.dart';
-
-import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/view/main/pin_detail_widget/pin_detail_widget.dart';
-import 'package:pintersest_clone/view/main/pins_list_widget/bloc/pins_list_bloc.dart';
 
-import 'bloc/pins_list_event.dart';
-import 'bloc/pins_list_state.dart';
+import 'bloc/bloc.dart';
 
 class PinsListWidget extends StatefulWidget {
   @override

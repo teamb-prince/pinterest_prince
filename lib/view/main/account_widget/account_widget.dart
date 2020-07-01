@@ -5,12 +5,11 @@ import 'package:pintersest_clone/data/users_repository.dart';
 import 'package:pintersest_clone/model/user_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/common_widget/rounded_tab_indicator.dart';
-import 'package:pintersest_clone/view/main/account_widget/bloc/account_bloc.dart';
-import 'package:pintersest_clone/view/main/account_widget/bloc/account_event.dart';
-import 'package:pintersest_clone/view/main/account_widget/bloc/account_state.dart';
 import 'package:pintersest_clone/view/main/boards_list_widget/boards_list_widget.dart';
 import 'package:pintersest_clone/view/main/pins_list_widget/pins_list_widget.dart';
 import 'package:pintersest_clone/view/main/user_detail_widget/user_detail_widget.dart';
+
+import 'bloc/bloc.dart';
 
 class AccountWidget extends StatelessWidget {
   @override

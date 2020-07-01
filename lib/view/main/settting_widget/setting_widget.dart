@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/auth_repository.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/main/settting_widget/bloc/setting_bloc.dart';
-import 'package:pintersest_clone/view/main/settting_widget/bloc/setting_event.dart';
-import 'package:pintersest_clone/view/main/settting_widget/bloc/setting_state.dart';
+
+import 'bloc/bloc.dart';
 
 class SettingItem {
   SettingItem(
@@ -34,8 +33,8 @@ class SettingWidget extends StatelessWidget {
     return BlocListener<SettingBloc, SettingState>(
         listener: (context, state) {
           if (state is SuccessState) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                AppRoute.loginTop, (route) => false);
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil(AppRoute.loginTop, (route) => false);
           }
         },
         child: Scaffold(

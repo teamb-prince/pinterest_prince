@@ -4,10 +4,8 @@ import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/model/board_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/common_widget/base_text_field.dart';
-import 'package:pintersest_clone/view/main/create_board_widget/bloc/create_board_state.dart';
 
-import 'bloc/create_board_bloc.dart';
-import 'bloc/create_board_event.dart';
+import 'bloc/bloc.dart';
 
 class CreateBoardWidget extends StatefulWidget {
   @override
