@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pintersest_clone/model/sign_up_request_model.dart';
 import 'package:pintersest_clone/model/user_model.dart';
-import 'package:pintersest_clone/view/authentication/sign_up_form_widget/bloc/bloc.dart';
+import 'package:pintersest_clone/view/authentication/sign_up_form/bloc/bloc.dart';
 
 import '../mock_auth_repository.dart';
 
