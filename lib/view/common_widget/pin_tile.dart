@@ -29,7 +29,9 @@ class PinTile extends StatelessWidget {
                       child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(AppColors.grey),
                   )),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  errorWidget: (context, url, error) =>
+                      Container(color: AppColors.grey),
+                  fit: BoxFit.cover,
                 ),
               ),
             ],
