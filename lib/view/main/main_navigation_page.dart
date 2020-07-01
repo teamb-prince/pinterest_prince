@@ -17,7 +17,7 @@ class MainPageDestination {
 List<MainPageDestination> mainPageDestinations = [
   MainPageDestination(0, 'ホーム', HomeWidget(), Icons.home),
   MainPageDestination(1, '検索', SearchWidget(), Icons.search),
-  MainPageDestination(2, 'お知らせ', NotificationWidget(), Icons.notifications),
+  MainPageDestination(2, 'お知らせ', NotificationWidget(), Icons.message),
   MainPageDestination(3, '保存済み', AccountWidget(), Icons.person),
 ];
 
@@ -30,7 +30,10 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   int _currentIndex = 0;
   final double _bottomNavBarPosition = 32;
   final double _bottomNavBarCornerRadius = 32;
-  final double _bottomNavBarHorizontalPadding = 48;
+  final double _bottomNavBarHorizontalPadding = 70;
+
+  final double _selectedIconSize = 25;
+  final double _unselectedIconSize = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +69,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
             backgroundColor: AppColors.white,
             type: BottomNavigationBarType.fixed,
             selectedItemColor: AppColors.black,
-            unselectedItemColor: Colors.grey,
+            unselectedItemColor: Colors.grey[500],
+            selectedIconTheme: IconThemeData(size: _selectedIconSize),
+            unselectedIconTheme: IconThemeData(size: _unselectedIconSize),
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
@@ -75,8 +80,15 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
             currentIndex: _currentIndex,
             items: mainPageDestinations
                 .map((item) => BottomNavigationBarItem(
-                      icon: Icon(item.iconData),
-                      title: Text(item.title),
+                      icon: Icon(
+                        item.iconData,
+                      ),
+                      title: Text(
+                        item.title,
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
                     ))
                 .toList(),
           ),
