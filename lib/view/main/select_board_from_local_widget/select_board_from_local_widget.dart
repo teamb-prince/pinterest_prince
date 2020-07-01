@@ -11,9 +11,7 @@ import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 
-import 'bloc/select_board_from_local_bloc.dart';
-import 'bloc/select_board_from_local_event.dart';
-import 'bloc/select_board_from_local_state.dart';
+import 'bloc/bloc.dart';
 
 class SelectBoardFromLocalArguments {
   SelectBoardFromLocalArguments(

@@ -6,7 +6,7 @@ import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/pin_request_model.dart';
 
 abstract class PinsApi {
-  Future<PinModel> getPin(String id);
+  Future<PinModel> getPin(String id, {String userId});
 
   Future<List<PinModel>> getPins(
       {String userId, String boardId, int limit, int offset});
@@ -27,8 +27,12 @@ class DefaultPinsApi extends PinsApi {
   final ApiClient _apiClient;
 
   @override
-  Future<PinModel> getPin(String id) async {
-    final response = await _apiClient.get('/pins/$id');
+  Future<PinModel> getPin(String id, {String userId}) async {
+    Map<String, String> query = {};
+    if (userId != null) {
+      query['user_id'] = userId;
+    }
+    final response = await _apiClient.get('/pins/$id', query: query);
     return PinModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 

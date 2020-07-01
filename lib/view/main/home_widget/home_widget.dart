@@ -5,9 +5,7 @@ import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/common_widget/pin_tile.dart';
 import 'package:pintersest_clone/view/common_widget/rounded_tab_indicator.dart';
-import 'package:pintersest_clone/view/main/home_widget/bloc/home_bloc.dart';
-import 'package:pintersest_clone/view/main/home_widget/bloc/home_event.dart';
-import 'package:pintersest_clone/view/main/home_widget/bloc/home_state.dart';
+import 'bloc/bloc.dart';
 
 class HomeWidget extends StatelessWidget {
   final double _topNavigationBarHeight = 48;

@@ -4,9 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:pintersest_clone/api/errors/error.dart';
 import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/model/image_model.dart';
-import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_bloc.dart';
-import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_event.dart';
-import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_state.dart';
+import 'package:pintersest_clone/view/main/crawling_image/bloc/bloc.dart';
 
 class MockImageRepository extends Mock implements ImageRepository {}
 

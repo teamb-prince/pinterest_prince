@@ -3,11 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/image_repository.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
-import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_event.dart';
-import 'package:pintersest_clone/view/main/crawling_image/bloc/crawling_image_state.dart';
 import 'package:pintersest_clone/view/main/edit_crawling_image_widget/edit_crawling_image_widget.dart';
 
-import 'bloc/crawling_image_bloc.dart';
+import 'bloc/bloc.dart';
 
 class CrawlingImageArgs {
   CrawlingImageArgs({@required this.url});
