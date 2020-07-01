@@ -15,8 +15,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is LoadData) {
+      yield LoadingState();
       try {
-        LoadingState();
         List<PinModel> pins;
         List<PinModel> currentPins;
         if (state is LoadedState) {
