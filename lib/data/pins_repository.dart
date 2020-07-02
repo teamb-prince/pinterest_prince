@@ -19,7 +19,8 @@ class PinsRepository {
 
   Future<List<PinModel>> getTokenUserPins() => _pinsApi.getTokenUserPins();
 
-  Future<List<PinModel>> getDiscoverPins() => _pinsApi.getDiscoverPins();
+  Future<List<PinModel>> getDiscoverPins({int limit, int offset}) =>
+      _pinsApi.getDiscoverPins(limit: limit, offset: offset);
 
   Future<PinModel> savePinFromUrl(PinRequestModel pinRequestModel) =>
       _pinsApi.savePinWithUrl(pinRequestModel);
