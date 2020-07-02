@@ -8,6 +8,7 @@ import 'package:pintersest_clone/view/common/bottom_loader_widget.dart';
 import 'package:pintersest_clone/view/common/pin_tile.dart';
 import 'package:pintersest_clone/view/common/rounded_tab_indicator.dart';
 import 'package:pintersest_clone/view/main/follow/follow_widget.dart';
+import 'package:pintersest_clone/view/main/pickup/pickup_widget.dart';
 
 import 'bloc/bloc.dart';
 
@@ -29,6 +30,8 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   final _scrollController = ScrollController();
   final _scrollThreshold = 200;
+
+  final _pickupWidget = PickupWidget();
 
   HomeBloc bloc;
 
@@ -96,7 +99,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         body: TabBarView(
           children: <Widget>[
             _buildStaggeredGridView(),
-            Container(color: Colors.red),
+            _pickupWidget,
             FollowWidget(),
           ],
         ),

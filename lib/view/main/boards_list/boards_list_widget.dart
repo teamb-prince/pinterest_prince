@@ -50,33 +50,38 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
       if (state is LoadedDataState) {
         final boards = state.boards;
         final pins = state.pins;
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: CustomScrollView(slivers: <Widget>[
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Column(
-                  children: <Widget>[
-                    _buildSearchBar(context),
-                  ],
-                )
-              ]),
-            ),
-            SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1, mainAxisSpacing: 16),
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(AppRoute.boardDetail,
-                        arguments: BoardDetailArgs(board: boards[index]));
-                  },
-                  child: BoardTile(
-                      board: boards[index], pins: pins[boards[index].id]),
-                );
-              }, childCount: boards.length),
-            )
-          ]),
+        return RefreshIndicator(
+          onRefresh: () {
+            BlocProvider.of<BoardsListBloc>(context).add(LoadData());
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: CustomScrollView(slivers: <Widget>[
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  Column(
+                    children: <Widget>[
+                      _buildSearchBar(context),
+                    ],
+                  )
+                ]),
+              ),
+              SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1, mainAxisSpacing: 16),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(AppRoute.boardDetail,
+                          arguments: BoardDetailArgs(board: boards[index]));
+                    },
+                    child: BoardTile(
+                        board: boards[index], pins: pins[boards[index].id]),
+                  );
+                }, childCount: boards.length),
+              )
+            ]),
+          ),
         );
       }
       return Container();

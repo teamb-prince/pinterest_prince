@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:pintersest_clone/app_route.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/data/users_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/user_model.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/common/base_button_widget.dart';
+import 'package:pintersest_clone/view/main/select_board_from_url/select_board_from_url_widget.dart';
 import 'package:pintersest_clone/view/main/similar_pins_list/similar_pins_list.dart';
 import 'package:pintersest_clone/view/web/my_in_app_browser.dart';
 
@@ -123,7 +125,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     );
   }
 
-  Widget _buildActionButton(String uploadType, String url) {
+  Widget _buildActionButton(PinModel pin) {
     return BlocBuilder<PinDetailBloc, PinDetailState>(
       builder: (context, state) {
         if (state is LoadingState) {
@@ -138,11 +140,13 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
                 children: [
                   Flexible(child: Icon(Icons.share)),
                   const SizedBox(width: 8),
-                  uploadType == uploadTypeList[0]
-                      ? _buildAccessButton(url)
+                  pin.uploadType == uploadTypeList[0]
+                      ? _buildAccessButton(pin.url)
                       : _buildMoreViewButton(),
                   const SizedBox(width: 8),
-                  state.saved ? _buildSavedButton() : _buildSaveBoardButton(),
+                  state.saved
+                      ? _buildSavedButton()
+                      : _buildSaveBoardButton(pin),
                   const SizedBox(width: 8),
                   Flexible(child: Icon(Icons.more_horiz)),
                 ],
@@ -156,12 +160,19 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
     );
   }
 
-  Widget _buildSaveBoardButton() {
+  Widget _buildSaveBoardButton(PinModel pin) {
     return BaseButton(
         title: '保存',
         buttonColor: AppColors.red,
         buttonTextColor: AppColors.white,
-        onPressedCallback: () => print('tap save'));
+        onPressedCallback: () {
+          Navigator.of(context).pushNamed(AppRoute.selectBoardFromUrl,
+              arguments: SelectBoardFromUrlArguments(
+                  url: pin.url,
+                  imageUrl: pin.imageUrl,
+                  title: pin.title,
+                  description: pin.description));
+        });
   }
 
   Widget _buildSavedButton() {
@@ -202,7 +213,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
       child: Column(
         children: [
           _buildPinInformation(pin),
-          _buildActionButton(pin.uploadType, pin.url),
+          _buildActionButton(pin),
         ],
       ),
     );

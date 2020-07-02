@@ -31,6 +31,9 @@ class PinsRepository {
   Future<List<PinModel>> getDiscoverPins({int limit, int offset}) =>
       _pinsApi.getDiscoverPins(limit: limit, offset: offset);
 
+  Future<List<PinModel>> getPickup({int limit, int offset, int id}) =>
+      _pinsApi.getPickup(limit: limit, offset: offset, id: id);
+
   Future<PinModel> savePinFromUrl(PinRequestModel pinRequestModel) =>
       _pinsApi.savePinWithUrl(pinRequestModel);
 

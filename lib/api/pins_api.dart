@@ -13,6 +13,8 @@ abstract class PinsApi {
 
   Future<List<PinModel>> getDiscoverPins({int limit, int offset});
 
+  Future<List<PinModel>> getPickup({int limit, int offset, int id});
+
   Future<List<PinModel>> getTokenUserPins();
 
   Future<PinModel> savePinWithUrl(PinRequestModel pinRequestModel);
@@ -83,6 +85,24 @@ class DefaultPinsApi extends PinsApi {
       query['offset'] = offset.toString();
     }
     final response = await _apiClient.get('/discover', query: query);
+    return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
+        .map((pin) => PinModel.fromJson(pin))
+        .toList();
+  }
+
+  @override
+  Future<List<PinModel>> getPickup({int limit, int offset, int id}) async {
+    Map<String, String> query = {};
+    if (limit != null) {
+      query['limit'] = limit.toString();
+    }
+    if (offset != null) {
+      query['offset'] = offset.toString();
+    }
+    if (id != null) {
+      query['id'] = id.toString();
+    }
+    final response = await _apiClient.get('/pickup/$id', query: query);
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((pin) => PinModel.fromJson(pin))
         .toList();
