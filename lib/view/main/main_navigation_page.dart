@@ -85,6 +85,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
               selectedIconTheme: IconThemeData(size: _selectedIconSize),
               unselectedIconTheme: IconThemeData(size: _unselectedIconSize),
               onTap: (index) {
+                if (!_isVisible) {
+                  return;
+                }
                 setState(() {
                   _currentIndex = index;
                 });
