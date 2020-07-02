@@ -70,7 +70,7 @@ class _PinTileState extends State<PinTile> {
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: CachedNetworkImage(
-              imageUrl: widget.pin.imageUrl,
+              imageUrl: widget.pin.thumbImageUrl,
               placeholder: (context, url) => const Center(
                   child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(AppColors.grey),

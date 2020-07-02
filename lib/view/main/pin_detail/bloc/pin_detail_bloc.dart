@@ -25,13 +25,12 @@ class PinDetailBloc extends Bloc<PinDetailEvent, PinDetailState> {
         user = await _usersRepository.getUser(event.userId);
 
         final tokenUser = await _usersRepository.getAccountInfo();
-
         await _pinsRepository.getPin(event.pinId, userId: tokenUser.id);
-
         yield LoadedState(user, true);
       } on NotFoundError catch (e) {
         yield LoadedState(user, false);
       } on Exception catch (e) {
+        print(e);
         yield ErrorState(e);
       }
     }
