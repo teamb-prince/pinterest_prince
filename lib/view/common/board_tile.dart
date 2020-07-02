@@ -33,6 +33,7 @@ class BoardTile extends StatelessWidget {
     final imageUrl1 = (pins.isNotEmpty) ? pins[0].imageUrl : '';
     final imageUrl2 = (pins.length >= 2) ? pins[1].imageUrl : '';
     final imageUrl3 = (pins.length >= 3) ? pins[2].imageUrl : '';
+
     return Container(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
