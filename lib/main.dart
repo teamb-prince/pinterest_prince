@@ -17,6 +17,7 @@ import 'package:pintersest_clone/view/authentication//sign_up/create_account_wid
 import 'package:pintersest_clone/view/authentication/login_form/login_form_widget.dart';
 import 'package:pintersest_clone/view/authentication/sign_up_form/sign_up_form_widget.dart';
 import 'package:pintersest_clone/view/main/board_detail/board_detail_widget.dart';
+import 'package:pintersest_clone/view/main/similar_pins_list/similar_pins_list.dart';
 import 'package:pintersest_clone/view/main/crawling_image/crawling_image_widget.dart';
 import 'package:pintersest_clone/view/main/create_board/create_board_widget.dart';
 import 'package:pintersest_clone/view/main/create_pin/create_pin_widget.dart';
@@ -105,6 +106,7 @@ class Pinterest extends StatelessWidget {
       AppRoute.editCrawlingImage: (context) => EditCrawlingImageWidget(),
       AppRoute.selectBoardFromLocal: (context) => SelectBoardFromLocalWidget(),
       AppRoute.selectBoardFromUrl: (context) => SelectBoardFromUrlWidget(),
+      AppRoute.similarPinsList: (context) => SimilarPinsListWidget(),
 
       // Others
       AppRoute.setting: (context) => SettingWidget(),

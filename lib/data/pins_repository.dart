@@ -13,9 +13,18 @@ class PinsRepository {
       _pinsApi.getPin(id, userId: userId);
 
   Future<List<PinModel>> getPins(
-          {String userId, String boardId, int limit, int offset}) =>
+          {String userId,
+          String boardId,
+          int limit,
+          int offset,
+          String label}) =>
       _pinsApi.getPins(
-          userId: userId, boardId: boardId, limit: limit, offset: offset);
+        userId: userId,
+        boardId: boardId,
+        limit: limit,
+        offset: offset,
+        label: label,
+      );
 
   Future<List<PinModel>> getTokenUserPins() => _pinsApi.getTokenUserPins();
 
