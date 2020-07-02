@@ -19,7 +19,11 @@ class AuthenticationPreferences {
     final payload = token.split('.')[1];
     final payloadMap = jsonDecode(utf8.decode(base64.decode(payload)));
     final expire = payloadMap[_expireKey] as int;
-    return _compareDate(expire);
+    if (!_compareDate(expire)) {
+      await clearToken();
+      return false;
+    }
+    return true;
   }
 
   bool _compareDate(int expire) {
