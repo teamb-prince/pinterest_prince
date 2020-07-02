@@ -51,7 +51,7 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
         final boards = state.boards;
         final pins = state.pins;
         return RefreshIndicator(
-          onRefresh: () {
+          onRefresh: () async {
             BlocProvider.of<BoardsListBloc>(context).add(LoadData());
           },
           child: Container(
