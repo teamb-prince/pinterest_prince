@@ -50,6 +50,21 @@ class Pinterest extends StatelessWidget {
 
   final String initialRoute;
 
+  static const int _customPrimaryValue = 0xFFD91A40;
+  static const MaterialColor _customSwatch =
+      MaterialColor(_customPrimaryValue, <int, Color>{
+    50: Color(0xFFFAE4E8),
+    100: Color(0xFFF4BAC6),
+    200: Color(0xFFEC8DA0),
+    300: Color(0xFFE45F79),
+    400: Color(0xFFDF3C5D),
+    500: Color(_customPrimaryValue),
+    600: Color(0xFFD5173A),
+    700: Color(0xFFCF1332),
+    800: Color(0xFFCA0F2A),
+    900: Color(0xFFC0081C),
+  });
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -77,7 +92,7 @@ class Pinterest extends StatelessWidget {
         child: MaterialApp(
           title: 'Pinterest',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: _customSwatch,
             visualDensity: VisualDensity.adaptivePlatformDensity,
             splashFactory: const NoSplashFactory(),
           ),
