@@ -7,7 +7,7 @@ import 'package:pintersest_clone/data/pins_repository.dart';
 
 class PickupListWidget extends StatefulWidget {
   PickupListWidget({this.id});
-  int id;
+  final int id;
   @override
   _PickupListWidgetState createState() => _PickupListWidgetState(id: id);
 }
@@ -18,7 +18,7 @@ class _PickupListWidgetState extends State<PickupListWidget>
   Animation<double> animation;
 
   _PickupListWidgetState({this.id});
-  int id;
+  final int id;
 
   final List<String> description = ['満点の星空に癒される🌠', 'お城特集'];
   final List<String> title = ['星降る夜空に包まれたい', 'お城特集'];
@@ -76,18 +76,10 @@ class _PickupListWidgetState extends State<PickupListWidget>
               scrollDirection: Axis.horizontal,
               physics: const NeverScrollableScrollPhysics(),
               child: Row(
-                children: <Widget>[
-                  _buildPinCard(pins[0].imageUrl),
-                  _buildPinCard(pins[1].imageUrl),
-                  _buildPinCard(pins[2].imageUrl),
-                  _buildPinCard(pins[3].imageUrl),
-                  _buildPinCard(pins[4].imageUrl),
-                  _buildPinCard(pins[5].imageUrl),
-                  _buildPinCard(pins[6].imageUrl),
-                  _buildPinCard(pins[7].imageUrl),
-                  _buildPinCard(pins[8].imageUrl),
-                  _buildPinCard(pins[9].imageUrl),
-                ],
+                children: pins
+                    .map((pin) => _buildPinCard(pin.imageUrl))
+                    .toList()
+                    .sublist(0, 10),
               ),
             ),
           ),
