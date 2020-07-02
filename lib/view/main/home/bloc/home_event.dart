@@ -6,3 +6,5 @@ abstract class HomeEvent extends Equatable {
 }
 
 class LoadData extends HomeEvent {}
+
+class ResetLoadData extends HomeEvent {}

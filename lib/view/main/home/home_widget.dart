@@ -3,11 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
-import 'package:pintersest_clone/view/main/pickup/pickup_widget.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/common/bottom_loader_widget.dart';
 import 'package:pintersest_clone/view/common/pin_tile.dart';
 import 'package:pintersest_clone/view/common/rounded_tab_indicator.dart';
+import 'package:pintersest_clone/view/main/pickup/pickup_widget.dart';
 
 import 'bloc/bloc.dart';
 
@@ -115,7 +115,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         final pins = state.pins;
         return RefreshIndicator(
           onRefresh: () async {
-            bloc.add(LoadData());
+            bloc.add(ResetLoadData());
           },
           backgroundColor: AppColors.black,
           color: AppColors.white,
