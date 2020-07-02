@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/view/main/pickup/pickup_widget.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/common/bottom_loader_widget.dart';
 import 'package:pintersest_clone/view/common/pin_tile.dart';
@@ -28,6 +29,8 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   final _scrollController = ScrollController();
   final _scrollThreshold = 200;
+
+  final _pickupWidget = PickupWidget();
 
   HomeBloc bloc;
 
@@ -95,8 +98,10 @@ class _HomeWidgetState extends State<HomeWidget> {
         body: TabBarView(
           children: <Widget>[
             _buildStaggeredGridView(),
-            Container(color: Colors.red),
-            Container(color: Colors.blue),
+            _pickupWidget,
+            Container(
+              color: Colors.blue,
+            ),
           ],
         ),
       ),
