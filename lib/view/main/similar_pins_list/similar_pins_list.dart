@@ -101,7 +101,7 @@ class _SimilarPinsListWidgetState extends State<SimilarPinsListWidget> {
         ),
       ),
       onTap: () {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           PageRouteBuilder(
             settings: RouteSettings(
