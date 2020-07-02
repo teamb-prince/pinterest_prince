@@ -33,7 +33,6 @@ class _SimilarPinsListWidgetState extends State<SimilarPinsListWidget> {
           if (state is LoadedState) {
             final pinsList = state.pins;
             return _buildSimilarPinsField(pinsList);
-            //return Container(color: Colors.red);
           } else if (state is ErrorState) {
             return Text(state.exception.toString());
           } else if (state is LoadingState) {
@@ -101,17 +100,8 @@ class _SimilarPinsListWidgetState extends State<SimilarPinsListWidget> {
         ),
       ),
       onTap: () {
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            settings: RouteSettings(
-              name: AppRoute.pinDetail,
-              arguments: PinDetailWidgetArguments(pin: pin, heroTag: pin.id),
-            ),
-            transitionDuration: const Duration(milliseconds: 400),
-            pageBuilder: (_, __, ___) => PinDetailWidget(),
-          ),
-        );
+        Navigator.pushReplacementNamed(context, AppRoute.pinDetail,
+            arguments: PinDetailWidgetArguments(pin: pin, heroTag: pin.id));
       },
     );
   }
