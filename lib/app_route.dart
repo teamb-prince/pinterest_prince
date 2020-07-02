@@ -18,6 +18,7 @@ class AppRoute {
   static const String editCrawlingImage = '/edit_crawling_image';
   static const String selectBoardFromLocal = '/select_board_from_local';
   static const String selectBoardFromUrl = '/select_board_from_url';
+  static const String similarPinsList = '/similar_pins_list';
 
   // Others
   static const String setting = '/setting';

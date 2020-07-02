@@ -9,9 +9,9 @@ abstract class PinsApi {
   Future<PinModel> getPin(String id, {String userId});
 
   Future<List<PinModel>> getPins(
-      {String userId, String boardId, int limit, int offset});
+      {String userId, String boardId, int limit, int offset, String label});
 
-  Future<List<PinModel>> getDiscoverPins();
+  Future<List<PinModel>> getDiscoverPins({int limit, int offset});
 
   Future<List<PinModel>> getTokenUserPins();
 
@@ -38,7 +38,11 @@ class DefaultPinsApi extends PinsApi {
 
   @override
   Future<List<PinModel>> getPins(
-      {String userId, String boardId, int limit, int offset}) async {
+      {String userId,
+      String boardId,
+      int limit,
+      int offset,
+      String label}) async {
     Map<String, String> query = {};
     if (userId != null) {
       query['user_id'] = userId;
@@ -51,6 +55,9 @@ class DefaultPinsApi extends PinsApi {
     }
     if (offset != null) {
       query['offset'] = offset.toString();
+    }
+    if (label != null) {
+      query['label'] = label;
     }
     final response = await _apiClient.get('/pins', query: query);
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
@@ -67,8 +74,15 @@ class DefaultPinsApi extends PinsApi {
   }
 
   @override
-  Future<List<PinModel>> getDiscoverPins() async {
-    final response = await _apiClient.get('/discover');
+  Future<List<PinModel>> getDiscoverPins({int limit, int offset}) async {
+    Map<String, String> query = {};
+    if (limit != null) {
+      query['limit'] = limit.toString();
+    }
+    if (offset != null) {
+      query['offset'] = offset.toString();
+    }
+    final response = await _apiClient.get('/discover', query: query);
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((pin) => PinModel.fromJson(pin))
         .toList();
