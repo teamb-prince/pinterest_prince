@@ -40,7 +40,6 @@ void main() async {
   final authenticationPreferences = AuthenticationPreferences();
   final token = await authenticationPreferences.getAccessToken();
 
-  await authenticationPreferences.clearToken();
   final initialRoute =
       token?.isNotEmpty ?? false ? AppRoute.home : AppRoute.loginTop;
   runApp(Pinterest(initialRoute));
