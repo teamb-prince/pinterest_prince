@@ -11,23 +11,23 @@ class SearchWidget extends StatelessWidget {
   final ideaTitleList = [
     '美しい砂漠',
     'ビーチの壁紙',
-    '美しい風景写真',
+    '世界遺産',
     '猫の写真',
     'お城 外観',
     '星空',
     'ディズニーランド',
-    'スパゲッティ 写真',
+    'メイクアップ',
   ];
 
   final ideaImageUrlList = [
-    'https://x.hankyu-travel.com/cms_photo_image/image_search_kikan5.php?p_photo_mno=00000-BP19_-04821.jpg',
-    'https://mk0yosowalk01fy9de1s.kinstacdn.com/wp-content/uploads/2014/02/%E7%BE%8E%E3%81%97%E3%81%84%E3%83%92%E3%82%99%E3%83%BC%E3%83%81-%E3%83%9B%E3%83%AF%E3%82%A4%E3%83%88%E3%83%98%E3%83%95%E3%82%99%E3%83%B3%E3%83%92%E3%82%99%E3%83%BC%E3%83%81-620x400.jpg',
-    'https://tripeditor.com/wp-content/uploads/2018/04/16151051/2016-3.jpg',
-    'https://pbs.twimg.com/profile_images/595885946383437826/ZWYWRFHM_400x400.jpg',
-    'https://www.taiyo-park.com/photo/mv-img.jpg',
-    'https://blog-imgs-42.fc2.com/s/o/r/soranosorakobako/sora2.jpg',
-    'https://ure.pia.co.jp/mwimgs/d/4/686/img_d4ff05beb962a5eb07f95f3efe2bafc8323075.jpg',
-    'https://video.kurashiru.com/production/videos/051f2807-ac06-4049-8428-7b3008bdb523/compressed_thumbnail_square_large.jpg?1531895042',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/desert_topic.jpg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/beach_topic.jpg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/heritage_topic.jpeg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/cat_topic.jpg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/castle_topic.jpg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/star_topic.jpeg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/disney_topic.jpg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/makeup_topic.gif',
   ];
 
   final famousTitleList = [
@@ -35,17 +35,17 @@ class SearchWidget extends StatelessWidget {
     '90年代 イラスト',
     '景色 幻想的',
     '京都',
-    '七夕',
+    '夏祭り',
     'ネオン',
   ];
 
   final famousImageUrlList = [
-    'https://static.retrip.jp/spot/bee33900-d3f7-48c2-9d1b-404205ea8d55/images/c864aa00-cb0c-46ab-afe3-807fbdf9d040_m.jpg',
-    'https://pbs.twimg.com/profile_images/1217773315407769605/mJsVuI4n_400x400.jpg',
-    'https://dnaimg.com/2013/07/16/adnan-bubalo-tuscany-landscape-photography-zsg/002.jpg',
-    'https://amd.c.yimg.jp/amd/20200229-00023521-gonline-000-1-view.jpg',
-    'https://www.kurobe-unazuki.jp/wp-content/uploads/2018/08/bba20b28ce765961ddad715c2e7b61f9.jpg',
-    'https://d1p3yg7ncaw58a.cloudfront.net/projects/2019/11/11/139428.jpg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/nightview_topic.jpg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/90_illust_topic.jpg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/keshiki_topic.jpeg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/kyoto_topic.jpg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/matsuri_topic.jpg',
+    'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/neon_topic.jpg',
   ];
 
   @override
@@ -152,7 +152,7 @@ class SearchWidget extends StatelessWidget {
             _buildTopicImage(urlList[index]),
             Container(
               decoration: BoxDecoration(
-                color: AppColors.black.withOpacity(0.6),
+                color: AppColors.black.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
