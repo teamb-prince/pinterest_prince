@@ -30,7 +30,6 @@ class PinDetailBloc extends Bloc<PinDetailEvent, PinDetailState> {
       } on NotFoundError catch (e) {
         yield LoadedState(user, false);
       } on Exception catch (e) {
-        print(e);
         yield ErrorState(e);
       }
     }
