@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:pintersest_clone/view/main/similar_pins_list/similar_pins_list.dart';
 import 'package:pintersest_clone/data/users_repository.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/model/user_model.dart';
@@ -27,18 +27,6 @@ class PinDetailWidget extends StatefulWidget {
 }
 
 class _PinDetailWidgetState extends State<PinDetailWidget> {
-  final List<String> imageList = [
-    'https://automaton-media.com/wp-content/uploads/2019/05/20190501-91106-001.jpg',
-    'https://c2.staticflickr.com/2/1496/26433173610_10a5654b94_o.jpg',
-    'https://skyticket.jp/guide/wp-content/uploads/shutterstock_252533968.jpg',
-    'https://d1fv7zhxzrl2y7.cloudfront.net/articlecontents/103160/dobai_AdobeStock_211353756.jpeg?1555031349',
-    'https://cdn.sbfoods.co.jp/recipes/06608_l.jpg',
-    'https://images3.imgbox.com/4a/4a/XnWFHADP_o.gif',
-    'https://town.epark.jp/lp/magazine/wp-content/uploads/2019/11/sunshine_aquarium.jpg',
-    'https://www.fashion-press.net/img/news/56610/bkg.jpg',
-    'https://pbs.twimg.com/media/EZoZKkBUMAARw9Z.jpg',
-  ];
-
   final List<String> uploadTypeList = ['url', 'local'];
 
   @override
@@ -61,34 +49,23 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   }
 
   Widget _buildScreen(BuildContext context, PinDetailWidgetArguments args) {
+    final _similarPinsListWidget = SimilarPinsListWidget(
+      label: args.pin.label.toString(),
+    );
     return Scaffold(
       backgroundColor: AppColors.pinsDetailBackgroundColor,
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Column(
-                    children: [
-                      _buildPinImage(args.pin),
-                    ],
-                  )
+        child: Stack(
+          children: <Widget>[
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildPinImage(args.pin),
+                  _similarPinsListWidget,
                 ],
               ),
             ),
-            SliverStaggeredGrid(
-              gridDelegate: SliverStaggeredGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
-                staggeredTileCount: imageList.length,
-              ),
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return _buildSmallImage(imageList[index]);
-              }),
-            ),
+            _buildBackButton(),
           ],
         ),
       ),
@@ -98,35 +75,28 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
   Widget _buildPinImage(PinModel pin) {
     return Stack(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(32),
-          child: Container(
-            color: AppColors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildImage(pin),
-                _buildInformation(pin),
-              ],
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(32),
+            child: Container(
+              color: AppColors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildImage(pin),
+                  _buildInformation(pin),
+                ],
+              ),
             ),
           ),
         ),
-        _buildBackButton(),
       ],
     );
   }
 
   Widget _buildImage(PinModel pin) {
     return Image.network(pin.imageUrl, fit: BoxFit.cover);
-  }
-
-  Widget _buildSmallImage(String imageUrl) {
-    return Container(
-      child: ClipRRect(
-        child: Image.network(imageUrl),
-        borderRadius: BorderRadius.circular(16),
-      ),
-    );
   }
 
   Widget _buildBackButton() {
@@ -137,12 +107,12 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: AppColors.darkGrey,
+          color: AppColors.black.withOpacity(0.7),
           borderRadius: BorderRadius.circular(20),
         ),
         child: IconButton(
-          icon: const Icon(
-            Icons.close,
+          icon: Icon(
+            Icons.arrow_back_ios,
             color: AppColors.white,
           ),
           onPressed: () {
@@ -253,7 +223,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
             ? _buildUrlInformation(pin.url)
             : _buildUserInformation(),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 7.0),
+          padding: const EdgeInsets.symmetric(vertical: 7),
           child: Container(
             child: Text(
               pin.title,

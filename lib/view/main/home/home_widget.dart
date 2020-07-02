@@ -3,14 +3,43 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/common/bottom_loader_widget.dart';
 import 'package:pintersest_clone/view/common/pin_tile.dart';
 import 'package:pintersest_clone/view/common/rounded_tab_indicator.dart';
 
 import 'bloc/bloc.dart';
 
-class HomeWidget extends StatelessWidget {
+class HomeWidget extends StatefulWidget {
+  @override
+  _HomeWidgetState createState() => _HomeWidgetState();
+}
+
+class _HomeWidgetState extends State<HomeWidget> {
+  _HomeWidgetState() {
+    _scrollController.addListener(_onScroll);
+  }
+
   final double _topNavigationBarHeight = 48;
   final double _tabIndicatorHeight = 40;
+
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200;
+
+  HomeBloc bloc;
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      bloc.add(LoadData());
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,23 +99,27 @@ class HomeWidget extends StatelessWidget {
 
   Widget _buildStaggeredGridView() {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      bloc = BlocProvider.of<HomeBloc>(context);
       if (state is LoadedState) {
         final pins = state.pins;
         return RefreshIndicator(
           onRefresh: () async {
-            BlocProvider.of<HomeBloc>(context).add(LoadData());
+            bloc.add(LoadData());
           },
           backgroundColor: AppColors.black,
           color: AppColors.white,
           child: StaggeredGridView.countBuilder(
+            controller: _scrollController,
             padding: const EdgeInsets.all(8),
             primary: false,
             crossAxisCount: 4,
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
             itemBuilder: (context, index) {
-              final heroTag = '${pins[index].id}-home';
-              return PinTile(pin: pins[index], heroTag: heroTag);
+              final heroTag = '${pins[index].id}-$index-home';
+              return index >= state.pins.length
+                  ? BottomLoaderWidget()
+                  : PinTile(pin: pins[index], heroTag: heroTag);
             },
             staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
             itemCount: pins.length,

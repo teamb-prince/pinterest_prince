@@ -13,13 +13,23 @@ class PinsRepository {
       _pinsApi.getPin(id, userId: userId);
 
   Future<List<PinModel>> getPins(
-          {String userId, String boardId, int limit, int offset}) =>
+          {String userId,
+          String boardId,
+          int limit,
+          int offset,
+          String label}) =>
       _pinsApi.getPins(
-          userId: userId, boardId: boardId, limit: limit, offset: offset);
+        userId: userId,
+        boardId: boardId,
+        limit: limit,
+        offset: offset,
+        label: label,
+      );
 
   Future<List<PinModel>> getTokenUserPins() => _pinsApi.getTokenUserPins();
 
-  Future<List<PinModel>> getDiscoverPins() => _pinsApi.getDiscoverPins();
+  Future<List<PinModel>> getDiscoverPins({int limit, int offset}) =>
+      _pinsApi.getDiscoverPins(limit: limit, offset: offset);
 
   Future<PinModel> savePinFromUrl(PinRequestModel pinRequestModel) =>
       _pinsApi.savePinWithUrl(pinRequestModel);
