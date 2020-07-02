@@ -9,8 +9,11 @@ import 'errors/error.dart';
 class ApiClient {
   ApiClient(this._client, this._authenticationPreferences);
 
-  static const _serverUrl = 'http://3.113.131.134:8080';
-  static const _serverDomain = '3.113.131.134:8080';
+  static const _serverUrl = 'http://localhost:8080';
+  static const _serverDomain = 'localhost:8080';
+
+//  static const _serverUrl = 'http://3.113.131.134:8080';
+//  static const _serverDomain = '3.113.131.134:8080';
   final Client _client;
   final AuthenticationPreferences _authenticationPreferences;
 

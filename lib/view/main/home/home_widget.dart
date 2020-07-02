@@ -7,6 +7,7 @@ import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:pintersest_clone/view/common/bottom_loader_widget.dart';
 import 'package:pintersest_clone/view/common/pin_tile.dart';
 import 'package:pintersest_clone/view/common/rounded_tab_indicator.dart';
+import 'package:pintersest_clone/view/main/follow/follow_widget.dart';
 
 import 'bloc/bloc.dart';
 
@@ -96,7 +97,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           children: <Widget>[
             _buildStaggeredGridView(),
             Container(color: Colors.red),
-            Container(color: Colors.blue),
+            FollowWidget(),
           ],
         ),
       ),
