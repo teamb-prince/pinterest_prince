@@ -71,10 +71,10 @@ class _PinTileState extends State<PinTile> {
             borderRadius: BorderRadius.circular(12),
             child: CachedNetworkImage(
               imageUrl: widget.pin.thumbImageUrl,
-              placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors.grey),
-              )),
+              placeholder: (context, url) => Container(
+                height: 100,
+                color: AppColors.grey,
+              ),
               errorWidget: (context, url, error) =>
                   Container(color: AppColors.grey),
               fit: BoxFit.cover,
