@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
@@ -10,6 +11,9 @@ import 'package:pintersest_clone/view/common/rounded_tab_indicator.dart';
 import 'bloc/bloc.dart';
 
 class HomeWidget extends StatefulWidget {
+  const HomeWidget({Key key, this.appearBottomNavBar}) : super(key: key);
+  final ValueChanged<bool> appearBottomNavBar;
+
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
 }
@@ -32,6 +36,14 @@ class _HomeWidgetState extends State<HomeWidget> {
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
       bloc.add(LoadData());
+    }
+    if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.reverse) {
+      widget.appearBottomNavBar(false);
+    }
+    if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.forward) {
+      widget.appearBottomNavBar(true);
     }
   }
 
@@ -69,9 +81,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               labelColor: AppColors.white,
               unselectedLabelColor: AppColors.black,
               isScrollable: true,
-              labelStyle: TextStyle(
-                fontSize: 14,
-              ),
+              labelStyle: const TextStyle(fontSize: 14),
               labelPadding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
               tabs: <Widget>[
@@ -85,12 +95,8 @@ class _HomeWidgetState extends State<HomeWidget> {
         body: TabBarView(
           children: <Widget>[
             _buildStaggeredGridView(),
-            Container(
-              color: Colors.red,
-            ),
-            Container(
-              color: Colors.blue,
-            ),
+            Container(color: Colors.red),
+            Container(color: Colors.blue),
           ],
         ),
       ),
