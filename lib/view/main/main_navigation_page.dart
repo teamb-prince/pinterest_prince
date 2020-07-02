@@ -28,6 +28,7 @@ class MainNavigationPage extends StatefulWidget {
 class _MainNavigationPageState extends State<MainNavigationPage> {
   int _currentIndex = 0;
   bool _isVisible = true;
+  bool _isClickable = true;
   final double _bottomNavBarPosition = 32;
   final double _bottomNavBarCornerRadius = 32;
   final double _bottomNavBarHorizontalPadding = 70;
@@ -37,6 +38,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   void _updateIsVisible(bool isVisible) {
     setState(() {
+      if (!_isClickable) {
+        _isClickable = isVisible;
+      }
       _isVisible = isVisible;
     });
   }
@@ -47,13 +51,14 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         body: Stack(
       children: <Widget>[
         IndexedStack(
-            index: _currentIndex,
-            children: <Widget>[
-              HomeWidget(appearBottomNavBar: _updateIsVisible),
-              SearchWidget(),
-              NotificationWidget(),
-              AccountWidget(),
-            ],),
+          index: _currentIndex,
+          children: <Widget>[
+            HomeWidget(appearBottomNavBar: _updateIsVisible),
+            SearchWidget(),
+            NotificationWidget(),
+            AccountWidget(),
+          ],
+        ),
         Positioned(
           left: 0,
           right: 0,
@@ -71,35 +76,42 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 500),
-        child: Container(
-          padding:
-              EdgeInsets.symmetric(horizontal: _bottomNavBarHorizontalPadding),
-          child: ClipRRect(
-            borderRadius:
-                BorderRadius.all(Radius.circular(_bottomNavBarCornerRadius)),
-            child: BottomNavigationBar(
-              backgroundColor: AppColors.white,
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: AppColors.black,
-              unselectedItemColor: Colors.grey[500],
-              selectedIconTheme: IconThemeData(size: _selectedIconSize),
-              unselectedIconTheme: IconThemeData(size: _unselectedIconSize),
-              onTap: (index) {
-                if (!_isVisible) {
-                  return;
-                }
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              currentIndex: _currentIndex,
-              items: mainPageDestinations
-                  .map((item) => BottomNavigationBarItem(
-                        icon: Icon(item.iconData),
-                        title: Text(item.title,
-                            style: const TextStyle(fontSize: 12)),
-                      ))
-                  .toList(),
+        onEnd: () {
+          if (!_isVisible) {
+            setState(() {
+              _isClickable = false;
+            });
+          }
+        },
+        child: Visibility(
+          visible: _isClickable,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: _bottomNavBarHorizontalPadding),
+            child: ClipRRect(
+              borderRadius:
+                  BorderRadius.all(Radius.circular(_bottomNavBarCornerRadius)),
+              child: BottomNavigationBar(
+                backgroundColor: AppColors.white,
+                type: BottomNavigationBarType.fixed,
+                selectedItemColor: AppColors.black,
+                unselectedItemColor: Colors.grey[500],
+                selectedIconTheme: IconThemeData(size: _selectedIconSize),
+                unselectedIconTheme: IconThemeData(size: _unselectedIconSize),
+                onTap: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                currentIndex: _currentIndex,
+                items: mainPageDestinations
+                    .map((item) => BottomNavigationBarItem(
+                          icon: Icon(item.iconData),
+                          title: Text(item.title,
+                              style: const TextStyle(fontSize: 12)),
+                        ))
+                    .toList(),
+              ),
             ),
           ),
         ),
