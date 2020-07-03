@@ -7,6 +7,8 @@ abstract class UsersApi {
   Future<UserModel> getUser(String id);
 
   Future<UserModel> getAccountInfo();
+
+  Future<List<UserModel>> getUsers();
 }
 
 class DefaultUsersApi extends UsersApi {
@@ -24,5 +26,13 @@ class DefaultUsersApi extends UsersApi {
   Future<UserModel> getAccountInfo() async {
     final response = await _apiClient.get('/profile/user');
     return UserModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+  }
+
+  @override
+  Future<List<UserModel>> getUsers() async {
+    final response = await _apiClient.get('/users');
+    return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
+        .map((pin) => UserModel.fromJson(pin))
+        .toList();
   }
 }
