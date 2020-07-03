@@ -17,6 +17,6 @@ class DefaultImageApi extends ImageApi {
   Future<ImageModel> crawlingImageFromUrl(String url) async {
     final body = jsonEncode({'url': url});
     final response = await _apiClient.post('/images/url-images', body: body);
-    return ImageModel.fromJson(jsonDecode(response.body));
+    return ImageModel.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 }
