@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pintersest_clone/app_route.dart';
+import 'package:pintersest_clone/view/main/search_pins_list/search_pins_list.dart';
 
 class UpdateWidget extends StatelessWidget {
   final String text1 = '「スパゲッティ」のトレンドのピン一覧を見てみましょう！';
@@ -36,6 +38,7 @@ class UpdateWidget extends StatelessWidget {
   ];
 
   final titleList1 = ['90年代 アニメ', 'スポーツカー', 'キャンドル', '星空  風景'];
+  final labelList1 = ['Illust', 'Car', 'Candle', 'Starry Sky'];
 
   final keywordList2 = [
     'https://bucket-pinterest-001.s3.ap-northeast-1.amazonaws.com/thumb/726459fa-7829-4450-9657-320d3b826a37',
@@ -45,6 +48,7 @@ class UpdateWidget extends StatelessWidget {
   ];
 
   final titleList2 = ['宇宙', '銀河', '宇宙 綺麗', '銀河系'];
+  final labelList2 = ['Nebula', 'Nebula', 'Nebula', 'Nebula'];
 
   final keywordList3 = [
     'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/thumb/img_history.jpg',
@@ -61,41 +65,54 @@ class UpdateWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           _buildFeatureText(text1, 1),
-          _buildIdeaField(ideaList1),
+          _buildIdeaField(ideaList1, 'スパゲッティ', 'Spaghetti', context),
           _buildFeatureText(text2, 2),
-          _buildKeyWordField(keywordList1, titleList1),
+          _buildKeyWordField(keywordList1, titleList1, labelList1, context),
           _buildFeatureText(text3, 4),
-          _buildIdeaField(ideaList2),
+          _buildIdeaField(ideaList2, '夏祭り', 'Matsuri', context),
           _buildFeatureText(text4, 4),
-          _buildKeyWordField(keywordList2, titleList2),
+          _buildKeyWordField(keywordList2, titleList2, labelList2, context),
           _buildFeatureText(text5, 8),
-          _buildKeyWordField(keywordList3, titleList3),
+          _buildKeyWordField(keywordList3, titleList3, labelList1, context),
           _buildFeatureText(text6, 9),
-          _buildIdeaField(ideaList3),
+          _buildIdeaField(ideaList3, 'おすすめ', '', context),
         ],
       ),
     );
   }
 
-  Widget _buildIdeaField(List<String> imageUrl) {
+  Widget _buildIdeaField(
+      List<String> imageUrl, String title, String label, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         bottom: 30,
       ),
-      child: Container(
-        width: 402,
-        height: 200,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildIdeaCardImage(imageUrl, 0),
-              _buildIdeaCardImage(imageUrl, 1),
-              _buildIdeaCardImage(imageUrl, 2),
-            ],
+      child: GestureDetector(
+        child: Container(
+          width: 402,
+          height: 200,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildIdeaCardImage(imageUrl, 0),
+                _buildIdeaCardImage(imageUrl, 1),
+                _buildIdeaCardImage(imageUrl, 2),
+              ],
+            ),
           ),
         ),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            AppRoute.searchPinsList,
+            arguments: SearchPinsListWidgetArguments(
+              label: label,
+              title: title,
+            ),
+          );
+        },
       ),
     );
   }
@@ -111,10 +128,8 @@ class UpdateWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildKeyWordField(
-    List<String> imageUrl,
-    List<String> title,
-  ) {
+  Widget _buildKeyWordField(List<String> imageUrl, List<String> title,
+      List<String> labelList, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         bottom: 30,
@@ -130,15 +145,19 @@ class UpdateWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  _buildKeywordCardImage(imageUrl, title, 0),
-                  _buildKeywordCardImage(imageUrl, title, 1),
+                  _buildKeywordCardImage(
+                      imageUrl, title, labelList, 0, context),
+                  _buildKeywordCardImage(
+                      imageUrl, title, labelList, 1, context),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  _buildKeywordCardImage(imageUrl, title, 2),
-                  _buildKeywordCardImage(imageUrl, title, 3),
+                  _buildKeywordCardImage(
+                      imageUrl, title, labelList, 2, context),
+                  _buildKeywordCardImage(
+                      imageUrl, title, labelList, 3, context),
                 ],
               ),
             ],
@@ -148,33 +167,45 @@ class UpdateWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildKeywordCardImage(
-      List<String> imageUrl, List<String> title, int index) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          height: 99,
-          width: 200,
-          child: Image.network(
-            imageUrl[index],
-            fit: BoxFit.cover,
+  Widget _buildKeywordCardImage(List<String> imageUrl, List<String> title,
+      List<String> labelList, int index, BuildContext context) {
+    return GestureDetector(
+      child: Stack(
+        children: <Widget>[
+          Container(
+            height: 99,
+            width: 200,
+            child: Image.network(
+              imageUrl[index],
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        Container(
-          height: 99,
-          width: 200,
-          color: AppColors.black.withOpacity(0.5),
-          child: Center(
-            child: Text(
-              title[index],
-              style: TextStyle(
-                color: AppColors.white,
-                fontSize: 20,
+          Container(
+            height: 99,
+            width: 200,
+            color: AppColors.black.withOpacity(0.5),
+            child: Center(
+              child: Text(
+                title[index],
+                style: TextStyle(
+                  color: AppColors.white,
+                  fontSize: 20,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          AppRoute.searchPinsList,
+          arguments: SearchPinsListWidgetArguments(
+            label: labelList[index],
+            title: title[index],
+          ),
+        );
+      },
     );
   }
 
