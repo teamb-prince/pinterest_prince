@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pintersest_clone/values/app_colors.dart';
-import 'pickup_list_widget.dart';
-import 'package:pintersest_clone/view/common/base_button_widget.dart';
-import 'pickup_cover_widget.dart';
-import 'package:intl/intl.dart';
 import 'package:pintersest_clone/app_route.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
+import 'package:pintersest_clone/view/common/base_button_widget.dart';
+
+import 'pickup_cover_widget.dart';
+import 'pickup_list_widget.dart';
 
 class PickupWidget extends StatefulWidget {
   @override
