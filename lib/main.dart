@@ -38,7 +38,6 @@ import 'data/users_repository.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final authenticationPreferences = AuthenticationPreferences();
-  await authenticationPreferences.clearToken();
   final token = await authenticationPreferences.getAccessToken();
   final initialRoute =
       token?.isNotEmpty ?? false ? AppRoute.home : AppRoute.loginTop;
