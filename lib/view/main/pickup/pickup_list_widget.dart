@@ -25,8 +25,8 @@ class _PickupListWidgetState extends State<PickupListWidget>
 
   final int id;
 
-  final List<String> description = ['満点の星空に癒される🌠', 'お城特集'];
-  final List<String> title = ['星降る夜空に包まれたい', 'お城特集'];
+  final List<String> description = ['満点の星空に癒される🌠', '一度は住んでみたいかも！？'];
+  final List<String> title = ['星降る夜空に包まれたい', '憧れのお城特集'];
 
   @override
   void initState() {
@@ -82,7 +82,7 @@ class _PickupListWidgetState extends State<PickupListWidget>
               physics: const NeverScrollableScrollPhysics(),
               child: Row(
                 children: pins
-                    .map((pin) => _buildPinCard(pin.imageUrl))
+                    .map((pin) => _buildPinCard(pin.thumbImageUrl))
                     .toList()
                     .sublist(0, 10),
               ),
