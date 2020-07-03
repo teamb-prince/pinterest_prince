@@ -23,7 +23,8 @@ class BoardDetailWidget extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           args.board.name,
-          style: const TextStyle(color: AppColors.black),
+          style: const TextStyle(
+              color: AppColors.black, fontWeight: FontWeight.bold),
         ),
         backgroundColor: AppColors.white,
         elevation: 0,
@@ -54,8 +55,7 @@ class BoardDetailWidget extends StatelessWidget {
             mainAxisSpacing: 8,
             itemBuilder: (context, index) {
               final heroTag = '${state.pins[index].id}-board';
-              return PinTile(
-                  pin: state.pins[index], heroTag: heroTag);
+              return PinTile(pin: state.pins[index], heroTag: heroTag);
             },
             staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
             itemCount: state.pins.length);

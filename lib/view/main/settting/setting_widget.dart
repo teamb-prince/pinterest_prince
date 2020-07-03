@@ -41,7 +41,8 @@ class SettingWidget extends StatelessWidget {
           appBar: AppBar(
             title: const Text(
               '設定',
-              style: TextStyle(color: AppColors.black),
+              style: TextStyle(
+                  color: AppColors.black, fontWeight: FontWeight.bold),
             ),
             brightness: Brightness.light,
             elevation: 0,

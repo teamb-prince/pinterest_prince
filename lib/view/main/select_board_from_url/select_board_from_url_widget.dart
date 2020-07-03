@@ -50,7 +50,9 @@ class SelectBoardFromUrlWidget extends StatelessWidget {
     }, builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('ボードを選択', style: TextStyle(color: AppColors.black)),
+          title: const Text('ボードを選択',
+              style: TextStyle(
+                  color: AppColors.black, fontWeight: FontWeight.bold)),
           backgroundColor: AppColors.white,
           iconTheme: const IconThemeData(color: AppColors.black),
           brightness: Brightness.light,

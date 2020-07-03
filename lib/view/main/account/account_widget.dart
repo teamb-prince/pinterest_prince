@@ -29,7 +29,8 @@ class AccountWidget extends StatelessWidget {
         appBar: AppBar(
           title: const Text(
             'アカウント',
-            style: TextStyle(color: AppColors.black),
+            style:
+                TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
           ),
           brightness: Brightness.light,
           elevation: 0,

@@ -10,10 +10,11 @@ class BaseButton extends StatelessWidget {
     @required this.buttonTextColor,
     @required this.onPressedCallback,
     this.buttonWidth,
+    this.buttonHeight,
   }) : super(key: key);
 
   RoundedRectangleBorder get _buttonShape => RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(25),
       );
 
   final String title;
@@ -21,13 +22,16 @@ class BaseButton extends StatelessWidget {
   final Color buttonTextColor;
   final VoidCallback onPressedCallback;
   final double buttonWidth;
+  final double buttonHeight;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: buttonWidth,
-      child: RaisedButton(
+      height: buttonHeight,
+      child: FlatButton(
         color: buttonColor,
+        hoverColor: buttonColor,
         shape: _buttonShape,
         child: Text(
           title,

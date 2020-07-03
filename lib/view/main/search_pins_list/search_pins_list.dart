@@ -33,20 +33,19 @@ class _SearchPinsListWidgetState extends State<SearchPinsListWidget> {
       create: (context) =>
           SearchPinsListBloc(context.repository<PinsRepository>())
             ..add(LoadData(args.label)),
-      child: SafeArea(
-        child: Scaffold(
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: AppBar(
           backgroundColor: AppColors.white,
-          appBar: AppBar(
-            backgroundColor: AppColors.white,
-            title: Text(
-              '${args.title} のピン',
-              style: TextStyle(color: AppColors.black),
-            ),
-            iconTheme: IconThemeData(color: AppColors.black),
-            elevation: 0,
+          title: Text(
+            '${args.title} のピン',
+            style:
+                TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
           ),
-          body: _buildScrollView(context),
+          iconTheme: IconThemeData(color: AppColors.black),
+          elevation: 0,
         ),
+        body: _buildScrollView(context),
       ),
     );
   }

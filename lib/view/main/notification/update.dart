@@ -190,6 +190,7 @@ class UpdateWidget extends StatelessWidget {
                 style: TextStyle(
                   color: AppColors.white,
                   fontSize: 20,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),

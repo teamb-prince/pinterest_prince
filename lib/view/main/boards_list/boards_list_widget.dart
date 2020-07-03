@@ -6,6 +6,7 @@ import 'package:pintersest_clone/data/boards_repository.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
 import 'package:pintersest_clone/view/common/board_tile.dart';
 import 'package:pintersest_clone/view/main/board_detail/board_detail_widget.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
 
 import 'bloc/bloc.dart';
 
@@ -51,6 +52,8 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
         final boards = state.boards;
         final pins = state.pins;
         return RefreshIndicator(
+          color: AppColors.white,
+          backgroundColor: AppColors.black,
           onRefresh: () async {
             BlocProvider.of<BoardsListBloc>(context).add(LoadData());
           },
@@ -106,7 +109,7 @@ class _BoardsListWidgetState extends State<BoardsListWidget> {
                   borderRadius: BorderRadius.circular(24),
                   borderSide: BorderSide.none,
                 ),
-                fillColor: Colors.grey[200],
+                fillColor: AppColors.grey,
                 filled: true,
                 hintText: '自分のボードを探す',
               ),

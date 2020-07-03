@@ -107,8 +107,13 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
                 items: mainPageDestinations
                     .map((item) => BottomNavigationBarItem(
                           icon: Icon(item.iconData),
-                          title: Text(item.title,
-                              style: const TextStyle(fontSize: 12)),
+                          title: Text(
+                            item.title,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
                         ))
                     .toList(),
               ),

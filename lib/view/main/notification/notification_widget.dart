@@ -32,7 +32,10 @@ class NotificationWidget extends StatelessWidget {
               labelColor: AppColors.white,
               unselectedLabelColor: AppColors.black,
               isScrollable: true,
-              labelStyle: const TextStyle(fontSize: 14),
+              labelStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
               labelPadding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
               tabs: <Widget>[
