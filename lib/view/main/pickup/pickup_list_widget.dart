@@ -1,13 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pintersest_clone/values/app_colors.dart';
-import 'bloc/bloc.dart';
-import 'package:pintersest_clone/model/pin_model.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
+import 'package:pintersest_clone/model/pin_model.dart';
+import 'package:pintersest_clone/values/app_colors.dart';
+
+import 'bloc/bloc.dart';
 
 class PickupListWidget extends StatefulWidget {
   PickupListWidget({this.id});
+
   final int id;
+
   @override
   _PickupListWidgetState createState() => _PickupListWidgetState(id: id);
 }
@@ -18,6 +22,7 @@ class _PickupListWidgetState extends State<PickupListWidget>
   Animation<double> animation;
 
   _PickupListWidgetState({this.id});
+
   final int id;
 
   final List<String> description = ['満点の星空に癒される🌠', 'お城特集'];
@@ -97,8 +102,14 @@ class _PickupListWidgetState extends State<PickupListWidget>
           width: 200,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              imageUrl,
+            child: CachedNetworkImage(
+              imageUrl: imageUrl,
+              placeholder: (context, url) => Container(
+                height: 100,
+                color: AppColors.grey,
+              ),
+              errorWidget: (context, url, error) =>
+                  Container(color: AppColors.grey),
               fit: BoxFit.cover,
             ),
           ),
