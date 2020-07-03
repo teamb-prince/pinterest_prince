@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:pintersest_clone/model/pin_model.dart';
 
-abstract class PinsListState extends Equatable {
+abstract class SearchPinsListState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class LoadingState extends PinsListState {}
+class LoadingState extends SearchPinsListState {}
 
-class LoadedState extends PinsListState {
+class LoadedState extends SearchPinsListState {
   LoadedState(this.pins);
 
   final List<PinModel> pins;
@@ -17,9 +17,9 @@ class LoadedState extends PinsListState {
   List<Object> get props => [pins];
 }
 
-class NoDataState extends PinsListState {}
+class NoDataState extends SearchPinsListState {}
 
-class ErrorState extends PinsListState {
+class ErrorState extends SearchPinsListState {
   ErrorState(this.exception);
 
   final Exception exception;

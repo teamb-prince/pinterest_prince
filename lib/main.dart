@@ -27,7 +27,7 @@ import 'package:pintersest_clone/view/main/pin_detail/pin_detail_widget.dart';
 import 'package:pintersest_clone/view/main/select_board_from_local/select_board_from_local_widget.dart';
 import 'package:pintersest_clone/view/main/select_board_from_url/select_board_from_url_widget.dart';
 import 'package:pintersest_clone/view/main/settting/setting_widget.dart';
-import 'package:pintersest_clone/view/main/similar_pins_list/similar_pins_list.dart';
+import 'package:pintersest_clone/view/main/search_pins_list/search_pins_list.dart';
 import 'package:pintersest_clone/view/main/user_detail/user_detail_widget.dart';
 
 import 'api/api_client.dart';
@@ -121,7 +121,7 @@ class Pinterest extends StatelessWidget {
       AppRoute.editCrawlingImage: (context) => EditCrawlingImageWidget(),
       AppRoute.selectBoardFromLocal: (context) => SelectBoardFromLocalWidget(),
       AppRoute.selectBoardFromUrl: (context) => SelectBoardFromUrlWidget(),
-      AppRoute.similarPinsList: (context) => SimilarPinsListWidget(),
+      AppRoute.searchPinsList: (context) => SearchPinsListWidget(),
 
       // Others
       AppRoute.setting: (context) => SettingWidget(),

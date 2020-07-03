@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pintersest_clone/values/app_colors.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pintersest_clone/app_route.dart';
+import 'package:pintersest_clone/view/main/search_pins_list/search_pins_list.dart';
 
 class SearchWidget extends StatelessWidget {
   final TextEditingController _searchTextController = TextEditingController();
 
   final String ideaText = 'おすすめのアイデア';
-  final String famousText = 'Pinterest で人気のピン';
+  final String popularText = 'Pinterest で人気のピン';
 
   final ideaTitleList = [
     '美しい砂漠',
@@ -30,7 +32,18 @@ class SearchWidget extends StatelessWidget {
     'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/makeup_topic.gif',
   ];
 
-  final famousTitleList = [
+  final ideaLabelList = [
+    'Desert',
+    '',
+    '',
+    'Cat',
+    'Castle',
+    'Starry Sky',
+    '',
+    '',
+  ];
+
+  final popularTitleList = [
     '夜景',
     '90年代 イラスト',
     '景色 幻想的',
@@ -39,13 +52,22 @@ class SearchWidget extends StatelessWidget {
     'ネオン',
   ];
 
-  final famousImageUrlList = [
+  final popularImageUrlList = [
     'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/nightview_topic.jpg',
     'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/90_illust_topic.jpg',
     'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/keshiki_topic.jpeg',
     'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/kyoto_topic.jpg',
     'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/matsuri_topic.jpg',
     'https://bucket-pinterest-001.s3-ap-northeast-1.amazonaws.com/sample/neon_topic.jpg',
+  ];
+
+  final popularLabelList = [
+    '',
+    'Illust',
+    '',
+    '',
+    'Matsuri',
+    '',
   ];
 
   @override
@@ -58,9 +80,11 @@ class SearchWidget extends StatelessWidget {
             children: <Widget>[
               _buildSearchBar(context),
               _buildBlockTitle(ideaText),
-              _buildBlockField(ideaTitleList, ideaImageUrlList),
-              _buildBlockTitle(famousText),
-              _buildBlockField(famousTitleList, famousImageUrlList),
+              _buildBlockField(
+                  ideaTitleList, ideaImageUrlList, ideaLabelList, context),
+              _buildBlockTitle(popularText),
+              _buildBlockField(popularTitleList, popularImageUrlList,
+                  popularLabelList, context),
             ],
           ),
         ),
@@ -69,38 +93,39 @@ class SearchWidget extends StatelessWidget {
   }
 
   Widget _buildSearchBar(BuildContext context) {
-    return Container(
-      height: 75,
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-      child: TextField(
-        controller: _searchTextController,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 12),
-          prefixIcon: Icon(
-            Icons.search,
-            color: AppColors.black,
-            size: 24,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(24),
-            borderSide: BorderSide.none,
-          ),
-          fillColor: AppColors.grey,
-          filled: true,
-          hintText: 'アイデアを検索',
-          suffixIcon: IconButton(
-            icon: Icon(
-              Icons.camera_alt,
-              color: AppColors.black,
-              size: 30,
-            ),
-            onPressed: () {
-              // TODO boardに追加画面（カメラからである必要あるか？）
-              print('tap camera');
-              // Navigator.pushNamed(context, AppRoute.createBoard).then((_) {
-              //   BlocProvider.of<BoardsListBloc>(context).add(LoadData());
-              // });
-            },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          color: AppColors.grey,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                Icons.search,
+                color: AppColors.black,
+                size: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 200),
+                child: Text(
+                  'アイデアを検索',
+                  style: TextStyle(
+                    color: AppColors.darkGrey,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.camera_alt,
+                color: AppColors.black,
+                size: 30,
+              )
+            ],
           ),
         ),
       ),
@@ -122,7 +147,8 @@ class SearchWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildBlockField(List<String> titleList, List<String> urlList) {
+  Widget _buildBlockField(List<String> titleList, List<String> urlList,
+      List<String> labelList, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: Container(
@@ -134,7 +160,8 @@ class SearchWidget extends StatelessWidget {
           children: List.generate(
             titleList.length,
             (index) {
-              return _buildTopicCard(index, titleList, urlList);
+              return _buildTopicCard(
+                  index, titleList, urlList, labelList, context);
             },
           ),
         ),
@@ -142,8 +169,8 @@ class SearchWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTopicCard(
-      int index, List<String> titleList, List<String> urlList) {
+  Widget _buildTopicCard(int index, List<String> titleList,
+      List<String> urlList, List<String> labelList, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(3),
       child: GestureDetector(
@@ -160,8 +187,14 @@ class SearchWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          // TODO ピン一覧へ遷移
-          print('tap topic');
+          Navigator.pushNamed(
+            context,
+            AppRoute.searchPinsList,
+            arguments: SearchPinsListWidgetArguments(
+              label: labelList[index],
+              title: titleList[index],
+            ),
+          );
         },
       ),
     );

@@ -79,9 +79,8 @@ class _PinsListWidgetState extends State<PinsListWidget> {
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
               itemBuilder: (context, index) {
-                final heroTag = '${pins[index].id}-account';
-                return PinTile(
-                    pin: pins[index], heroTag: heroTag);
+                final heroTag = '${pins[index].id}-search';
+                return PinTile(pin: pins[index], heroTag: heroTag);
               },
               staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
               itemCount: pins.length,
