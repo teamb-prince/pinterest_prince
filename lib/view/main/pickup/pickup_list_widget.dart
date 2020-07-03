@@ -25,8 +25,8 @@ class _PickupListWidgetState extends State<PickupListWidget>
 
   final int id;
 
-  final List<String> description = ['満点の星空に癒される🌠', 'お城特集'];
-  final List<String> title = ['星降る夜空に包まれたい', 'お城特集'];
+  final List<String> description = ['満点の星空に癒される🌠', '一度は住んでみたいかも！？'];
+  final List<String> title = ['星降る夜空に包まれたい', '憧れのお城特集'];
 
   @override
   void initState() {
