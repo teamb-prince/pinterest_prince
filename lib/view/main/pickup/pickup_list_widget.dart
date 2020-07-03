@@ -82,7 +82,7 @@ class _PickupListWidgetState extends State<PickupListWidget>
               physics: const NeverScrollableScrollPhysics(),
               child: Row(
                 children: pins
-                    .map((pin) => _buildPinCard(pin.imageUrl))
+                    .map((pin) => _buildPinCard(pin.thumbImageUrl))
                     .toList()
                     .sublist(0, 10),
               ),
