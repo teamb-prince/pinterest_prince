@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pintersest_clone/data/pins_repository.dart';
@@ -131,8 +132,14 @@ class FollowWidget extends StatelessWidget {
       height: 200,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: Image.network(
-          imageUrl,
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          placeholder: (context, url) => Container(
+            height: 200,
+            color: AppColors.grey,
+          ),
+          errorWidget: (context, url, error) =>
+              Container(color: AppColors.grey),
           fit: BoxFit.cover,
         ),
       ),
