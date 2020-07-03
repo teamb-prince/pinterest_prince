@@ -45,7 +45,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           elevation: 0,
           title: const Text(
             'ログイン',
-            style: TextStyle(color: AppColors.black),
+            style:
+                TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
           ),
         ),
         body: Container(

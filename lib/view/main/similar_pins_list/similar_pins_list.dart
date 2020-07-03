@@ -67,6 +67,8 @@ class _SimilarPinsListWidgetState extends State<SimilarPinsListWidget> {
           '似ているピン',
           style: TextStyle(
             fontSize: 25,
+            fontWeight: FontWeight.w500,
+            fontFamily: 'SourceHanCodeJP',
           ),
         ),
       ),

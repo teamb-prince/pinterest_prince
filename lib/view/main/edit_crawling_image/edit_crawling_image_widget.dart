@@ -44,7 +44,7 @@ class EditCrawlingImageWidget extends StatelessWidget {
         elevation: 0,
         title: const Text(
           'ピンのタイトルを編集',
-          style: TextStyle(color: AppColors.black),
+          style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Container(

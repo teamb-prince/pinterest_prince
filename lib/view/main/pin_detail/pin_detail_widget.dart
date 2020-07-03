@@ -165,6 +165,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         title: '保存',
         buttonColor: AppColors.red,
         buttonTextColor: AppColors.white,
+        buttonHeight: 50,
         onPressedCallback: () {
           Navigator.of(context).pushNamed(AppRoute.selectBoardFromUrl,
               arguments: SelectBoardFromUrlArguments(
@@ -180,6 +181,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         title: '保存しました!',
         buttonColor: AppColors.grey,
         buttonTextColor: AppColors.black,
+        buttonHeight: 50,
         onPressedCallback: () => print('tap saved'));
   }
 
@@ -188,6 +190,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         title: 'アクセス',
         buttonColor: AppColors.grey,
         buttonTextColor: AppColors.black,
+        buttonHeight: 50,
         onPressedCallback: () => widget.browser.open(url: url));
   }
 
@@ -196,6 +199,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         title: '表示',
         buttonColor: AppColors.grey,
         buttonTextColor: AppColors.black,
+        buttonHeight: 50,
         onPressedCallback: () => print('tap more view'));
   }
 
@@ -204,6 +208,7 @@ class _PinDetailWidgetState extends State<PinDetailWidget> {
         title: 'フォロー',
         buttonColor: AppColors.grey,
         buttonTextColor: AppColors.black,
+        buttonHeight: 50,
         onPressedCallback: () => print('tap follow'));
   }
 

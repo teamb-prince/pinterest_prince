@@ -40,8 +40,10 @@ class _CrawlingImageState extends State<CrawlingImageWidget> {
           backgroundColor: AppColors.white,
           title: const Text(
             '画像を選択',
-            style:
-                TextStyle(fontWeight: FontWeight.bold, color: AppColors.black),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: AppColors.black,
+            ),
           ),
         ),
         backgroundColor: Colors.white,

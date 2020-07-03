@@ -44,3 +44,19 @@ flutter:
   assets:
     - assets/images/
 
+  fonts:
+    - family: SourceHanCodeJP
+      fonts:
+      - asset: fonts/SourceHanCodeJP-ExtraLight.otf
+        weight: 200
+      - asset: fonts/SourceHanCodeJP-Light.otf
+        weight: 300
+      - asset: fonts/SourceHanCodeJP-Regular.otf
+        weight: 400
+      - asset: fonts/SourceHanCodeJP-Medium.otf
+        weight: 500
+      - asset: fonts/SourceHanCodeJP-Bold.otf
+        weight: 600
+      - asset: fonts/SourceHanCodeJP-Heavy.otf
+        weight: 700
+

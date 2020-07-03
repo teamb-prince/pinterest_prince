@@ -30,7 +30,9 @@ class _CreatePinWidgetState extends State<CreatePinWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ピンを作成', style: TextStyle(color: AppColors.black)),
+        title: const Text('ピンを作成',
+            style:
+                TextStyle(color: AppColors.black, fontWeight: FontWeight.bold)),
         backgroundColor: AppColors.white,
         iconTheme: const IconThemeData(color: AppColors.black),
         brightness: Brightness.light,

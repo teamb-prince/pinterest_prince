@@ -82,7 +82,7 @@ class BoardTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Text(board.name,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
           textAlign: TextAlign.left),
     );
   }

@@ -57,7 +57,8 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
           elevation: 0,
           title: const Text(
             '登録',
-            style: TextStyle(color: AppColors.black),
+            style:
+                TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
           ),
         ),
         body: Container(
