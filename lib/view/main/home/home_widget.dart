@@ -114,7 +114,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         final pins = state.pins;
         return RefreshIndicator(
           onRefresh: () async {
-            bloc.add(LoadData());
+            bloc.add(ResetLoadData());
           },
           backgroundColor: AppColors.black,
           color: AppColors.white,

@@ -39,6 +39,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       } on Exception catch (e) {
         yield ErrorState(e);
       }
+    } else if (event is ResetLoadData) {
+      try {
+        List<PinModel> pins;
+
+        pins = await _pinsRepository.getDiscoverPins(offset: 0, limit: 50);
+
+        if (pins.isEmpty) {
+          yield NoDataState();
+          return;
+        }
+        yield LoadedState(pins);
+      } on Exception catch (e) {
+        yield ErrorState(e);
+      }
     }
   }
 }
